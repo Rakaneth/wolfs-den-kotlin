@@ -11,6 +11,7 @@ object EquipSystem {
             Slot.OH -> entity.oh= null
             Slot.ARMOR -> entity.armor = null
             Slot.TRINKET -> entity.trinket = null
+            Slot.TWOH -> {entity.mh = null; entity.oh = null}
         }
     }
 }

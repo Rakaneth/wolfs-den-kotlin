@@ -1,12 +1,13 @@
 package wolfsden.map
 
+import squidpony.ArrayTools
 import squidpony.squidgrid.gui.gdx.MapUtility
 import squidpony.squidgrid.mapping.DungeonUtility
 import wolfsden.Chars
 import wolfsden.RNG
 
 class WolfMap (var baseMap: Array<CharArray>, var light: Boolean = true) {
-    var displayMap: Array<CharArray> = Array(baseMap.size, { CharArray(baseMap[0].size, {'#'}) })
+    var displayMap: Array<CharArray> = ArrayTools.fill('#', baseMap.size, baseMap[0].size)
 
     init {
         for ((x, row) in baseMap.withIndex()) {
