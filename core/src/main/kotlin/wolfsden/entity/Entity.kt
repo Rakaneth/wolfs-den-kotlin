@@ -24,22 +24,22 @@ class Entity(
 ) : Serializable {
     val eID = UUID.randomUUID().toString()
 
-
     val atk: Int
-        get() = (stats?.skl ?: 0) + (armor?.atk ?: 0) + (mh?.atk ?: 0) + (oh?.atk ?: 0) + (trinket?.atk ?: 0)
+        get() = stats?.skl.nz() + armor?.atk.nz() + mh?.atk.nz() + oh?.atk.nz() + trinket?.atk.nz()
     val dfp: Int
-        get() = (stats?.spd ?: 0) + (armor?.dfp ?: 0) + (mh?.dfp ?: 0) + (oh?.dfp ?: 0) + (trinket?.dfp ?: 0)
+        get() = stats?.spd.nz() + armor?.dfp.nz() + mh?.dfp.nz() + oh?.dfp.nz() + trinket?.dfp.nz()
     val dmg: Int
-        get() = (stats?.str ?: 0) + (armor?.dmg ?: 0) + (mh?.dmg ?: 0) + (oh?.dmg ?: 0) + (trinket?.dmg ?: 0)
+        get() = stats?.str.nz() + armor?.dmg.nz() + mh?.dmg.nz() + oh?.dmg.nz() + trinket?.dmg.nz()
     val sav: Int
-        get() = (stats?.stam ?: 0) + (armor?.sav ?: 0) + (mh?.sav ?: 0) + (oh?.sav ?: 0) + (trinket?.sav ?: 0)
+        get() = stats?.stam.nz() + armor?.sav.nz() + mh?.sav.nz() + oh?.sav.nz() + trinket?.sav.nz()
     val atkDly: Int
-        get() = maxOf(5 + maxOf(mh?.dly ?: 0, oh?.dly ?: 0) - (stats?.skl ?: 0), 1)
+        get() = maxOf(5 + maxOf(mh?.dly.nz(), oh?.dly.nz()) - stats?.skl.nz(), 1)
     val movDly: Int
-        get() = maxOf(5 + (armor?.dly ?: 0) - (stats?.spd ?: 0), 1)
+        get() = maxOf(5 + armor?.dly.nz() - stats?.spd.nz(), 1)
     val markupString: String?
         get() = if (draw == null || id == null) null else "[${draw?.color}]${id?.name}[]"
 
+    fun Int?.nz() = this ?: 0
 
     fun addID(name: String, desc: String) {
         id = Identity(eID, name, desc)
