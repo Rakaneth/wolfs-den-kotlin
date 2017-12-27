@@ -8,8 +8,8 @@ import squidpony.squidgrid.gui.gdx.SquidInput
 import squidpony.squidgrid.gui.gdx.SquidPanel
 
 object TitleScreen : WolfScreen("title") {
-    override val vport = StretchViewport(Params.fullPixelW, Params.fullPixelH)
-    override val stage = Stage(vport, Params.batch)
+    override val vport = StretchViewport(fullPixelW, fullPixelH)
+    override val stage = Stage(vport, batch)
     override val input = SquidInput({ key, alt, ctrl, shift ->
         when (key) {
             'n', 'N' -> TODO("New game procedures in progress")
@@ -21,7 +21,7 @@ object TitleScreen : WolfScreen("title") {
     private val display = SquidPanel(120, 40, slab)
 
     init {
-        display.setBounds(0f, 0f, Params.fullPixelW, Params.fullPixelH)
+        display.setBounds(0f, 0f, fullPixelW, fullPixelH)
         stage.addActor(display)
         setInput()
     }

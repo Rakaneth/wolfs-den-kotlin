@@ -12,12 +12,12 @@ import squidpony.squidgrid.gui.gdx.SquidInput
 
 abstract class WolfScreen(val name: String) {
     companion object Params {
-        val cellWidth = 10f
-        val cellHeight = 20f
-        val fullGridW = 120
-        val fulllGridH = 40
-        val fullPixelW = 120f * cellWidth
-        val fullPixelH = 40f * cellHeight
+        const val cellWidth = 10f
+        const val cellHeight = 20f
+        const val fullGridW = 120
+        const val fulllGridH = 40
+        const val fullPixelW = 120f * cellWidth
+        const val fullPixelH = 40f * cellHeight
         val batch = SpriteBatch()
     }
 
