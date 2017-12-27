@@ -1,5 +1,6 @@
 package wolfsden
 
+import squidpony.squidmath.StatefulRNG
 import wolfsden.entity.Entity
 import wolfsden.map.WolfMap
 import java.io.*
@@ -14,6 +15,8 @@ object GameStore {
     val curMap: WolfMap
         get() = mapList[player.pos!!.mapID]!!
 
+    var WolfRNG = StatefulRNG(0xDEADBEEF)
+
     fun getByID(eID: String): Entity? = entityList[eID]
 
     fun saveGame() {
@@ -27,6 +30,7 @@ object GameStore {
             ObjectOutputStream(FileOutputStream("$savePath/$fileName")).use { it ->
                 it.writeObject(entityList)
                 it.writeObject(mapList)
+                it.writeObject(WolfRNG)
             }
             println("Game saved")
         } catch (e: IOException) {
@@ -41,6 +45,7 @@ object GameStore {
             ObjectInputStream(FileInputStream(filePath)).use { it ->
                 val entityBlob = it.readObject()
                 val mapBlob = it.readObject()
+                val rngBlob = it.readObject()
 
                 when (entityBlob) {
                     is MutableMap<*, *> ->
@@ -51,6 +56,11 @@ object GameStore {
                 when (mapBlob) {
                     is MutableMap<*, *> -> mapList = mapBlob as MutableMap<String, WolfMap>
                     else -> throw IOException("Error loading map table")
+                }
+
+                when (rngBlob) {
+                    is StatefulRNG -> WolfRNG = rngBlob
+                    else -> throw IOException("Error loading RNG")
                 }
             }
             println("$fileName loaded")

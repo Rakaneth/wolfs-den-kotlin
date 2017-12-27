@@ -2,9 +2,6 @@ package wolfsden
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Colors
-import squidpony.squidmath.StatefulRNG
-
-val RNG = StatefulRNG(0xDEADBEEF)
 
 object Chars {
     val WALL = '\u2588'

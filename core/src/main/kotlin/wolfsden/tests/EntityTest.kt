@@ -47,7 +47,6 @@ object EntityTestSource {
         ObjectOutputStream(FileOutputStream("test.wlf")).use { it ->
             it.writeObject(e1)
         }
-        println("Saved Test Entity")
         ObjectInputStream(FileInputStream("test.wlf")).use { it ->
             val newEntity = it.readObject()
             when (newEntity) {
