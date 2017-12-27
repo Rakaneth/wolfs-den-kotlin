@@ -68,4 +68,8 @@ object GameStore {
             println("Error loading $fileName: ${e.stackTrace}")
         }
     }
+
+    fun newGame(playerClass: String, playerName: String) {
+        
+    }
 }
