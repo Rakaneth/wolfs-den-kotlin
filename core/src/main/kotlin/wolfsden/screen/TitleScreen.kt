@@ -1,5 +1,6 @@
 package wolfsden.screen
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import squidpony.squidgrid.gui.gdx.DefaultResources
@@ -24,6 +25,7 @@ object TitleScreen : WolfScreen("title") {
         display.setBounds(0f, 0f, fullPixelW, fullPixelH)
         stage.addActor(display)
         setInput()
+        println(Gdx.files.internal("data/").exists())
     }
 
     override fun render() {

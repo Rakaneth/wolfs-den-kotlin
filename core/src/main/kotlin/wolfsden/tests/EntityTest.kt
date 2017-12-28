@@ -13,7 +13,7 @@ import wolfsden.map.WolfMap
 import java.io.*
 
 
-object EntityTestSource {
+class EntityTestSource {
     private val e1 = Entity()
     private val e2 = Entity()
     private val gen = DungeonGenerator()
@@ -105,17 +105,5 @@ object EntityTestSource {
             }
         }
         File("test2.wlf").delete()
-    }
-
-    @Test fun readXMLTest() {
-        val reader = XmlReader()
-        val data = Gdx.files.internal("data/")
-        try {
-            val root = reader.parse(Gdx.files.internal("/data/test2.xml"))
-            val wolf = root.getChildrenByName("EntityType").filter { it.hasAttribute("creature")}.first()
-            assertEquals("Wolf", wolf.getChildByName("Identity").getAttribute("name"))
-        } catch (err: IOException) {
-            fail<XmlReader>("Failed to read XML: ${err.stackTrace}")
-        }
     }
 }
