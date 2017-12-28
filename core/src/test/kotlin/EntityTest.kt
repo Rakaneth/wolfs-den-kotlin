@@ -1,6 +1,5 @@
-package wolfsden.tests
-
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.XmlReader
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.fail
@@ -105,5 +104,16 @@ class EntityTestSource {
             }
         }
         File("test2.wlf").delete()
+    }
+
+    @Test fun readXMLTest() {
+        val reader = XmlReader()
+        try {
+            val root = reader.parse(FileHandle("src/test/res/data/test2.xml"))
+            val wolf = root.getChildrenByName("EntityType").filter{ it.attributes["meta:RefKey"] == "creature"}.first()
+            assertEquals("Wolf", wolf.getChildByName("identity").getAttribute("name"))
+        } catch (err: IOException) {
+            fail<XmlReader>("Failed to read XML: ${err.stackTrace}")
+        }
     }
 }

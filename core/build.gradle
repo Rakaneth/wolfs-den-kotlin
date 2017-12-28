@@ -1,5 +1,6 @@
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 eclipse.project.name = appName + '-core'
+sourceSets.test.resources.srcDirs = ["src/test/res/"]
 
 dependencies {
   compile "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -8,5 +9,7 @@ dependencies {
   compile "com.github.SquidPony.SquidLib:squidlib:$squidLibVersion"
   compile "com.github.SquidPony.SquidLib:squidlib-util:$squidLibUtilVersion"
   compile "com.github.tommyettinger:regexodus:$regExodusVersion"
+  testCompile('org.junit.jupiter:junit-jupiter-api:5.0.1')
+  testRuntime('org.junit.juipter:junit-jupiter-engine:5.0.1')
 }
         
