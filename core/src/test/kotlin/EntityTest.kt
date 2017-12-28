@@ -1,4 +1,3 @@
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.XmlReader
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -106,12 +105,17 @@ class EntityTestSource {
         File("test2.wlf").delete()
     }
 
-    @Test fun readXMLTest() {
+    @Test
+    fun readXMLTest() {
         val reader = XmlReader()
         try {
             val root = reader.parse(FileHandle("src/test/res/data/test2.xml"))
-            val wolf = root.getChildrenByName("EntityType").filter{ it.attributes["meta:RefKey"] == "creature"}.first()
+            val wolf = root.getChildrenByName("EntityType").filter { it.attributes["meta:RefKey"] == "creature" }.first()
+            val rations = root.getChildrenByName("EntityType").filter {it.attributes["meta:RefKey"] == "item"}.first()
+            val fangs = root.getChildrenByName("EntityType").filter {it.attributes["meta:RefKey"] == "equipment"}.first()
             assertEquals("Wolf", wolf.getChildByName("identity").getAttribute("name"))
+            assertEquals(0.2f, rations.getChildByName("recoverData").attributes["pctAmt"].toFloat())
+            assertEquals(1, fangs.getChildByName("eqData").attributes["dmg"].toInt())
         } catch (err: IOException) {
             fail<XmlReader>("Failed to read XML: ${err.stackTrace}")
         }

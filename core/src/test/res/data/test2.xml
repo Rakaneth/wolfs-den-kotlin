@@ -1,22 +1,22 @@
 <Entities xmlns:meta="Editor">
-	<EntityType meta:RefKey="creature">
-		<id>wolf</id>
-		<identity name="Wolf" desc="A large, shaggy wolf." />
-		<draw glyph="W" color="Sepia" />
-		<vitals>true</vitals>
-		<stats str="2" stam="2" spd="1" skl="1" />
-		<worthXP>100</worthXP>
-	</EntityType>
-	<EntityType meta:RefKey="item">
-		<id>rations</id>
-		<identity name="Rations" desc="Rations for a fighting man." />
-		<draw glyph=";" color="Amber" />
-		<recoverData itemType="healing" pctAmt="0.2" />
-	</EntityType>
-	<EntityType meta:RefKey="equipment">
-		<id>wolfFangs</id>
-		<identity name="Wolf Fangs" desc="Sharp fangs from a wolf's maw." />
-		<draw glyph="x" color="Crimson" />
-		<eqData slot="mh" atk="1" dfp="0" dmg="1" sav="0" dly="0" />
-	</EntityType>
+    <EntityType meta:RefKey="creature">
+        <id>wolf</id>
+        <identity name="Wolf" desc="A large, shaggy wolf."/>
+        <draw glyph="W" color="Sepia"/>
+        <vitals>true</vitals>
+        <stats str="2" stam="2" spd="1" skl="1"/>
+        <worthXP>100</worthXP>
+    </EntityType>
+    <EntityType meta:RefKey="item">
+        <id>rations</id>
+        <identity name="Rations" desc="Rations for a fighting man."/>
+        <draw glyph=";" color="Amber"/>
+        <recoverData itemType="healing" pctAmt="0.2"/>
+    </EntityType>
+    <EntityType meta:RefKey="equipment">
+        <id>wolfFangs</id>
+        <identity name="Wolf Fangs" desc="Sharp fangs from a wolf's maw."/>
+        <draw glyph="x" color="Crimson"/>
+        <eqData slot="mh" atk="1" dfp="0" dmg="1" sav="0" dly="0"/>
+    </EntityType>
 </Entities>

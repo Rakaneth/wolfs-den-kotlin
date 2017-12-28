@@ -70,6 +70,6 @@ object GameStore {
     }
 
     fun newGame(playerClass: String, playerName: String) {
-        
+
     }
 }
