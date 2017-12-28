@@ -44,6 +44,7 @@ data class Position(
 
 data class Equipment(
         override val entity: String,
+        val name: String, //for UI purposes since Creatures get Equipment components, not Entities
         val slot: Slot,
         val atk: Int = 0,
         val dfp: Int = 0,
