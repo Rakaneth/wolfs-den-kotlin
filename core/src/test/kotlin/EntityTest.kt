@@ -27,9 +27,9 @@ class EntityTestSource {
 
     @Test
     fun equipFunctions() {
-        e1.armor = Equipment(e1.eID, Slot.ARMOR, 1, 2, 3, 4, 5)
-        e1.mh = Equipment(e1.eID, Slot.MH, 2, 0, 2, 0, 5)
-        e1.oh = Equipment(e1.eID, Slot.OH, 0, 1, 1, 0, 8)
+        e1.armor = Equipment(e1.eID, "armor", Slot.ARMOR, 1, 2, 3, 4, 5)
+        e1.mh = Equipment(e1.eID, "mh", Slot.MH, 2, 0, 2, 0, 5)
+        e1.oh = Equipment(e1.eID, "oh", Slot.OH, 0, 1, 1, 0, 8)
         e1.addStats(1, 1, 1, 1)
         assertEquals(4, e1.atk)
         assertEquals(4, e1.dfp)
@@ -51,7 +51,7 @@ class EntityTestSource {
             val newEntity = it.readObject()
             when (newEntity) {
                 is Entity -> {
-                    newEntity.addEQ(Slot.TRINKET, 4, 2, 3, 3)
+                    newEntity.addEQ("trinket", Slot.TRINKET, 4, 2, 3, 3)
                     assertEquals(e1.eID, newEntity.eID)
                     assertEquals(e1.draw?.glyph, newEntity.draw?.glyph)
                     assertEquals(4, newEntity.eq?.atk)

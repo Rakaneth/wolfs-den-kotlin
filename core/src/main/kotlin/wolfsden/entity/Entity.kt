@@ -57,8 +57,8 @@ class Entity(
         pos = Position(eID, mapID, x, y)
     }
 
-    fun addEQ(slot: Slot, atk: Int = 0, dfp: Int = 0, dmg: Int = 0, sav: Int = 0, dly: Int = 0) {
-        eq = Equipment(eID, slot, atk, dfp, dmg, sav, dly)
+    fun addEQ(name: String, slot: Slot, atk: Int = 0, dfp: Int = 0, dmg: Int = 0, sav: Int = 0, dly: Int = 0) {
+        eq = Equipment(eID, name, slot, atk, dfp, dmg, sav, dly)
     }
 
     fun addVitals(alive: Boolean, curVit: Int, maxVit: Int, curEnd: Int, maxEnd: Int) {
