@@ -1,5 +1,7 @@
 package wolfsden
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.utils.XmlReader
 import squidpony.squidmath.StatefulRNG
 import wolfsden.entity.Entity
 import wolfsden.map.WolfMap
@@ -14,6 +16,13 @@ object GameStore {
 
     val curMap: WolfMap
         get() = mapList[player.pos!!.mapID]!!
+
+    val reader = XmlReader()
+
+    val creatureBP = reader.parse(Gdx.files.internal("data/creatures.xml"))
+    val equipBP = reader.parse(Gdx.files.internal("data/equipment.xml"))
+    val itemBP = reader.parse(Gdx.files.internal("data/items.xml"))
+    val heroBP = reader.parse(Gdx.files.internal("data/heroes.xml"))
 
     var WolfRNG = StatefulRNG(0xDEADBEEF)
 
