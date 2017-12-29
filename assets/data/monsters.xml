@@ -1,0 +1,62 @@
+<Entities xmlns:meta="Editor">
+	<EntityType meta:RefKey="creature">
+		<id>wolf</id>
+		<identity name="Wolf" desc="A large, shaggy wolf." />
+		<draw glyph="W" color="Sepia" />
+		<vitals>true</vitals>
+		<stats str="2" stam="2" spd="2" skl="1" />
+		<worthXP>100</worthXP>
+	</EntityType>
+	<EntityType meta:RefKey="creature">
+		<id>alpha</id>
+		<identity name="Alpha" desc="A larger wolf, usually seen at the head of a pack." />
+		<draw glyph="W" color="Burnt Umber" />
+		<vitals>true</vitals>
+		<stats str="4" stam="3" spd="3" skl="2" />
+		<worthXP>300</worthXP>
+		<gainsXP>true</gainsXP>
+	</EntityType>
+	<EntityType meta:RefKey="creature">
+		<id>dire</id>
+		<identity name="Great Wolf" desc="A massive monster of a wolf." />
+		<draw glyph="W" color="Dark Grey" />
+		<vitals>true</vitals>
+		<stats str="6" stam="5" spd="4" skl="4" />
+		<worthXP>500</worthXP>
+	</EntityType>
+	<EntityType meta:RefKey="creature">
+		<id>revenant</id>
+		<identity name="Fallen Warrior" desc="A fallen warrior, animated by foul magic." />
+		<draw glyph="Z" color="Dark Grey" />
+		<vitals>true</vitals>
+		<stats str="4" stam="4" spd="4" skl="4" />
+		<equip mh="ironSword" oh="woodShield" armor="chainMail" />
+		<worthXP>500</worthXP>
+	</EntityType>
+	<EntityType meta:RefKey="creature">
+		<id>wolfLord</id>
+		<identity name="Wolf Lord" desc="A savage man with wolflike features, covered in furs." />
+		<draw glyph="@" color="Sepia" />
+		<vitals>true</vitals>
+		<stats str="7" stam="7" spd="7" skl="7" />
+		<equip mh="wolfFangs" oh="wolfClaws" armor="wolfFur" trinket="wolfCharm" />
+		<worthXP>1000</worthXP>
+	</EntityType>
+	<EntityType meta:RefKey="creature">
+		<id>banshee</id>
+		<identity name="Banshee" desc="A wailing spirit, eerie and translucent." />
+		<draw glyph="G" color="White" />
+		<vitals>true</vitals>
+		<stats str="3" stam="2" spd="8" skl="9" />
+		<worthXP>800</worthXP>
+	</EntityType>
+	<EntityType meta:RefKey="creature">
+		<id>margrave</id>
+		<identity name="Margrave of Bones" desc="A frightening creature, thin as a rail, radiating menace." />
+		<draw glyph="M" color="CW Rich Purple" />
+		<vitals>true</vitals>
+		<stats str="7" stam="7" spd="7" skl="7" />
+		<equip mh="fellHammer" armor="shadowRobe" />
+		<worthXP>5000</worthXP>
+	</EntityType>
+</Entities>

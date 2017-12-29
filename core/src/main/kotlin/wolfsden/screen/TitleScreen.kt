@@ -25,7 +25,6 @@ object TitleScreen : WolfScreen("title") {
         display.setBounds(0f, 0f, fullPixelW, fullPixelH)
         stage.addActor(display)
         setInput()
-        println(Gdx.files.internal("data/").exists())
     }
 
     override fun render() {

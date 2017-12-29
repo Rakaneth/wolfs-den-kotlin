@@ -1,0 +1,84 @@
+<Entities xmlns:meta="Editor">
+	<EntityType meta:RefKey="equipment">
+		<id>wolfFangs</id>
+		<identity name="Wolf Fangs" desc="Sharp fangs from a large wolf." />
+		<draw glyph="w" color="Crimson" />
+		<eqData slot="mh" atk="0" dfp="0" dmg="1" sav="0" dly="4" />
+	</EntityType>
+	<EntityType meta:RefKey="equipment">
+		<id>wolfClaws</id>
+		<identity name="Wolf Claws" desc="Short, furry claws from a large wolf." />
+		<draw glyph="v" color="Crimson" />
+		<eqData slot="oh" atk="1" dfp="0" dmg="0" sav="0" dly="3" />
+	</EntityType>
+	<EntityType meta:RefKey="equipment">
+		<id>ironSword</id>
+		<identity name="Iron Sword" desc="A serviceable, sturdy shortsword." />
+		<draw glyph="\u2356" color="Grey" />
+		<eqData slot="mh" atk="2" dfp="0" dmg="1" sav="0" dly="5" />
+	</EntityType>
+	<EntityType meta:RefKey="equipment">
+		<id>dagger</id>
+		<eqData slot="ambi" atk="1" dfp="0" dmg="1" sav="0" dly="4" />
+	</EntityType>
+	<EntityType meta:RefKey="equipment">
+		<id>mace</id>
+		<identity name="Mace" desc="An intimidating iron mace." />
+		<draw glyph="\u0189" color="Grey" />
+		<eqData slot="mh" atk="0" dfp="0" dmg="3" sav="0" dly="6" />
+	</EntityType>
+	<EntityType meta:RefKey="equipment">
+		<id>greatAxe</id>
+		<identity name="Greataxe" desc="A heavy bearded axe." />
+		<draw glyph="\u00de" color="White" />
+		<eqData slot="2h" atk="1" dfp="0" dmg="4" sav="0" dly="7" />
+	</EntityType>
+	<EntityType meta:RefKey="equipment">
+		<id>wolfFur</id>
+		<identity name="Wolf Furs" desc="A thick layer of shaggy wolf fur." />
+		<draw glyph=")" color="Sepia" />
+		<eqData slot="armor" atk="0" dfp="0" dmg="0" sav="1" dly="2" prot="10" curProt="10" />
+	</EntityType>
+	<EntityType meta:RefKey="equipment">
+		<id>leather</id>
+		<identity name="Leather Jerkin" desc="A sturdy, supple leather jerkin." />
+		<draw glyph=")" color="Burnt Umber" />
+		<eqData slot="armor" atk="0" dfp="0" dmg="0" sav="1" dly="4" prot="15" curProt="15" />
+	</EntityType>
+	<EntityType meta:RefKey="equipment">
+		<id>chainMail</id>
+		<identity name="Chainmail" desc="A heavy chain hauberk." />
+		<draw glyph="]" color="Grey" />
+		<eqData slot="armor" atk="0" dfp="0" dmg="0" sav="0" dly="7" prot="20" curProt="20" />
+	</EntityType>
+	<EntityType meta:RefKey="equipment">
+		<id>woodShield</id>
+		<identity name="Wooden Shield" desc="A sturdy wooden shield, embossed with bronze." />
+		<draw glyph="[" color="Burnt Umber" />
+		<eqData slot="oh" atk="0" dfp="2" dmg="0" sav="2" dly="4" />
+	</EntityType>
+	<EntityType meta:RefKey="equipment">
+		<id>fellHammer</id>
+		<identity name="Fell Hammer" desc="A massive warhammer, covered in bloody spikes." />
+		<draw glyph="\u0188" color="CW Drab Purple" />
+		<eqData slot="2h" atk="3" dfp="0" dmg="3" sav="0" dly="7" prot="10" curProt="10" />
+	</EntityType>
+	<EntityType meta:RefKey="equipment">
+		<id>shadowRobe</id>
+		<identity name="Shadow Robe" desc="A tattered robe that seems to move on its own." />
+		<draw glyph=")" color="CW Drab Purple" />
+		<eqData slot="armor" atk="0" dfp="3" dmg="0" sav="3" dly="0" prot="10" curProt="10" />
+	</EntityType>
+	<EntityType meta:RefKey="equipment">
+		<id>wolfCharm</id>
+		<identity name="Wolf Charm" desc="A necklace of fangs and claws on leather cord." />
+		<draw glyph="=" color="Sepia" />
+		<eqData slot="trinket" atk="1" dfp="1" dmg="1" sav="1" dly="0" prot="5" curProt="5" />
+	</EntityType>
+	<EntityType meta:RefKey="equipment">
+		<id>ravenSymbol</id>
+		<identity name="Raven Medallion" desc="A holy symbol of the Raven." />
+		<draw glyph="=" color="Dark Grey" />
+		<eqData slot="trinket" atk="1" dfp="0" dmg="1" sav="0" dly="0" prot="5" curProt="5" />
+	</EntityType>
+</Entities>
