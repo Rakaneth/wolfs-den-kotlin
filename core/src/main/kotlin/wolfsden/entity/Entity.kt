@@ -1,6 +1,7 @@
 package wolfsden.entity
 
 import squidpony.squidmath.Coord
+import wolfsden.nz
 import java.io.Serializable
 import java.util.*
 
@@ -39,7 +40,7 @@ class Entity(
     val markupString: String?
         get() = if (draw == null || id == null) null else "[${draw?.color}]${id?.name}[]"
 
-    fun Int?.nz() = this ?: 0
+
 
     fun addID(name: String, desc: String) {
         id = Identity(eID, name, desc)
