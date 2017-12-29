@@ -4,7 +4,7 @@ import squidpony.ArrayTools
 import squidpony.squidgrid.gui.gdx.MapUtility
 import squidpony.squidgrid.mapping.DungeonUtility
 import wolfsden.Chars
-import wolfsden.GameStore.WolfRNG
+import wolfsden.system.WolfRNG
 import java.io.Serializable
 
 class WolfMap(val id: String, var baseMap: Array<CharArray>, var light: Boolean = true) : Serializable {
@@ -27,7 +27,7 @@ class WolfMap(val id: String, var baseMap: Array<CharArray>, var light: Boolean 
     }
 
     @Transient
-    val utility = DungeonUtility(WolfRNG)
+    val utility = DungeonUtility(WolfRNG.wolfRNG)
     var bgFloats = MapUtility.generateDefaultBGColorsFloat(displayMap)
     var fgFloats = MapUtility.generateDefaultColorsFloat(displayMap)
     var resistances = DungeonUtility.generateResistances(displayMap)

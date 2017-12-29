@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.XmlReader
 import squidpony.squidmath.StatefulRNG
 import wolfsden.entity.Entity
 import wolfsden.map.WolfMap
+import wolfsden.system.WolfRNG
 import java.io.*
 
 object GameStore {
@@ -24,8 +25,6 @@ object GameStore {
     val itemBP = reader.parse(Gdx.files.internal("data/items.xml"))
     val heroBP = reader.parse(Gdx.files.internal("data/heroes.xml"))
 
-    var WolfRNG = StatefulRNG(0xDEADBEEF)
-
     fun getByID(eID: String): Entity? = entityList[eID]
 
     fun saveGame() {
@@ -39,7 +38,7 @@ object GameStore {
             ObjectOutputStream(FileOutputStream("$savePath/$fileName")).use { it ->
                 it.writeObject(entityList)
                 it.writeObject(mapList)
-                it.writeObject(WolfRNG)
+                it.writeObject(WolfRNG.wolfRNG)
             }
             println("Game saved")
         } catch (e: IOException) {
@@ -68,7 +67,7 @@ object GameStore {
                 }
 
                 when (rngBlob) {
-                    is StatefulRNG -> WolfRNG = rngBlob
+                    is StatefulRNG -> WolfRNG.wolfRNG = rngBlob
                     else -> throw IOException("Error loading RNG")
                 }
             }
