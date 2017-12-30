@@ -4,11 +4,13 @@
 		<identity name="Rations" desc="Salted meat and hard tack, surprisingly still edible." />
 		<draw glyph="&quot;" color="Sepia" />
 		<recoverData itemType="healing" pctAmt="0.2" />
+		<rarity>20</rarity>
 	</EntityType>
 	<EntityType meta:RefKey="item">
 		<id>Scraps</id>
 		<identity name="Armor Scraps" desc="Armor scraps left behind from previous battles. Can be used to repair armor." />
 		<draw glyph="(" color="Grey" />
 		<recoverData itemType="repair" flatAmt="10" />
+		<rarity>20</rarity>
 	</EntityType>
 </Entities>

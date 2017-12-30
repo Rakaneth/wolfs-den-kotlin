@@ -6,6 +6,7 @@
 		<vitals>true</vitals>
 		<stats str="2" stam="2" spd="2" skl="1" />
 		<worthXP>100</worthXP>
+		<tags>wolf</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>alpha</id>
@@ -15,6 +16,7 @@
 		<stats str="4" stam="3" spd="3" skl="2" />
 		<worthXP>300</worthXP>
 		<gainsXP>true</gainsXP>
+		<tags>wolf</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>dire</id>
@@ -23,6 +25,8 @@
 		<vitals>true</vitals>
 		<stats str="6" stam="5" spd="4" skl="4" />
 		<worthXP>500</worthXP>
+		<rarity>20</rarity>
+		<tags>wolf</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>revenant</id>
@@ -32,6 +36,8 @@
 		<stats str="4" stam="4" spd="4" skl="4" />
 		<equip mh="ironSword" oh="woodShield" armor="chainMail" />
 		<worthXP>500</worthXP>
+		<rarity>15</rarity>
+		<tags>undead,door</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>wolfLord</id>
@@ -41,6 +47,7 @@
 		<stats str="7" stam="7" spd="7" skl="7" />
 		<equip mh="wolfFangs" oh="wolfClaws" armor="wolfFur" trinket="wolfCharm" />
 		<worthXP>1000</worthXP>
+		<tags>wolf</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>banshee</id>
@@ -49,6 +56,7 @@
 		<vitals>true</vitals>
 		<stats str="3" stam="2" spd="8" skl="9" />
 		<worthXP>800</worthXP>
+		<tags>undead</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>margrave</id>
@@ -58,5 +66,6 @@
 		<stats str="7" stam="7" spd="7" skl="7" />
 		<equip mh="fellHammer" armor="shadowRobe" />
 		<worthXP>5000</worthXP>
+		<tags>undead</tags>
 	</EntityType>
 </Entities>
