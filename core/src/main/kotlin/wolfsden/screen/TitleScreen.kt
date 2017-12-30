@@ -1,18 +1,18 @@
 package wolfsden.screen
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.StretchViewport
-import squidpony.squidgrid.gui.gdx.DefaultResources
-import squidpony.squidgrid.gui.gdx.SColor
-import squidpony.squidgrid.gui.gdx.SquidInput
-import squidpony.squidgrid.gui.gdx.SquidPanel
+import squidpony.squidgrid.gui.gdx.*
+import wolfsden.WolfGame
 
 object TitleScreen : WolfScreen("title") {
     override val vport = StretchViewport(fullPixelW, fullPixelH)
     override val stage = Stage(vport, batch)
     override val input = SquidInput({ key, alt, ctrl, shift ->
         when (key) {
-            'n', 'N' -> TODO("New game procedures in progress")
+            'n', 'N' -> (Gdx.app.applicationListener as WolfGame).setScreen(PlayScreen)
+            SquidInput.ESCAPE -> Gdx.app.exit()
             else -> {
             }
         }
