@@ -25,6 +25,7 @@
 	</EntityType>
 	<EntityType meta:RefKey="equipment">
 		<id>dagger</id>
+		<identity name="Dagger" desc="A short, common dagger." />
 		<eqData slot="ambi" atk="1" dfp="0" dmg="1" sav="0" dly="4" />
 		<rarity>35</rarity>
 		<tags>melee,close,stab,slash</tags>
