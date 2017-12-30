@@ -8,16 +8,17 @@ object WolfRNG {
     var wolfRNG = StatefulRNG(0xDEADBEEF)
     private val dice = Dice(wolfRNG)
 
-    //based on Earthdawn's step system, periodic about d10 for simplicity
-    private val steps = arrayOf("0", "!4-2", "!4-1", "!4", "!6", "!8", "!10", "!6+!4", "2!6", "!8+!6", "!10+!6", "!10+!8")
+    //based on Earthdawn's step system, repeats the second set every 6 steps
+    private val steps = arrayOf("0", "!4-2", "!4-1", "!4", "!6", "!8", "!10")
+    private val steps2 = arrayOf( "0", "!6+!4", "2!6", "!8+!6", "!10+!6", "!10+!8")
 
     fun diceString(step: Int): String {
         return when {
             step < 0 -> "0"
-            step.between(0, 11) -> steps[step]
-            else -> "${step/6-1}!10+${steps[step%6+6]}"
+            step.between(0, 6) -> steps[step]
+            step.between(7, 11) -> steps2[step - 6]
+            else -> "${step/6 - 1}!10+${steps2[(step) % 6]}"
         }
-
     }
 
     fun roll(step: Int, diff: Int?=null): Int {
@@ -32,11 +33,11 @@ object WolfRNG {
 
     fun testRoll(step: Int, diff: Int?=null) {
         val r = roll(step, diff)
-        println("Rolling step $step ${if (diff != null) "against diff $diff" else ""} (${diceString(step)}): $r")
+        println("Rolling step $step (${diceString(step)})${if (diff != null) " against diff $diff" else ""}: $r")
     }
 
     fun extendedRollTest(step: Int, diff: Int) {
-        val pct = Array (100, { roll(step, diff) }).count {it > 0}
-        println("Result of 100 step $step (${diceString(step)}) rolls against diff $diff: $pct%")
+        val pct = Array (1000, { roll(step, diff) }).count {it > 0}
+        println("Result of 1000 step $step (${diceString(step)}) rolls against diff $diff: ${pct/10}%")
     }
 }
