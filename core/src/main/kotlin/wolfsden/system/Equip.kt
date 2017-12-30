@@ -3,7 +3,7 @@ package wolfsden.system
 import wolfsden.entity.BESTIARY
 import wolfsden.entity.Slot
 
-object EquipSystem {
+object Equip {
     fun unequip(eID: String, slot: Slot) {
         val entity = BESTIARY[eID]!!
         when (slot) {

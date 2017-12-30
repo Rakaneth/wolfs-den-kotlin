@@ -8,6 +8,7 @@ import java.util.*
 val BESTIARY: MutableMap<String, Entity> = mutableMapOf()
 
 class Entity(
+        val eID: String,
         var id: Identity? = null,
         var draw: Drawing? = null,
         var pos: Position? = null,
@@ -23,8 +24,6 @@ class Entity(
         var xp: XPGainer? = null,
         var isPlayer: Boolean = false
 ) : Serializable {
-    val eID = UUID.randomUUID().toString()
-
     val atk: Int
         get() = stats?.skl.nz() + armor?.atk.nz() + mh?.atk.nz() + oh?.atk.nz() + trinket?.atk.nz()
     val dfp: Int
@@ -39,6 +38,11 @@ class Entity(
         get() = maxOf(5 + armor?.dly.nz() - stats?.spd.nz(), 1)
     val markupString: String?
         get() = if (draw == null || id == null) null else "[${draw?.color}]${id?.name}[]"
+    val maxVit: Int
+        get() = stats?.stam.nz() * 10
+    val maxEnd: Int
+        get()= stats?.stam.nz() * 15
+    var worthXP: Float = 0f
 
 
 

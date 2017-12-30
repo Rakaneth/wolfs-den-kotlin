@@ -1,29 +1,32 @@
-package wolfsden
+package wolfsden.system
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.XmlReader
 import squidpony.squidmath.StatefulRNG
 import wolfsden.entity.Entity
 import wolfsden.map.WolfMap
-import wolfsden.system.WolfRNG
 import java.io.*
 
 object GameStore {
-    var entityList: Map<String, Entity> = mutableMapOf()
-    var mapList: Map<String, WolfMap> = mutableMapOf()
+    var entityList: MutableMap<String, Entity> = mutableMapOf()
+    var mapList: MutableMap<String, WolfMap> = mutableMapOf()
 
-    val player: Entity
+    val player
         get() = entityList["player"]!!
 
-    val curMap: WolfMap
+    val curMap
         get() = mapList[player.pos!!.mapID]!!
 
-    val reader = XmlReader()
+    val curEntities
+        get() = entityList.values.filter{Location.sameMap(it, player)}
 
-    val creatureBP = reader.parse(Gdx.files.internal("data/creatures.xml"))
-    val equipBP = reader.parse(Gdx.files.internal("data/equipment.xml"))
-    val itemBP = reader.parse(Gdx.files.internal("data/items.xml"))
-    val heroBP = reader.parse(Gdx.files.internal("data/heroes.xml"))
+    fun addEntity(entity: Entity) {
+        entityList[entity.eID] = entity
+    }
+
+    fun removeEntity(entity: Entity) {
+        entityList.remove(entity.eID)
+    }
 
     fun getByID(eID: String): Entity? = entityList[eID]
 

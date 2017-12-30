@@ -1,5 +1,6 @@
 package wolfsden.entity
 
+import squidpony.squidmath.Coord
 import java.io.Serializable
 
 enum class Slot { MH, OH, ARMOR, TRINKET, TWOH }
@@ -40,7 +41,10 @@ data class Position(
         var mapID: String,
         var x: Int = -1,
         var y: Int = -1
-) : Component(entity)
+) : Component(entity) {
+    val coord: Coord
+        get() = Coord.get(x, y)
+}
 
 data class Equipment(
         override val entity: String,

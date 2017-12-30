@@ -15,7 +15,6 @@
 		<vitals>true</vitals>
 		<stats str="4" stam="3" spd="3" skl="2" />
 		<worthXP>300</worthXP>
-		<gainsXP>true</gainsXP>
 		<tags>wolf</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
@@ -67,5 +66,41 @@
 		<equip mh="fellHammer" armor="shadowRobe" />
 		<worthXP>5000</worthXP>
 		<tags>undead</tags>
+	</EntityType>
+		<EntityType meta:RefKey="creature">
+		<id>fighter</id>
+		<identity name="Warrior" desc="A burly, seasoned warrior." />
+		<draw glyph="@" color="White" />
+		<vitals>false</vitals>
+		<stats str="2" stam="2" spd="1" skl="1" />
+		<equip mh="ironSword" armor="chainMail" />
+		<worthXP>300</worthXP>
+		<gainsXP>true</gainsXP>
+		<rarity>5</rarity>
+		<tags>hero</tags>
+	</EntityType>
+	<EntityType meta:RefKey="creature">
+		<id>rogue</id>
+		<identity name="Rogue" desc="A lithe, deft scoundrel." />
+		<draw glyph="@" color="White" />
+		<vitals>true</vitals>
+		<stats str="1" stam="1" spd="2" skl="2" />
+		<equip mh="dagger" oh="dagger" armor="leather" />
+		<worthXP>300</worthXP>
+		<gainsXP>true</gainsXP>
+		<rarity>5</rarity>
+		<tags>hero</tags>
+	</EntityType>
+	<EntityType meta:RefKey="creature">
+		<id>cleric</id>
+		<identity name="Oathbound" desc="An Oathbound, devoted to the Raven." />
+		<draw glyph="@" color="White" />
+		<vitals>true</vitals>
+		<stats str="1" stam="2" spd="1" skl="2" />
+		<equip mh="mace" oh="woodShield" armor="chainMail" trinket="ravenSymbol" />
+		<worthXP>300</worthXP>
+		<gainsXP>true</gainsXP>
+		<rarity>5</rarity>
+		<tags>hero</tags>
 	</EntityType>
 </Entities>
