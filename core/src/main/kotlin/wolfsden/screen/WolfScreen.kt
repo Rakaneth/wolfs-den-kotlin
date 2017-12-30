@@ -19,11 +19,11 @@ abstract class WolfScreen(val name: String) {
         const val fullPixelW = 120f * cellWidth
         const val fullPixelH = 40f * cellHeight
         val batch = SpriteBatch()
+        val vport = StretchViewport(fullPixelW, fullPixelH)
     }
 
     abstract val stage: Stage
     abstract val input: SquidInput
-    abstract val vport: StretchViewport
 
     abstract fun render()
     open fun enter() {

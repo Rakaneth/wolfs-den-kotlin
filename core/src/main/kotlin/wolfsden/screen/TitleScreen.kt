@@ -7,7 +7,6 @@ import squidpony.squidgrid.gui.gdx.*
 import wolfsden.WolfGame
 
 object TitleScreen : WolfScreen("title") {
-    override val vport = StretchViewport(fullPixelW, fullPixelH)
     override val stage = Stage(vport, batch)
     override val input = SquidInput({ key, alt, ctrl, shift ->
         when (key) {
