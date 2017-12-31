@@ -12,11 +12,11 @@ import java.io.*
 
 
 class EntityTestSource {
-    private val e1 = Entity()
-    private val e2 = Entity()
+    private val e1 = Entity("e1")
+    private val e2 = Entity("e2")
     private val gen = DungeonGenerator()
-    private val m1 = WolfMap("test", gen.generate())
-    private val m2 = WolfMap("test2", gen.generate())
+    private val m1 = WolfMap("test", "Test Map 1",  gen.generate(), true)
+    private val m2 = WolfMap("test2", "Test Map 2", gen.generate(), true)
 
     @Test
     fun testDraw() {
