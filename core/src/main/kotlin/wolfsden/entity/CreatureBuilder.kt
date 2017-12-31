@@ -1,9 +1,9 @@
-package wolfsden.system
+package wolfsden.entity
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.XmlReader
 import squidpony.squidmath.Coord
-import wolfsden.entity.Entity
+import wolfsden.system.GameStore
 import java.util.*
 
 object CreatureBuilder {

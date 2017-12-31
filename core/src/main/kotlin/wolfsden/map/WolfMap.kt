@@ -1,6 +1,7 @@
 package wolfsden.map
 
 import squidpony.ArrayTools
+import squidpony.squidgrid.FOV
 import squidpony.squidgrid.gui.gdx.MapUtility
 import squidpony.squidgrid.mapping.DungeonUtility
 import squidpony.squidmath.Coord
@@ -9,7 +10,7 @@ import wolfsden.Chars
 import wolfsden.system.WolfRNG
 import java.io.Serializable
 
-class WolfMap(val id: String, var baseMap: Array<CharArray>, var light: Boolean = true) : Serializable {
+class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, var light: Boolean = true) : Serializable {
     var displayMap: Array<CharArray> = ArrayTools.fill('#', baseMap.size, baseMap[0].size)
 
     init {
@@ -30,9 +31,49 @@ class WolfMap(val id: String, var baseMap: Array<CharArray>, var light: Boolean 
 
     @Transient
     val utility = DungeonUtility(WolfRNG.wolfRNG)
+
     var bgFloats = MapUtility.generateDefaultBGColorsFloat(displayMap)
     var fgFloats = MapUtility.generateDefaultColorsFloat(displayMap)
-    var resistances = DungeonUtility.generateResistances(displayMap)
+    var resistances = DungeonUtility.generateResistances(baseMap)
+    val connections: MutableMap<Coord, Connection> = mutableMapOf()
+
+    fun connect(from: Coord, toCoord: Coord, mapID: String) {
+        connections[from] = Connection(toCoord, mapID)
+    }
+
+    fun connection(from: Coord): Connection? = connections[from]
 
     fun randomFloor(): Coord = utility.randomFloor(displayMap)
+
+    fun randomFloorWithin(c: Coord, radius: Double = 1.0): Coord {
+        val tempVisible = ArrayTools.fill(0.0, baseMap.size, baseMap[0].size)
+        FOV.reuseFOV(resistances, tempVisible, c.x, c.y, radius)
+        return CoordPacker.singleRandom(CoordPacker.pack(tempVisible), WolfRNG.wolfRNG)
+    }
+
+    fun changeMap(c: Coord, baseChar: Char, displayChar: Char) {
+        baseMap[c.x][c.y] = baseChar
+        displayMap[c.x][c.y] = displayChar
+        fgFloats = MapUtility.generateDefaultBGColorsFloat(displayMap)
+        bgFloats = MapUtility.generateDefaultColorsFloat(displayMap)
+        resistances = DungeonUtility.generateResistances(baseMap)
+    }
+
+    fun closeDoor(c: Coord) {
+        changeMap(c, '+', Chars.CLOSED)
+    }
+
+    fun openDoor(c: Coord) {
+        changeMap(c, '\\', Chars.OPEN)
+    }
+
+    fun downStair(c: Coord) {
+        changeMap(c, '>', Chars.DOWN)
+    }
+
+    fun upStair(c: Coord) {
+        changeMap(c, '<', Chars.UP)
+    }
+
+    data class Connection(val to: Coord, val mapID: String) : Serializable
  }
