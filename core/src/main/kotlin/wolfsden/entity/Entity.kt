@@ -3,7 +3,6 @@ package wolfsden.entity
 import squidpony.squidmath.Coord
 import wolfsden.nz
 import java.io.Serializable
-import java.util.*
 
 val BESTIARY: MutableMap<String, Entity> = mutableMapOf()
 
@@ -22,6 +21,7 @@ class Entity(
         var armor: Equipment? = null,
         var trinket: Equipment? = null,
         var xp: XPGainer? = null,
+        var vision: Vision? = null,
         var isPlayer: Boolean = false
 ) : Serializable {
     val atk: Int
@@ -41,10 +41,9 @@ class Entity(
     val maxVit: Int
         get() = stats?.stam.nz() * 10
     val maxEnd: Int
-        get()= stats?.stam.nz() * 15
+        get() = stats?.stam.nz() * 15
     var worthXP: Float = 0f
-
-
+    val tags: MutableList<String> = mutableListOf()
 
     fun addID(name: String, desc: String) {
         id = Identity(eID, name, desc)
@@ -82,8 +81,16 @@ class Entity(
         repair = RepairItem(eID, pctAmt, flatAmt)
     }
 
+    fun addVision(radius: Double = 6.0) {
+        vision = Vision(eID, radius)
+    }
+
     fun addXP(curXP: Float = 0f, totXP: Float = 0f) {
         xp = XPGainer(eID, curXP, totXP)
+    }
+
+    fun addTag(tag: String) {
+        tags.add(tag)
     }
 
 }

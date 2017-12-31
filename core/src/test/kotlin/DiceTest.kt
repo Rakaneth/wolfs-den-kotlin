@@ -26,22 +26,22 @@ class DiceTestSource {
 
     @Test
     fun testPcts() {
-        with (WolfRNG) {
+        with(WolfRNG) {
             extendedRollTest(5, 5)
             extendedRollTest(17, 17)
             extendedRollTest(26, 26)
             extendedRollTest(38, 38)
-            extendedRollTest(69,69)
+            extendedRollTest(69, 69)
             extendedRollTest(5, 3)
             extendedRollTest(17, 14)
             extendedRollTest(26, 23)
             extendedRollTest(38, 35)
-            extendedRollTest(69,66)
+            extendedRollTest(69, 66)
             extendedRollTest(5, 8)
             extendedRollTest(17, 20)
             extendedRollTest(26, 29)
             extendedRollTest(38, 41)
-            extendedRollTest(69,72)
+            extendedRollTest(69, 72)
         }
     }
 

@@ -2,32 +2,35 @@ package wolfsden.screen
 
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.utils.viewport.StretchViewport
 import squidpony.squidgrid.gui.gdx.*
 import wolfsden.screen.WolfScreen.Params.batch
 import wolfsden.screen.WolfScreen.Params.cellHeight
 import wolfsden.screen.WolfScreen.Params.cellWidth
-import wolfsden.screen.WolfScreen.Params.vport
 
-fun layout(block: Layout.() -> Unit): Layout = Layout().apply(block)
+fun layout(vport: StretchViewport, block: Layout.() -> Unit): Layout = Layout(vport).apply(block)
 
-class Layout {
-    val stage = Stage(vport, batch)
+class Layout(vport: StretchViewport) {
+    private val stage = Stage(vport, batch)
     val actors: MutableMap<String, Actor> = mutableMapOf()
     fun panel(block: PanelBuilder.() -> Unit) {
         val pb = PanelBuilder().apply(block)
         actors[pb.id] = pb.build()
         stage.addActor(actors[pb.id])
     }
+
     fun layers(block: SparseBuilder.() -> Unit) {
         val sb = SparseBuilder().apply(block)
         actors[sb.id] = sb.build()
         stage.addActor(actors[sb.id])
     }
+
     fun messages(block: MessageBuilder.() -> Unit) {
         val mb = MessageBuilder().apply(block)
         actors[mb.id] = mb.build()
         stage.addActor(actors[mb.id])
     }
+
     fun build(): Stage = stage
 }
 
@@ -41,6 +44,7 @@ class SparseBuilder {
     fun tcf(block: TCFBuild.() -> Unit) {
         _tcf = TCFBuild().apply(block).build()
     }
+
     fun build(): SparseLayers {
         val spl = SparseLayers(gw, gh, cellWidth, cellHeight, _tcf)
         spl.setPosition(x * cellWidth, y * cellHeight)
@@ -58,6 +62,7 @@ class MessageBuilder {
     fun tcf(block: TCFBuild.() -> Unit) {
         _tcf = TCFBuild().apply(block).build()
     }
+
     fun build(): SquidMessageBox {
         val msg = SquidMessageBox(gw, gh, _tcf)
         msg.setBounds(x * cellWidth, y * cellHeight, gw * cellWidth, gh * cellHeight)
@@ -90,7 +95,7 @@ class PanelBuilder {
 class TCFBuild {
     var tweakWidth = 1f
     var tweakHeight = 1f
-    var base = DefaultResources.getSlabFamily()
+    var base: TextCellFactory = DefaultResources.getSlabFamily()
 
     fun build(): TextCellFactory = base.width(WolfScreen.cellWidth).height(WolfScreen.cellHeight).tweakWidth(tweakWidth * WolfScreen.cellWidth).tweakHeight(tweakHeight * WolfScreen.cellHeight).initBySize()
 }

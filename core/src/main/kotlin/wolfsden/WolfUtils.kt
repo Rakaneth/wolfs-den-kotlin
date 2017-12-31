@@ -1,6 +1,6 @@
 package wolfsden
 
-fun <T: Comparable<T>> T.between(low: T, high: T): Boolean {
+fun <T : Comparable<T>> T.between(low: T, high: T): Boolean {
     return when {
         this < low -> false
         this > high -> false

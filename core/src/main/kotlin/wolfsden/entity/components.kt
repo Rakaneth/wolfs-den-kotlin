@@ -74,3 +74,10 @@ data class XPGainer(
         var curXP: Float = 0f,
         var totXP: Float = 0f
 ) : Component(entity)
+
+data class Vision(
+        override val entity: String,
+        var vision: Double = 6.0
+) : Component(entity) {
+    var visible: Array<DoubleArray>? = null
+}

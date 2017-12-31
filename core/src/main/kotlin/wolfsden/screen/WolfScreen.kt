@@ -12,18 +12,18 @@ import squidpony.squidgrid.gui.gdx.SquidInput
 
 abstract class WolfScreen(val name: String) {
     companion object Params {
-        const val cellWidth = 10f
+        const val cellWidth = 16f
         const val cellHeight = 20f
         const val fullGridW = 120
         const val fulllGridH = 40
         const val fullPixelW = 120f * cellWidth
         const val fullPixelH = 40f * cellHeight
         val batch = SpriteBatch()
-        val vport = StretchViewport(fullPixelW, fullPixelH)
     }
 
     abstract val stage: Stage
     abstract val input: SquidInput
+    abstract val vport: StretchViewport
 
     abstract fun render()
     open fun enter() {

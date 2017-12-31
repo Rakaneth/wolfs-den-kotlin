@@ -1,10 +1,16 @@
 package wolfsden.screen
 
-import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.graphics.Colors
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import squidpony.squidgrid.gui.gdx.*
+import squidpony.squidmath.Coord
+import wolfsden.entity.CreatureBuilder
+import wolfsden.map.MapBuilder
+import wolfsden.system.GameStore
+import wolfsden.system.Location
 
-object PlayScreen: WolfScreen("main") {
+object PlayScreen : WolfScreen("main") {
     private val mapW = 80
     private val mapH = 30
     private val statW = 42
@@ -20,7 +26,9 @@ object PlayScreen: WolfScreen("main") {
     private val eqW = 40
     private val eqH = 6
 
-    private val playLayout = layout {
+    override val vport = StretchViewport(fullPixelW, fullPixelH)
+
+    private val playLayout = layout(vport) {
         layers {
             id = "map"
             gw = mapW
@@ -28,8 +36,9 @@ object PlayScreen: WolfScreen("main") {
             x = 0
             y = msgH
             tcf {
-                tweakWidth = 1.2f
-                tweakHeight = 1.5f
+                base = DefaultResources.getStretchableWideFont()
+                tweakWidth = 1.1f
+                tweakHeight = 1.1f
             }
         }
         messages {
@@ -103,22 +112,50 @@ object PlayScreen: WolfScreen("main") {
     private val mapLayers = playLayout.actors["map"] as SparseLayers
     private val statPanel = playLayout.actors["stats"] as SquidPanel
     private val msgPanel = playLayout.actors["messages"] as SquidMessageBox
-    private val ttPanel =  playLayout.actors["tt"] as SquidPanel
+    private val ttPanel = playLayout.actors["tt"] as SquidPanel
     private val sklPanel = playLayout.actors["skills"] as SquidPanel
     private val invPanel = playLayout.actors["inventory"] as SquidPanel
     private val eqPanel = playLayout.actors["equip"] as SquidPanel
     private const val FW = SColor.FLOAT_WHITE
+    var mapDirty: Boolean = true
+    var hudDirty: Boolean = true
+
 
     override val stage = playLayout.build()
     override val input = SquidInput({ key, alt, ctrl, shift ->
         TODO("Write keyhandler for main screen")
     })
+    val cam: Coord
+        get() {
+            val m = GameStore.curMap
+            val c = GameStore.player.pos!!.coord
+            val calc: (Int, Int, Int) -> Int = { p, m, s -> MathUtils.clamp(p - s / 2, 0, maxOf(m - s, 0)) }
+            val camX = calc(c.x, m.width, mapW)
+            val camY = calc(c.y, m.height, mapH)
+            return Coord.get(camX, camY)
+        }
 
-    init { setInput() }
+    init {
+        setInput()
+    }
 
     private fun drawDungeon() {
         mapLayers.clear()
-        mapLayers.put(1, 0, "Map".toICString())
+        val m = GameStore.curMap
+        for (x in 0.until(mapW)) {
+            for (y in 0.until(mapH)) {
+                val wx = x + cam.x
+                val wy = y + cam.y
+                val wc = Coord.get(wx, wy)
+                when {
+                    !m.oob(wc) && (m.light || Location.visible(GameStore.player, wc)) -> {
+                        mapLayers.put(x, y, m.displayMap[wx][wy], m.fgFloats[wx][wy], m.bgFloats[wx][wy])
+                    }
+                    m.oob(wc) -> mapLayers.put(x, y, ' ', SColor.FLOAT_BLACK)
+                }
+            }
+        }
+        drawEntities()
     }
 
     private fun drawStats() {
@@ -160,9 +197,33 @@ object PlayScreen: WolfScreen("main") {
         drawEQ()
     }
 
+    private fun drawEntities() {
+        var ec: Coord
+        for (entity in GameStore.curEntities) {
+            ec = entity.pos!!.coord
+            val color = entity.draw!!.color
+            if (Location.visible(GameStore.player, entity.pos!!.coord)) {
+                mapLayers.put(ec.x - cam.x, ec.y - cam.y, entity.draw!!.glyph, Colors.get(color))
+            }
+        }
+    }
+
+    override fun enter() {
+        MapBuilder.build("mine")
+        CreatureBuilder.build("fighter", true, null, "mine", "Palmyra")
+        super.enter()
+    }
+
     override fun render() {
-        drawDungeon()
-        drawHUD()
+        if (mapDirty) {
+            drawDungeon()
+            mapDirty = false
+        }
+        if (hudDirty) {
+            drawHUD()
+            hudDirty = false
+        }
+        if (input.hasNext()) input.next()
         stage.act()
         stage.draw()
     }

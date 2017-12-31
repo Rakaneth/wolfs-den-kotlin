@@ -7,6 +7,7 @@ import squidpony.squidgrid.mapping.DungeonUtility
 import squidpony.squidmath.Coord
 import squidpony.squidmath.CoordPacker
 import wolfsden.Chars
+import wolfsden.between
 import wolfsden.system.WolfRNG
 import java.io.Serializable
 
@@ -30,12 +31,22 @@ class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, v
     }
 
     @Transient
-    val utility = DungeonUtility(WolfRNG.wolfRNG)
+    var utility = DungeonUtility(WolfRNG.wolfRNG)
 
     var bgFloats = MapUtility.generateDefaultBGColorsFloat(displayMap)
     var fgFloats = MapUtility.generateDefaultColorsFloat(displayMap)
     var resistances = DungeonUtility.generateResistances(baseMap)
     val connections: MutableMap<Coord, Connection> = mutableMapOf()
+
+    val width
+        get() = baseMap.size
+
+    val height
+        get() = baseMap[0].size
+
+    fun oob(c: Coord): Boolean = !c.x.between(0, width - 1) || !c.y.between(0, height - 1)
+
+    fun walkable(c: Coord): Boolean = arrayOf('\\', '.', '>', '<', ',', ':').contains(baseMap[c.x][c.y])
 
     fun connect(from: Coord, toCoord: Coord, mapID: String) {
         connections[from] = Connection(toCoord, mapID)
@@ -43,7 +54,7 @@ class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, v
 
     fun connection(from: Coord): Connection? = connections[from]
 
-    fun randomFloor(): Coord = utility.randomFloor(displayMap)
+    fun randomFloor(): Coord = utility.randomFloor(baseMap)
 
     fun randomFloorWithin(c: Coord, radius: Double = 1.0): Coord {
         val tempVisible = ArrayTools.fill(0.0, baseMap.size, baseMap[0].size)
@@ -76,4 +87,4 @@ class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, v
     }
 
     data class Connection(val to: Coord, val mapID: String) : Serializable
- }
+}

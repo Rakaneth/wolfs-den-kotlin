@@ -1,7 +1,5 @@
 package wolfsden.system
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.utils.XmlReader
 import squidpony.squidmath.StatefulRNG
 import wolfsden.entity.Entity
 import wolfsden.map.WolfMap
@@ -18,7 +16,7 @@ object GameStore {
         get() = mapList[player.pos!!.mapID]!!
 
     val curEntities
-        get() = entityList.values.filter{Location.sameMap(it, player)}
+        get() = entityList.values.filter { Location.sameMap(it, player) }
 
     fun addEntity(entity: Entity) {
         entityList[entity.eID] = entity

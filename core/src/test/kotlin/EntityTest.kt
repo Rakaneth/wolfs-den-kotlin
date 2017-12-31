@@ -4,19 +4,22 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.Test
 import squidpony.squidgrid.mapping.DungeonGenerator
+import squidpony.squidgrid.mapping.DungeonUtility
 import wolfsden.entity.Entity
 import wolfsden.entity.Equipment
 import wolfsden.entity.Slot
+import wolfsden.map.MapBuilder
 import wolfsden.map.WolfMap
+import wolfsden.system.WolfRNG
 import java.io.*
 
 
 class EntityTestSource {
     private val e1 = Entity("e1")
     private val e2 = Entity("e2")
-    private val gen = DungeonGenerator()
-    private val m1 = WolfMap("test", "Test Map 1",  gen.generate(), true)
-    private val m2 = WolfMap("test2", "Test Map 2", gen.generate(), true)
+    private val gen = DungeonGenerator(30,30, WolfRNG.wolfRNG)
+    private val m1 = WolfMap("test", "Test Map 1", gen.generate(), true)
+    private val m2 = WolfMap("test", "Test Map 2", gen.generate(), true)
 
     @Test
     fun testDraw() {
@@ -46,9 +49,11 @@ class EntityTestSource {
         e1.addXP(125f, 1750f)
         ObjectOutputStream(FileOutputStream("test.wlf")).use { it ->
             it.writeObject(e1)
+            it.writeObject(m1)
         }
         ObjectInputStream(FileInputStream("test.wlf")).use { it ->
             val newEntity = it.readObject()
+            val newMap = it.readObject()
             when (newEntity) {
                 is Entity -> {
                     newEntity.addEQ("trinket", Slot.TRINKET, 4, 2, 3, 3)
@@ -57,6 +62,13 @@ class EntityTestSource {
                     assertEquals(4, newEntity.eq?.atk)
                 }
                 else -> fail("Deserialization failed")
+            }
+            when (newMap) {
+                is WolfMap -> {
+                    newMap.utility = DungeonUtility(WolfRNG.wolfRNG)
+                    println(newMap.randomFloor())
+                    assertEquals(newMap.id, m1.id)
+                }
             }
         }
         File("test.wlf").delete()
@@ -111,8 +123,8 @@ class EntityTestSource {
         try {
             val root = reader.parse(FileHandle("src/test/res/data/test2.xml"))
             val wolf = root.getChildrenByName("EntityType").filter { it.attributes["meta:RefKey"] == "creature" }.first()
-            val rations = root.getChildrenByName("EntityType").filter {it.attributes["meta:RefKey"] == "item"}.first()
-            val fangs = root.getChildrenByName("EntityType").filter {it.attributes["meta:RefKey"] == "equipment"}.first()
+            val rations = root.getChildrenByName("EntityType").filter { it.attributes["meta:RefKey"] == "item" }.first()
+            val fangs = root.getChildrenByName("EntityType").filter { it.attributes["meta:RefKey"] == "equipment" }.first()
             assertEquals("Wolf", wolf.getChildByName("identity").getAttribute("name"))
             assertEquals(0.2f, rations.getChildByName("recoverData").attributes["pctAmt"].toFloat())
             assertEquals(1, fangs.getChildByName("eqData").attributes["dmg"].toInt())

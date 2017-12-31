@@ -6,6 +6,7 @@
 		<vitals>true</vitals>
 		<stats str="2" stam="2" spd="2" skl="1" />
 		<worthXP>100</worthXP>
+		<vision>10</vision>
 		<tags>wolf</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
@@ -15,6 +16,7 @@
 		<vitals>true</vitals>
 		<stats str="4" stam="3" spd="3" skl="2" />
 		<worthXP>300</worthXP>
+		<vision>13</vision>
 		<tags>wolf</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
@@ -24,6 +26,7 @@
 		<vitals>true</vitals>
 		<stats str="6" stam="5" spd="4" skl="4" />
 		<worthXP>500</worthXP>
+		<vision>15</vision>
 		<rarity>20</rarity>
 		<tags>wolf</tags>
 	</EntityType>
@@ -35,6 +38,7 @@
 		<stats str="4" stam="4" spd="4" skl="4" />
 		<equip mh="ironSword" oh="woodShield" armor="chainMail" />
 		<worthXP>500</worthXP>
+		<vision>6</vision>
 		<rarity>15</rarity>
 		<tags>undead,door</tags>
 	</EntityType>
@@ -46,7 +50,8 @@
 		<stats str="7" stam="7" spd="7" skl="7" />
 		<equip mh="wolfFangs" oh="wolfClaws" armor="wolfFur" trinket="wolfCharm" />
 		<worthXP>1000</worthXP>
-		<tags>wolf</tags>
+		<vision>10</vision>
+		<tags>wolf,door</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>banshee</id>
@@ -55,6 +60,7 @@
 		<vitals>true</vitals>
 		<stats str="3" stam="2" spd="8" skl="9" />
 		<worthXP>800</worthXP>
+		<vision>6</vision>
 		<tags>undead</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
@@ -65,9 +71,10 @@
 		<stats str="7" stam="7" spd="7" skl="7" />
 		<equip mh="fellHammer" armor="shadowRobe" />
 		<worthXP>5000</worthXP>
-		<tags>undead</tags>
+		<vision>8</vision>
+		<tags>undead,door</tags>
 	</EntityType>
-		<EntityType meta:RefKey="creature">
+	<EntityType meta:RefKey="creature">
 		<id>fighter</id>
 		<identity name="Warrior" desc="A burly, seasoned warrior." />
 		<draw glyph="@" color="White" />
@@ -76,8 +83,9 @@
 		<equip mh="ironSword" armor="chainMail" />
 		<worthXP>300</worthXP>
 		<gainsXP>true</gainsXP>
+		<vision>6</vision>
 		<rarity>5</rarity>
-		<tags>hero</tags>
+		<tags>hero,door</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>rogue</id>
@@ -88,8 +96,9 @@
 		<equip mh="dagger" oh="dagger" armor="leather" />
 		<worthXP>300</worthXP>
 		<gainsXP>true</gainsXP>
+		<vision>6</vision>
 		<rarity>5</rarity>
-		<tags>hero</tags>
+		<tags>hero,door</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>cleric</id>
@@ -100,7 +109,8 @@
 		<equip mh="mace" oh="woodShield" armor="chainMail" trinket="ravenSymbol" />
 		<worthXP>300</worthXP>
 		<gainsXP>true</gainsXP>
+		<vision>6</vision>
 		<rarity>5</rarity>
-		<tags>hero</tags>
+		<tags>hero,door</tags>
 	</EntityType>
 </Entities>
