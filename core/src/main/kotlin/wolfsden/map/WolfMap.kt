@@ -33,8 +33,8 @@ class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, v
     @Transient
     var utility = DungeonUtility(WolfRNG.wolfRNG)
 
-    var bgFloats = MapUtility.generateDefaultBGColorsFloat(displayMap)
-    var fgFloats = MapUtility.generateDefaultColorsFloat(displayMap)
+    var bgFloats = MapUtility.generateDefaultBGColorsFloat(baseMap)
+    var fgFloats = MapUtility.generateDefaultColorsFloat(baseMap)
     var resistances = DungeonUtility.generateResistances(baseMap)
     val connections: MutableMap<Coord, Connection> = mutableMapOf()
 
@@ -46,7 +46,7 @@ class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, v
 
     fun oob(c: Coord): Boolean = !c.x.between(0, width - 1) || !c.y.between(0, height - 1)
 
-    fun walkable(c: Coord): Boolean = arrayOf('\\', '.', '>', '<', ',', ':').contains(baseMap[c.x][c.y])
+    fun walkable(c: Coord): Boolean = !oob(c) && arrayOf('\\', '.', '>', '<', ',', ':').contains(baseMap[c.x][c.y])
 
     fun connect(from: Coord, toCoord: Coord, mapID: String) {
         connections[from] = Connection(toCoord, mapID)

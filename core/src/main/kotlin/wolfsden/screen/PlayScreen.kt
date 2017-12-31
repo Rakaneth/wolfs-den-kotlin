@@ -3,10 +3,12 @@ package wolfsden.screen
 import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.viewport.StretchViewport
+import squidpony.squidgrid.Direction
 import squidpony.squidgrid.gui.gdx.*
 import squidpony.squidmath.Coord
 import wolfsden.entity.CreatureBuilder
 import wolfsden.map.MapBuilder
+import wolfsden.system.CommandProcessor
 import wolfsden.system.GameStore
 import wolfsden.system.Location
 
@@ -117,13 +119,20 @@ object PlayScreen : WolfScreen("main") {
     private val invPanel = playLayout.actors["inventory"] as SquidPanel
     private val eqPanel = playLayout.actors["equip"] as SquidPanel
     private const val FW = SColor.FLOAT_WHITE
-    var mapDirty: Boolean = true
-    var hudDirty: Boolean = true
-
 
     override val stage = playLayout.build()
     override val input = SquidInput({ key, alt, ctrl, shift ->
-        TODO("Write keyhandler for main screen")
+        val player = GameStore.player
+        when (key) {
+            SquidInput.UP_ARROW -> CommandProcessor.process(player, "move", Direction.UP)
+            SquidInput.UP_RIGHT_ARROW -> CommandProcessor.process(player, "move", Direction.UP_RIGHT)
+            SquidInput.RIGHT_ARROW -> CommandProcessor.process(player, "move", Direction.RIGHT)
+            SquidInput.DOWN_RIGHT_ARROW -> CommandProcessor.process(player, "move", Direction.DOWN_RIGHT)
+            SquidInput.DOWN_ARROW -> CommandProcessor.process(player, "move", Direction.DOWN)
+            SquidInput.DOWN_LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.DOWN_LEFT)
+            SquidInput.LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.LEFT)
+            SquidInput.UP_LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.UP_LEFT)
+        }
     })
     val cam: Coord
         get() {
@@ -215,13 +224,13 @@ object PlayScreen : WolfScreen("main") {
     }
 
     override fun render() {
-        if (mapDirty) {
+        if (GameStore.mapDirty) {
             drawDungeon()
-            mapDirty = false
+            GameStore.mapDirty = false
         }
-        if (hudDirty) {
+        if (GameStore.hudDirty) {
             drawHUD()
-            hudDirty = false
+            GameStore.hudDirty = false
         }
         if (input.hasNext()) input.next()
         stage.act()

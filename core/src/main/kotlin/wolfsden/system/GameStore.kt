@@ -8,6 +8,8 @@ import java.io.*
 object GameStore {
     var entityList: MutableMap<String, Entity> = mutableMapOf()
     var mapList: MutableMap<String, WolfMap> = mutableMapOf()
+    var mapDirty = true
+    var hudDirty = true
 
     val player
         get() = entityList["player"]!!
@@ -17,6 +19,12 @@ object GameStore {
 
     val curEntities
         get() = entityList.values.filter { Location.sameMap(it, player) }
+
+
+    fun update(map: Boolean=true, hud: Boolean=true) {
+        if (map) mapDirty = true
+        if (hud) hudDirty = true
+    }
 
     fun addEntity(entity: Entity) {
         entityList[entity.eID] = entity

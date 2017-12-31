@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.XmlReader
 import squidpony.ArrayTools
 import squidpony.squidgrid.FOV
 import squidpony.squidmath.Coord
+import wolfsden.nz
 import wolfsden.system.GameStore
 import java.util.*
 
@@ -25,16 +26,19 @@ object CreatureBuilder {
 
         foetus.addID(toName, id["desc"])
         foetus.addDraw(draw["glyph"].toCharArray().first(), draw["color"])
-        foetus.addStats(stats["str"].toInt(), stats["stam"].toInt(), stats["spd"].toInt(), stats["skl"].toInt())
+        info.nz("stats") {
+            foetus.addStats(stats["str"].toInt(), stats["stam"].toInt(), stats["spd"].toInt(), stats["skl"].toInt())
+        }
         foetus.addVitals(true, foetus.maxVit, foetus.maxVit, foetus.maxEnd, foetus.maxEnd)
-        foetus.worthXP = info["worthXP"].toFloat()
-        if (info["gainsXP"] != null) foetus.addXP()
+        info.nz("worthXP") { foetus.worthXP = info["worthXP"].toFloat() }
+        info.nz("gainsXP") { foetus.addXP() }
         foetus.isPlayer = isPlayer
 
-        for (tag in info["tags"].split(",")) {
-            foetus.addTag(tag)
+        info.nz("tags") {
+            for (tag in info["tags"].split(",")) {
+                foetus.addTag(tag)
+            }
         }
-
         var toStart: Coord
         var toMap: String
 
@@ -47,7 +51,7 @@ object CreatureBuilder {
         }
 
         foetus.addPos(toStart, toMap)
-        if (info["vision"] != null) {
+        info.nz("vision") {
             val m = GameStore.mapList[toMap]!!
             foetus.addVision(info["vision"].toDouble())
             foetus.vision!!.visible = ArrayTools.fill(0.0, m.width, m.height)
@@ -58,3 +62,4 @@ object CreatureBuilder {
         return foetus
     }
 }
+

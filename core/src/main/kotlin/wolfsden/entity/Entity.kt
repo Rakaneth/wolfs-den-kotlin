@@ -1,7 +1,10 @@
 package wolfsden.entity
 
+import squidpony.squidgrid.FOV
 import squidpony.squidmath.Coord
+import wolfsden.map.WolfMap
 import wolfsden.nz
+import wolfsden.system.GameStore
 import java.io.Serializable
 
 val BESTIARY: MutableMap<String, Entity> = mutableMapOf()
