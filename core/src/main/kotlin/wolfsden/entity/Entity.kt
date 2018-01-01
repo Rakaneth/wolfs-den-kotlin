@@ -12,14 +12,14 @@ class Entity(
         var draw: Drawing? = null,
         var pos: Position? = null,
         var vit: Vitals? = null,
-        var eq: Equipment? = null,
+        var eq: EquipStats? = null,
         var heal: HealingItem? = null,
         var repair: RepairItem? = null,
         var stats: Stats? = null,
-        var mh: Equipment? = null,
-        var oh: Equipment? = null,
-        var armor: Equipment? = null,
-        var trinket: Equipment? = null,
+        var mh: EquipStats? = null,
+        var oh: EquipStats? = null,
+        var armor: EquipStats? = null,
+        var trinket: EquipStats? = null,
         var xp: XPGainer? = null,
         var vision: Vision? = null,
         var ai: AI? = null,
@@ -54,6 +54,10 @@ class Entity(
         get() = mh?.prot.nz() + trinket?.prot.nz()
     var worthXP: Float = 0f
     private val tags: MutableList<String> = mutableListOf()
+    val inventory: MutableList<Entity> = mutableListOf()
+    val bagsFull
+        get() = inventory.size >= 10
+
 
     fun addID(name: String, desc: String) {
         id = Identity(eID, name, desc)
@@ -71,8 +75,8 @@ class Entity(
         pos = Position(eID, mapID, x, y)
     }
 
-    fun addEQ(name: String, slot: Slot, atk: Int = 0, dfp: Int = 0, dmg: Int = 0, sav: Int = 0, dly: Int = 0) {
-        eq = Equipment(eID, name, slot, atk, dfp, dmg, sav, dly)
+    fun addEQ(slot: Slot, atk: Int = 0, dfp: Int = 0, dmg: Int = 0, sav: Int = 0, dly: Int = 0) {
+        eq = EquipStats(eID, slot, atk, dfp, dmg, sav, dly)
     }
 
     fun addVitals(alive: Boolean, curVit: Int, maxVit: Int, curEnd: Int, maxEnd: Int) {
@@ -112,18 +116,86 @@ class Entity(
         tags.remove(tag)
     }
 
-    fun repair(amt: Int) {
-        var amtToRepair = armor?.prot.nz() - armor?.curProt.nz()
-        var bank = amt
-        if (bank > amtToRepair) {
-            armor?.curProt = armor?.prot.nz()
-            bank -= amtToRepair
-        } else {
-            armor!!.curProt += amt
-            return
+    fun putOn(item: Entity) {
+        when (item.eq!!.slot) {
+            Slot.TWOH -> {
+                takeOff(Slot.MH)
+                takeOff(Slot.OH)
+                equip(item, Slot.MH)
+            }
+            Slot.AMBI ->  {
+                if (mh != null) {
+                    takeOff(Slot.MH)
+                    equip(item, Slot.MH)
+                } else {
+                    takeOff(Slot.OH)
+                    equip(item, Slot.OH)
+                }
+            }
+            else -> takeOff(item.eq!!.slot)
         }
-        if (bank > 0 && oh != null) {
-            oh!!.curProt = minOf(oh!!.prot, oh!!.curProt + bank)
+    }
+
+    fun takeOff(slot: Slot) {
+        var toProcess: EquipStats?
+        when (slot) {
+            Slot.MH -> {toProcess = mh; mh = null}
+            Slot.OH -> {toProcess = oh; oh = null}
+            Slot.ARMOR -> {toProcess = armor; armor = null}
+            else -> {toProcess = trinket; trinket = null}
+        }
+        if (bagsFull) {
+            toProcess?.getEntity!!.addPos(pos!!.coord, pos!!.mapID)
+        } else {
+            putInBags(toProcess?.getEntity!!)
+        }
+    }
+
+    fun equip(item: Entity, slot: Slot) {
+        when (slot) {
+            Slot.MH -> mh = item.eq
+            Slot.OH -> oh = item.eq
+            Slot.ARMOR -> armor = item.eq
+            Slot.TRINKET -> trinket = item.eq
+        }
+        item.pos = null
+    }
+
+    fun putInBags(item: Entity) {
+        item.pos = null
+        inventory.add(item)
+    }
+
+    fun removeFromBags(item: Entity) {
+        inventory.remove(item)
+        item.addPos(pos!!.coord, pos!!.mapID)
+    }
+
+    fun repair(flatAmt: Int = 0, pctAmt: Float = 0f) {
+        val cArm = (pctAmt * armor?.prot.nz()).toInt()
+        val cOH = (pctAmt * oh?.prot.nz()).toInt()
+        val tArm = flatAmt + cArm
+        val tOH = flatAmt + cOH
+
+        armor?.curProt = minOf(armor?.curProt.nz() + tArm, armor?.prot.nz())
+        oh?.curProt = minOf(oh?.curProt.nz() + tOH, oh?.prot.nz())
+    }
+
+    fun heal(flatAmt: Int = 0, pctAmt: Float = 0f) {
+        val tVit = ((pctAmt * maxVit) + flatAmt).toInt()
+        if (vit == null) {
+            return
+        } else {
+            vit!!.curVit = minOf(vit!!.curVit + tVit, maxVit)
+        }
+    }
+
+    fun restore(flatAmt: Int = 0, pctAmt: Float = 0f) {
+        val tEnd = ((pctAmt * maxVit) +  flatAmt).toInt()
+        if (vit == null) {
+            return
+        } else {
+            vit!!.curEnd = minOf(vit!!.curEnd + tEnd, maxEnd)
         }
     }
 

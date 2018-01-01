@@ -6,9 +6,16 @@ import squidpony.squidmath.Coord
 import wolfsden.system.GameStore
 import java.io.Serializable
 
-enum class Slot { MH, OH, ARMOR, TRINKET, TWOH }
+enum class Slot { MH, OH, ARMOR, TRINKET, TWOH, AMBI }
 
-open class Component(open val entity: String) : Serializable
+open class Component(open val entity: String) : Serializable {
+    val getEntity
+        get() = GameStore.getByID(entity)!!
+}
+
+interface Item {
+    fun use(user: Entity? = null, target: Coord? = null)
+}
 
 data class Identity(
         override val entity: String,
@@ -49,9 +56,8 @@ data class Position(
         get() = Coord.get(x, y)
 }
 
-data class Equipment(
+data class EquipStats(
         override val entity: String,
-        val name: String, //for UI purposes since Creatures get Equipment components, not Entities
         val slot: Slot,
         val atk: Int = 0,
         val dfp: Int = 0,
@@ -60,19 +66,42 @@ data class Equipment(
         val dly: Int = 0,
         var curProt: Int = 0,
         val prot: Int = 0
-) : Component(entity)
+) : Component(entity) {
+    val name
+        get() = getEntity.id!!.name
+    val desc
+        get() = getEntity.id!!.desc
+}
 
-data class HealingItem(
+class HealingItem(
         override val entity: String,
-        val pctAmt: Float = 0f,
-        val flatAmt: Int = 0
-) : Component(entity)
+        private val pctAmt: Float = 0f,
+        private val flatAmt: Int = 0
+) : Component(entity), Item {
+    override fun use(user: Entity?, target: Coord?) {
+        user?.heal(flatAmt, pctAmt)
+    }
+}
 
-data class RepairItem(
+class RepairItem(
         override val entity: String,
-        val pctAmt: Float = 0f,
-        val flatAmt: Int = 0
-) : Component(entity)
+        private val pctAmt: Float = 0f,
+        private val flatAmt: Int = 0
+) : Component(entity), Item {
+    override fun use(user: Entity?, target: Coord?) {
+        user?.repair(flatAmt, pctAmt)
+    }
+}
+
+class RestoreItem(
+        override val entity: String,
+        private val pctAmt: Float = 0f,
+        private val flatAmt: Int = 0
+) : Component(entity), Item {
+    override fun use(user: Entity?, target: Coord?) {
+        user?.restore(flatAmt, pctAmt)
+    }
+}
 
 data class XPGainer(
         override val entity: String,

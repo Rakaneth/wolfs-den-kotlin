@@ -8,7 +8,7 @@ import squidpony.squidgrid.gui.gdx.*
 import squidpony.squidmath.Coord
 import wolfsden.CommonColors
 import wolfsden.entity.CreatureBuilder
-import wolfsden.entity.Equipment
+import wolfsden.entity.EquipStats
 import wolfsden.map.MapBuilder
 import wolfsden.system.CommandProcessor
 import wolfsden.system.GameStore
@@ -238,8 +238,8 @@ object PlayScreen : WolfScreen("main") {
     private fun drawEQ() {
         with(eqPanel) {
             erase()
-            putBorders(FW, "Equipment")
-            val markupEQ = { label: String, y: Int, eq: Equipment?  ->
+            putBorders(FW, "EquipStats")
+            val markupEQ = { label: String, y: Int, eq: EquipStats?  ->
                 eqPanel.put(1, y, "[${CommonColors.INFO}]%8s[]: ${eq?.name ?: "Nothing"}".format(label).toICString())
             }
             markupEQ("Mainhand", 1, player.mh)
@@ -260,7 +260,7 @@ object PlayScreen : WolfScreen("main") {
 
     private fun drawEntities() {
         var ec: Coord
-        for (entity in GameStore.curEntities) {
+        for (entity in GameStore.curEntities.filter{ it.pos != null}) {
             ec = entity.pos!!.coord
             val color = entity.draw!!.color
             if (Location.visible(GameStore.player, entity.pos!!.coord)) {

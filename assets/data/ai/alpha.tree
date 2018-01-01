@@ -1,0 +1,15 @@
+#Wolf alpha tree
+
+#imports
+import detectPreyNearby?: "wolfsden.ai.conditions.DetectPreyCondition"
+#import detectFood?: "wolfsden.ai.conditions.DetectFoodCondition"
+import randomWalk: "wolfsden.ai.tasks.RandomWalkTask"
+import getTarget: "wolfsden.ai.tasks.GetTargetTask"
+
+#tree definition
+root
+	dynamicGuardSelector
+		(include subtree: "data/ai/common/preyExists.tree" lazy:true) include subtree: "data/ai/common/commandAndHuntPrey.tree" lazy:true
+		(detectPreyNearby?) getTarget
+		#(detectFood?) include subtree: "data/ai/common/lookForFood.tree" lazy:true
+		() randomWalk

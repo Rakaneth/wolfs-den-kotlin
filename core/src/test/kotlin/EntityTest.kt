@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import squidpony.squidgrid.mapping.DungeonGenerator
 import squidpony.squidgrid.mapping.DungeonUtility
 import wolfsden.entity.Entity
-import wolfsden.entity.Equipment
+import wolfsden.entity.EquipStats
 import wolfsden.entity.Slot
 import wolfsden.map.WolfMap
 import wolfsden.system.WolfRNG
@@ -29,9 +29,9 @@ class EntityTestSource {
 
     @Test
     fun equipFunctions() {
-        e1.armor = Equipment(e1.eID, "armor", Slot.ARMOR, 1, 2, 3, 4, 5)
-        e1.mh = Equipment(e1.eID, "mh", Slot.MH, 2, 0, 2, 0, 5)
-        e1.oh = Equipment(e1.eID, "oh", Slot.OH, 0, 1, 1, 0, 8)
+        e1.armor = EquipStats(e1.eID, Slot.ARMOR, 1, 2, 3, 4, 5)
+        e1.mh = EquipStats(e1.eID, Slot.MH, 2, 0, 2, 0, 5)
+        e1.oh = EquipStats(e1.eID, Slot.OH, 0, 1, 1, 0, 8)
         e1.addStats(1, 1, 1, 1)
         assertEquals(4, e1.atk)
         assertEquals(4, e1.dfp)
@@ -55,7 +55,7 @@ class EntityTestSource {
             val newMap = it.readObject()
             when (newEntity) {
                 is Entity -> {
-                    newEntity.addEQ("trinket", Slot.TRINKET, 4, 2, 3, 3)
+                    newEntity.addEQ(Slot.TRINKET, 4, 2, 3, 3)
                     assertEquals(e1.eID, newEntity.eID)
                     assertEquals(e1.draw?.glyph, newEntity.draw?.glyph)
                     assertEquals(4, newEntity.eq?.atk)
