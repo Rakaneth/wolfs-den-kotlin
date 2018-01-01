@@ -54,7 +54,7 @@ object CreatureBuilder {
 
         foetus.addPos(toStart, toMap)
         info.nz("vision") {
-            val m = GameStore.mapList[toMap]!!
+            val m = GameStore.getMapByID(toMap)
             foetus.addVision(info["vision"].toDouble())
             foetus.vision!!.visible = ArrayTools.fill(0.0, m.width, m.height)
             FOV.reuseFOV(m.resistances, foetus.vision!!.visible, toStart.x, toStart.y, foetus.vision!!.vision)
@@ -62,6 +62,12 @@ object CreatureBuilder {
         foetus.blocking = true
 
         info.nz("ai") { foetus.addAI(foetus.movDly, info["ai"]) }
+        info.nz("equip") {
+            info.getChildByName("equip").attributes.values().forEach {
+                val item = ItemBuilder.build(it, toMap)
+                foetus.putOn(item)
+            }
+        }
 
         GameStore.addEntity(foetus)
         return foetus

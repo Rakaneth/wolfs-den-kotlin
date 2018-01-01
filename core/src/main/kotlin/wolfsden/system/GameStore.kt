@@ -35,6 +35,7 @@ object GameStore {
     }
 
     fun getByID(eID: String): Entity? = entityList[eID]
+    fun getMapByID(mapID: String): WolfMap = mapList[mapID]!!
 
     fun saveGame() {
         val savePath = "${System.getProperty("user.home")}/WolfsDenKotlin"

@@ -15,6 +15,7 @@ class Entity(
         var eq: EquipStats? = null,
         var heal: HealingItem? = null,
         var repair: RepairItem? = null,
+        var rest: RestoreItem? = null,
         var stats: Stats? = null,
         var mh: EquipStats? = null,
         var oh: EquipStats? = null,
@@ -75,8 +76,8 @@ class Entity(
         pos = Position(eID, mapID, x, y)
     }
 
-    fun addEQ(slot: Slot, atk: Int = 0, dfp: Int = 0, dmg: Int = 0, sav: Int = 0, dly: Int = 0) {
-        eq = EquipStats(eID, slot, atk, dfp, dmg, sav, dly)
+    fun addEQ(slot: Slot, atk: Int = 0, dfp: Int = 0, dmg: Int = 0, sav: Int = 0, dly: Int = 0, prot: Int = 0) {
+        eq = EquipStats(eID, slot, atk, dfp, dmg, sav, dly, prot, prot)
     }
 
     fun addVitals(alive: Boolean, curVit: Int, maxVit: Int, curEnd: Int, maxEnd: Int) {
@@ -108,6 +109,10 @@ class Entity(
         ai = AI(eID, initialDelay, toAI)
     }
 
+    fun addRestore(flatAmt: Int, pctAmt: Float) {
+        rest = RestoreItem(eID, pctAmt, flatAmt)
+    }
+
     fun addTag(tag: String) {
         tags.add(tag)
     }
@@ -132,7 +137,10 @@ class Entity(
                     equip(item, Slot.OH)
                 }
             }
-            else -> takeOff(item.eq!!.slot)
+            else -> {
+                takeOff(item.eq!!.slot)
+                equip(item, item.eq!!.slot)
+            }
         }
     }
 
@@ -144,10 +152,12 @@ class Entity(
             Slot.ARMOR -> {toProcess = armor; armor = null}
             else -> {toProcess = trinket; trinket = null}
         }
-        if (bagsFull) {
-            toProcess?.getEntity!!.addPos(pos!!.coord, pos!!.mapID)
-        } else {
-            putInBags(toProcess?.getEntity!!)
+        if (toProcess != null) {
+            if (bagsFull) {
+                toProcess?.getEntity!!.addPos(pos!!.coord, pos!!.mapID)
+            } else {
+                putInBags(toProcess?.getEntity!!)
+            }
         }
     }
 

@@ -238,7 +238,7 @@ object PlayScreen : WolfScreen("main") {
     private fun drawEQ() {
         with(eqPanel) {
             erase()
-            putBorders(FW, "EquipStats")
+            putBorders(FW, "Equipment")
             val markupEQ = { label: String, y: Int, eq: EquipStats?  ->
                 eqPanel.put(1, y, "[${CommonColors.INFO}]%8s[]: ${eq?.name ?: "Nothing"}".format(label).toICString())
             }
