@@ -8,6 +8,7 @@ import squidpony.squidmath.Coord
 import squidpony.squidmath.CoordPacker
 import wolfsden.Chars
 import wolfsden.between
+import wolfsden.system.Location
 import wolfsden.system.WolfRNG
 import java.io.Serializable
 
@@ -46,7 +47,11 @@ class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, v
 
     fun oob(c: Coord): Boolean = !c.x.between(0, width - 1) || !c.y.between(0, height - 1)
 
-    fun walkable(c: Coord): Boolean = !oob(c) && arrayOf('\\', '.', '>', '<', ',', ':').contains(baseMap[c.x][c.y])
+    fun walkable(c: Coord): Boolean {
+        val canWalk = !oob(c) && arrayOf('\\', '.', '>', '<', ',', ':').contains(baseMap[c.x][c.y])
+        val emptyC = Location.thingsAt(c, id).none { it.blocking }
+        return canWalk && emptyC
+    }
 
     fun connect(from: Coord, toCoord: Coord, mapID: String) {
         connections[from] = Connection(toCoord, mapID)

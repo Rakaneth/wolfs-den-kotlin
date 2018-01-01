@@ -21,7 +21,7 @@ object GameStore {
         get() = entityList.values.filter { Location.sameMap(it, player) }
 
 
-    fun update(map: Boolean=true, hud: Boolean=true) {
+    fun update(map: Boolean = true, hud: Boolean = true) {
         if (map) mapDirty = true
         if (hud) hudDirty = true
     }

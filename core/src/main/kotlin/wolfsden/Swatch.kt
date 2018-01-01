@@ -1,8 +1,5 @@
 package wolfsden
 
-import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Colors
-
 object Chars {
     val WALL = '\u2588'
     val FLOOR = '\u00A0'
@@ -14,13 +11,10 @@ object Chars {
     val BRIDGE = ':'
 }
 
-enum class CommonColors(val color: String) {
-    INFO("Light Blue"),
-    WARNING("Amber"),
-    VIT("Crimson"),
-    METAL("Silver"),
-    XP("Green");
-
-    val colorObj: Color
-        get() = Colors.get(color)
+object CommonColors {
+    const val INFO = "Light Blue"
+    const val WARNING = "Amber"
+    const val VIT = "Crimson"
+    const val METAL = "Silver"
+    const val XP = "Green"
 }

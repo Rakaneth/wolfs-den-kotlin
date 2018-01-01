@@ -1,10 +1,7 @@
 package wolfsden.entity
 
-import squidpony.squidgrid.FOV
 import squidpony.squidmath.Coord
-import wolfsden.map.WolfMap
 import wolfsden.nz
-import wolfsden.system.GameStore
 import java.io.Serializable
 
 val BESTIARY: MutableMap<String, Entity> = mutableMapOf()
@@ -25,7 +22,9 @@ class Entity(
         var trinket: Equipment? = null,
         var xp: XPGainer? = null,
         var vision: Vision? = null,
-        var isPlayer: Boolean = false
+        var ai: AI? = null,
+        var isPlayer: Boolean = false,
+        var blocking: Boolean = true
 ) : Serializable {
     val atk: Int
         get() = stats?.skl.nz() + armor?.atk.nz() + mh?.atk.nz() + oh?.atk.nz() + trinket?.atk.nz()
@@ -45,8 +44,12 @@ class Entity(
         get() = stats?.stam.nz() * 10
     val maxEnd: Int
         get() = stats?.stam.nz() * 15
+    val curArmor: Int
+        get() = armor?.curProt.nz() + oh?.curProt.nz()
+    val curShield: Int
+        get() = mh?.curProt.nz() + trinket?.curProt.nz()
     var worthXP: Float = 0f
-    val tags: MutableList<String> = mutableListOf()
+    private val tags: MutableList<String> = mutableListOf()
 
     fun addID(name: String, desc: String) {
         id = Identity(eID, name, desc)
@@ -92,8 +95,36 @@ class Entity(
         xp = XPGainer(eID, curXP, totXP)
     }
 
+    fun addAI(initialDelay: Int, aiTree: String) {
+        val toAI = "data/ai/$aiTree.tree"
+        ai = AI(eID, initialDelay, toAI)
+    }
+
     fun addTag(tag: String) {
         tags.add(tag)
     }
+
+    fun removeTag(tag: String) {
+        tags.remove(tag)
+    }
+
+    fun repair (amt: Int) {
+        var amtToRepair = armor?.prot.nz() - armor?.curProt.nz()
+        var bank = amt
+        if (bank > amtToRepair) {
+            armor?.curProt = armor?.prot.nz()
+            bank -= amtToRepair
+        } else {
+            armor!!.curProt += amt
+            return
+        }
+        if (bank > 0 && oh != null) {
+            oh!!.curProt = minOf(oh!!.prot, oh!!.curProt + bank)
+        }
+    }
+
+    fun hasTag(tag: String): Boolean = tags.contains(tag)
+
+    override fun toString(): String = "${id?.name}-${eID}"
 
 }

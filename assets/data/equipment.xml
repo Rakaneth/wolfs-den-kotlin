@@ -50,7 +50,7 @@
 	<EntityType meta:RefKey="equipment">
 		<id>wolfFur</id>
 		<identity name="Wolf Furs" desc="A thick layer of shaggy wolf fur." />
-		<draw glyph=")" color="Sepia" />
+		<draw glyph=")" color="CW Light Brown" />
 		<eqData slot="armor" atk="0" dfp="0" dmg="0" sav="1" dly="2" prot="10" curProt="10" />
 		<rarity>35</rarity>
 		<tags>natural,wolf</tags>
@@ -94,7 +94,7 @@
 	<EntityType meta:RefKey="equipment">
 		<id>wolfCharm</id>
 		<identity name="Wolf Charm" desc="A necklace of fangs and claws on leather cord." />
-		<draw glyph="=" color="Sepia" />
+		<draw glyph="=" color="CW Light Brown" />
 		<eqData slot="trinket" atk="1" dfp="1" dmg="1" sav="1" dly="0" prot="5" curProt="5" />
 		<rarity>5</rarity>
 		<tags>natural,wolf</tags>

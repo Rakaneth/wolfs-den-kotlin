@@ -8,7 +8,6 @@ import squidpony.squidgrid.mapping.DungeonUtility
 import wolfsden.entity.Entity
 import wolfsden.entity.Equipment
 import wolfsden.entity.Slot
-import wolfsden.map.MapBuilder
 import wolfsden.map.WolfMap
 import wolfsden.system.WolfRNG
 import java.io.*
@@ -17,7 +16,7 @@ import java.io.*
 class EntityTestSource {
     private val e1 = Entity("e1")
     private val e2 = Entity("e2")
-    private val gen = DungeonGenerator(30,30, WolfRNG.wolfRNG)
+    private val gen = DungeonGenerator(30, 30, WolfRNG.wolfRNG)
     private val m1 = WolfMap("test", "Test Map 1", gen.generate(), true)
     private val m2 = WolfMap("test", "Test Map 2", gen.generate(), true)
 

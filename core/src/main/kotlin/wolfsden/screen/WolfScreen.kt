@@ -38,7 +38,9 @@ abstract class WolfScreen(val name: String) {
         return GDXMarkup.instance.colorString(this)
     }
 
-    fun setInput() {
+    protected fun markup(text: String, color: String): IColoredString<out Color> = "[$color]$text[]".toICString()
+
+    protected fun setInput() {
         Gdx.input.inputProcessor = InputMultiplexer(stage, input)
     }
 }

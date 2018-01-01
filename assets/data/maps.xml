@@ -1,5 +1,5 @@
 <WolfMaps xmlns:meta="Editor">
-	<WolfMap id="mine" name="Mine - Upper Level" width="50" height="50" roomCarvers="2" boxCarvers="1" doors="5" doubleDoors="True" light="False" meta:RefKey="WolfMap">
+	<WolfMap id="mine" name="Mine - Upper Level" width="50" height="50" roomCarvers="2" boxCarvers="1" doors="5" doubleDoors="True" light="True" meta:RefKey="WolfMap">
 		<connections>
 			<connection meta:RefKey="connection">
 				<mapID>mine2</mapID>

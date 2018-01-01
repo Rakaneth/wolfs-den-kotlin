@@ -2,11 +2,12 @@
 	<EntityType meta:RefKey="creature">
 		<id>wolf</id>
 		<identity name="Wolf" desc="A large, shaggy wolf." />
-		<draw glyph="W" color="Sepia" />
+		<draw glyph="W" color="CW Light Brown" />
 		<vitals>true</vitals>
 		<stats str="2" stam="2" spd="2" skl="1" />
 		<worthXP>100</worthXP>
 		<vision>10</vision>
+		<ai>wolf</ai>
 		<tags>wolf</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
@@ -16,7 +17,9 @@
 		<vitals>true</vitals>
 		<stats str="4" stam="3" spd="3" skl="2" />
 		<worthXP>300</worthXP>
+		<gainsXP>true</gainsXP>
 		<vision>13</vision>
+		<ai>alpha</ai>
 		<tags>wolf</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
@@ -27,7 +30,18 @@
 		<stats str="6" stam="5" spd="4" skl="4" />
 		<worthXP>500</worthXP>
 		<vision>15</vision>
+		<ai>wolf</ai>
 		<rarity>20</rarity>
+		<tags>wolf</tags>
+	</EntityType>
+	<EntityType meta:RefKey="creature">
+		<id>direAlpha</id>
+		<identity name="Great Wolf Alpha" desc="The mightiest among wolves, these lupine titans lead packs of great wolves." />
+		<vitals>true</vitals>
+		<stats str="9" stam="8" spd="8" skl="7" />
+		<worthXP>1000</worthXP>
+		<vision>15</vision>
+		<ai>alpha</ai>
 		<tags>wolf</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
@@ -39,18 +53,20 @@
 		<equip mh="ironSword" oh="woodShield" armor="chainMail" />
 		<worthXP>500</worthXP>
 		<vision>6</vision>
+		<ai>hunt</ai>
 		<rarity>15</rarity>
 		<tags>undead,door</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>wolfLord</id>
 		<identity name="Wolf Lord" desc="A savage man with wolflike features, covered in furs." />
-		<draw glyph="@" color="Sepia" />
+		<draw glyph="@" color="CW Light Brown" />
 		<vitals>true</vitals>
 		<stats str="7" stam="7" spd="7" skl="7" />
 		<equip mh="wolfFangs" oh="wolfClaws" armor="wolfFur" trinket="wolfCharm" />
 		<worthXP>1000</worthXP>
 		<vision>10</vision>
+		<ai>alpha</ai>
 		<tags>wolf,door</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
@@ -61,6 +77,7 @@
 		<stats str="3" stam="2" spd="8" skl="9" />
 		<worthXP>800</worthXP>
 		<vision>6</vision>
+		<ai>hunt</ai>
 		<tags>undead</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
@@ -72,6 +89,7 @@
 		<equip mh="fellHammer" armor="shadowRobe" />
 		<worthXP>5000</worthXP>
 		<vision>8</vision>
+		<ai>hunt</ai>
 		<tags>undead,door</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
@@ -84,6 +102,7 @@
 		<worthXP>300</worthXP>
 		<gainsXP>true</gainsXP>
 		<vision>6</vision>
+		<ai>hunt</ai>
 		<rarity>5</rarity>
 		<tags>hero,door</tags>
 	</EntityType>
@@ -97,6 +116,7 @@
 		<worthXP>300</worthXP>
 		<gainsXP>true</gainsXP>
 		<vision>6</vision>
+		<ai>hunt</ai>
 		<rarity>5</rarity>
 		<tags>hero,door</tags>
 	</EntityType>
@@ -110,6 +130,7 @@
 		<worthXP>300</worthXP>
 		<gainsXP>true</gainsXP>
 		<vision>6</vision>
+		<ai>hunt</ai>
 		<rarity>5</rarity>
 		<tags>hero,door</tags>
 	</EntityType>

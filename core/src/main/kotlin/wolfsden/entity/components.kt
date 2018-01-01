@@ -1,6 +1,9 @@
 package wolfsden.entity
 
+import com.badlogic.gdx.ai.btree.BehaviorTree
+import com.badlogic.gdx.ai.btree.utils.BehaviorTreeLibraryManager
 import squidpony.squidmath.Coord
+import wolfsden.system.GameStore
 import java.io.Serializable
 
 enum class Slot { MH, OH, ARMOR, TRINKET, TWOH }
@@ -54,7 +57,9 @@ data class Equipment(
         val dfp: Int = 0,
         val dmg: Int = 0,
         val sav: Int = 0,
-        val dly: Int = 0
+        val dly: Int = 0,
+        var curProt: Int = 0,
+        val prot: Int = 0
 ) : Component(entity)
 
 data class HealingItem(
@@ -80,4 +85,28 @@ data class Vision(
         var vision: Double = 6.0
 ) : Component(entity) {
     var visible: Array<DoubleArray>? = null
+}
+
+data class AI(
+        override val entity: String,
+        var delay: Int,
+        private var aiTree: String
+) : Component(entity) {
+    @Transient
+    var btree: BehaviorTree<Entity>? = null
+    var target: String? = null
+
+    fun updateBTree(aiName: String? = null) {
+        if (aiName != null) aiTree = "data/ai/$aiName.tree"
+        btree = BehaviorTreeLibraryManager.getInstance().library.createBehaviorTree(aiTree, GameStore.entityList[entity])
+    }
+
+    fun getBTree(): BehaviorTree<Entity> {
+        return if (btree == null) {
+            updateBTree()
+            btree!!
+        } else {
+            btree!!
+        }
+    }
 }

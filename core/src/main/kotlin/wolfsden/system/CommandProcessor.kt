@@ -10,6 +10,7 @@ object CommandProcessor {
     fun Entity.updateFOV() {
         FOV.reuseFOV(this.getMap()!!.resistances, this.vision!!.visible, this.pos!!.x, this.pos!!.y, this.vision!!.vision)
     }
+
     private fun tryMoveBy(entity: Entity, dx: Int, dy: Int): Boolean {
         val m = entity.getMap()
         val newC = entity.pos!!.coord.translate(dx, dy)
@@ -28,17 +29,19 @@ object CommandProcessor {
         return tryMoveBy(entity, d.deltaX, d.deltaY)
     }
 
-    fun process(entity: Entity, cmd: String, vararg targets: Any): Int {
+    fun process(entity: Entity, cmd: String, target: Any) {
+        var result = 0
         when (cmd) {
             "move" -> {
-                if(tryMoveBy(entity, targets.first() as Direction)) {
+                if (tryMoveBy(entity, target as Direction)) {
                     GameStore.update()
-                    return entity.movDly
+                    result = entity.movDly
                 }
             }
-            else -> {} //TODO: other cmds
+            else -> {
+            } //TODO: other cmds
         }
-        return 0
+        if (result > 0 && entity.isPlayer) Scheduler.resume()
+        entity.ai!!.delay = result
     }
-
 }

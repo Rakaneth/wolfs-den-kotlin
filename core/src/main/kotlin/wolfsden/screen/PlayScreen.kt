@@ -6,11 +6,14 @@ import com.badlogic.gdx.utils.viewport.StretchViewport
 import squidpony.squidgrid.Direction
 import squidpony.squidgrid.gui.gdx.*
 import squidpony.squidmath.Coord
+import wolfsden.CommonColors
 import wolfsden.entity.CreatureBuilder
 import wolfsden.map.MapBuilder
 import wolfsden.system.CommandProcessor
 import wolfsden.system.GameStore
+import wolfsden.system.GameStore.curMap
 import wolfsden.system.Location
+import wolfsden.system.Scheduler
 
 object PlayScreen : WolfScreen("main") {
     private val mapW = 80
@@ -167,9 +170,30 @@ object PlayScreen : WolfScreen("main") {
         drawEntities()
     }
 
+    private fun markupStat(label: String, stat: Number, col: Int, y: Int) {
+        var placement = Pair(0, 0)
+        when (col) {
+            1 -> placement = Pair(1, 5)
+            2 -> placement = Pair(8, 12)
+        }
+        statPanel.put(placement.first, y, markup(label, CommonColors.INFO))
+        statPanel.put(placement.second, y, stat.toString())
+    }
+
     private fun drawStats() {
+        val player = GameStore.player
         statPanel.erase()
         statPanel.putBorders(FW, "Stats")
+        statPanel.put(1, 1, player.markupString!!.toICString())
+        statPanel.put(1, 2, "${curMap.name} ${player.pos!!.coord}")
+        markupStat("Str", player.stats!!.str,1, 3)
+        markupStat("Sta", player.stats!!.stam, 1, 4)
+        markupStat("Spd", player.stats!!.spd, 1, 5)
+        markupStat("Skl", player.stats!!.skl, 1, 6)
+        markupStat("Dmg", player.dmg, 2, 3)
+        markupStat("Sav", player.sav, 2, 4)
+        markupStat("Dfp", player.dfp, 2, 5)
+        markupStat("Atk", player.atk, 2, 6)
     }
 
     private fun drawMsgs() {
@@ -219,7 +243,11 @@ object PlayScreen : WolfScreen("main") {
 
     override fun enter() {
         MapBuilder.build("mine")
-        CreatureBuilder.build("fighter", true, null, "mine", "Palmyra")
+        with(CreatureBuilder) {
+            build("fighter", true, null, "mine", "Palmyra")
+            build("wolf")
+        }
+        Scheduler.resume()
         super.enter()
     }
 
@@ -232,6 +260,7 @@ object PlayScreen : WolfScreen("main") {
             drawHUD()
             GameStore.hudDirty = false
         }
+        Scheduler.tick()
         if (input.hasNext()) input.next()
         stage.act()
         stage.draw()

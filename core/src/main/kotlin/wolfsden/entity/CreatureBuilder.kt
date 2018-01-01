@@ -39,6 +39,8 @@ object CreatureBuilder {
                 foetus.addTag(tag)
             }
         }
+        foetus.addTag("creature")
+
         var toStart: Coord
         var toMap: String
 
@@ -57,6 +59,9 @@ object CreatureBuilder {
             foetus.vision!!.visible = ArrayTools.fill(0.0, m.width, m.height)
             FOV.reuseFOV(m.resistances, foetus.vision!!.visible, toStart.x, toStart.y, foetus.vision!!.vision)
         }
+        foetus.blocking = true
+
+        info.nz("ai") { foetus.addAI(foetus.movDly, info["ai"]) }
 
         GameStore.addEntity(foetus)
         return foetus
