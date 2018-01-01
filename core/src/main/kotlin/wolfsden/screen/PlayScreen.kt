@@ -8,12 +8,14 @@ import squidpony.squidgrid.gui.gdx.*
 import squidpony.squidmath.Coord
 import wolfsden.CommonColors
 import wolfsden.entity.CreatureBuilder
+import wolfsden.entity.Equipment
 import wolfsden.map.MapBuilder
 import wolfsden.system.CommandProcessor
 import wolfsden.system.GameStore
 import wolfsden.system.GameStore.curMap
 import wolfsden.system.Location
 import wolfsden.system.Scheduler
+import wolfsden.toICString
 
 object PlayScreen : WolfScreen("main") {
     private val mapW = 80
@@ -122,6 +124,8 @@ object PlayScreen : WolfScreen("main") {
     private val invPanel = playLayout.actors["inventory"] as SquidPanel
     private val eqPanel = playLayout.actors["equip"] as SquidPanel
     private const val FW = SColor.FLOAT_WHITE
+    private val player
+        get() = GameStore.player
 
     override val stage = playLayout.build()
     override val input = SquidInput({ key, alt, ctrl, shift ->
@@ -170,23 +174,24 @@ object PlayScreen : WolfScreen("main") {
         drawEntities()
     }
 
-    private fun markupStat(label: String, stat: Number, col: Int, y: Int) {
-        var placement = Pair(0, 0)
-        when (col) {
-            1 -> placement = Pair(1, 5)
-            2 -> placement = Pair(8, 12)
-            3 -> placement = Pair(30, 34)
-        }
-        statPanel.put(placement.first, y, markup(label, CommonColors.INFO))
-        statPanel.put(placement.second, y, stat.toString())
-    }
-
-    private fun markupTemper(label: String, tMin: Int, tMax: Int, startx: Int, y: Int, color: String) {
-        statPanel.put(startx, y, "[$color]$label[] %4d/%4d".format(tMin, tMax).toICString())
-    }
-
     private fun drawStats() {
-        val player = GameStore.player
+        val markupStat = {label: String, stat: Number, col: Int, y: Int ->
+            var placement = Pair(0, 0)
+            when (col) {
+                1 -> placement = Pair(1, 5)
+                2 -> placement = Pair(8, 12)
+                3 -> placement = Pair(30, 34)
+            }
+            statPanel.put(placement.first, y, markup(label, CommonColors.INFO))
+            statPanel.put(placement.second, y, stat.toString())
+        }
+        val markupTemper = {label: String, tMin: Number, tMax: Number, startx: Int, y: Int, color: String ->
+            val numFormat = when (tMin) {
+                is Int -> "%4d/%4d"
+                else -> "%5.0f/%5.0f"
+            }
+            statPanel.put(startx, y, "[$color]$label[] $numFormat".format(tMin, tMax).toICString())
+        }
         with(statPanel) {
             erase()
             putBorders(FW, "Stats")
@@ -206,7 +211,7 @@ object PlayScreen : WolfScreen("main") {
             markupTemper("Shd", player.curShield, player.maxShield, 15, 6, CommonColors.SHIELD)
             markupStat("MDl", player.movDly, 3, 3)
             markupStat("ADl", player.atkDly, 3, 4)
-            put(1, 7, "[${CommonColors.XP}]XP[] %5.0f/%5.0f".format(player.xp!!.curXP, player.xp!!.totXP).toICString())
+            markupTemper("XP", player.xp!!.curXP, player.xp!!.totXP, 1, 7, CommonColors.XP)
         }
     }
 
@@ -231,8 +236,17 @@ object PlayScreen : WolfScreen("main") {
     }
 
     private fun drawEQ() {
-        eqPanel.erase()
-        eqPanel.putBorders(FW, "Equipment")
+        with(eqPanel) {
+            erase()
+            putBorders(FW, "Equipment")
+            val markupEQ = { label: String, y: Int, eq: Equipment?  ->
+                eqPanel.put(1, y, "[${CommonColors.INFO}]%8s[]: ${eq?.name ?: "Nothing"}".format(label).toICString())
+            }
+            markupEQ("Mainhand", 1, player.mh)
+            markupEQ("Offhand", 2, player.oh)
+            markupEQ("Armor",3, player.armor)
+            markupEQ("Trinket", 4, player.trinket)
+        }
     }
 
     private fun drawHUD() {
@@ -255,6 +269,10 @@ object PlayScreen : WolfScreen("main") {
         }
     }
 
+    fun addMessage(msg: String) {
+        msgPanel.appendWrappingMessage(msg.toICString())
+    }
+
     override fun enter() {
         MapBuilder.build("mine")
         with(CreatureBuilder) {
@@ -262,6 +280,7 @@ object PlayScreen : WolfScreen("main") {
             build("wolf")
         }
         Scheduler.resume()
+        addMessage("Welcome to [Green][*]Wolf's Den II![]")
         super.enter()
     }
 

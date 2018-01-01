@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport
 import squidpony.panel.IColoredString
 import squidpony.squidgrid.gui.gdx.GDXMarkup
 import squidpony.squidgrid.gui.gdx.SquidInput
+import wolfsden.toICString
 
 abstract class WolfScreen(val name: String) {
     companion object Params {
@@ -32,10 +33,6 @@ abstract class WolfScreen(val name: String) {
 
     open fun exit() {
         println("Exited $name screen")
-    }
-
-    fun String.toICString(): IColoredString<Color> {
-        return GDXMarkup.instance.colorString(this)
     }
 
     protected fun markup(text: String, color: String): IColoredString<out Color> = "[$color]$text[]".toICString()

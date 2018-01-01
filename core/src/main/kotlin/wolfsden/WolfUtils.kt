@@ -1,7 +1,10 @@
 package wolfsden
 
 import com.badlogic.gdx.ai.GdxAI
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.utils.XmlReader
+import squidpony.panel.IColoredString
+import squidpony.squidgrid.gui.gdx.GDXMarkup
 
 
 fun <T : Comparable<T>> T.between(low: T, high: T): Boolean {
@@ -20,4 +23,8 @@ inline fun XmlReader.Element.nz(attr: String, block: () -> Unit) {
 
 fun log(time: Int, tag: String, msg: String) {
     GdxAI.getLogger().info(tag, "[$time]$msg")
+}
+
+fun String.toICString(): IColoredString<Color> {
+    return GDXMarkup.instance.colorString(this)
 }
