@@ -17,4 +17,5 @@ object CommonColors {
     const val VIT = "Crimson"
     const val METAL = "Silver"
     const val XP = "Green"
+    const val SHIELD = "Violet"
 }

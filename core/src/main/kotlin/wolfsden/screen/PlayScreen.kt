@@ -175,25 +175,39 @@ object PlayScreen : WolfScreen("main") {
         when (col) {
             1 -> placement = Pair(1, 5)
             2 -> placement = Pair(8, 12)
+            3 -> placement = Pair(30, 34)
         }
         statPanel.put(placement.first, y, markup(label, CommonColors.INFO))
         statPanel.put(placement.second, y, stat.toString())
     }
 
+    private fun markupTemper(label: String, tMin: Int, tMax: Int, startx: Int, y: Int, color: String) {
+        statPanel.put(startx, y, "[$color]$label[] %4d/%4d".format(tMin, tMax).toICString())
+    }
+
     private fun drawStats() {
         val player = GameStore.player
-        statPanel.erase()
-        statPanel.putBorders(FW, "Stats")
-        statPanel.put(1, 1, player.markupString!!.toICString())
-        statPanel.put(1, 2, "${curMap.name} ${player.pos!!.coord}")
-        markupStat("Str", player.stats!!.str,1, 3)
-        markupStat("Sta", player.stats!!.stam, 1, 4)
-        markupStat("Spd", player.stats!!.spd, 1, 5)
-        markupStat("Skl", player.stats!!.skl, 1, 6)
-        markupStat("Dmg", player.dmg, 2, 3)
-        markupStat("Sav", player.sav, 2, 4)
-        markupStat("Dfp", player.dfp, 2, 5)
-        markupStat("Atk", player.atk, 2, 6)
+        with(statPanel) {
+            erase()
+            putBorders(FW, "Stats")
+            put(1, 1, player.markupString!!.toICString())
+            put(1, 2, "${curMap.name} ${player.pos!!.coord}")
+            markupStat("Str", player.stats!!.str, 1, 3)
+            markupStat("Sta", player.stats!!.stam, 1, 4)
+            markupStat("Spd", player.stats!!.spd, 1, 5)
+            markupStat("Skl", player.stats!!.skl, 1, 6)
+            markupStat("Dmg", player.dmg, 2, 3)
+            markupStat("Sav", player.sav, 2, 4)
+            markupStat("Dfp", player.dfp, 2, 5)
+            markupStat("Atk", player.atk, 2, 6)
+            markupTemper("Vit", player.vit!!.curVit, player.maxVit, 15, 3, CommonColors.VIT)
+            markupTemper("End", player.vit!!.curEnd, player.maxEnd, 15, 4, CommonColors.WARNING)
+            markupTemper("Arm", player.curArmor, player.maxArmor, 15, 5, CommonColors.METAL)
+            markupTemper("Shd", player.curShield, player.maxShield, 15, 6, CommonColors.SHIELD)
+            markupStat("MDl", player.movDly, 3, 3)
+            markupStat("ADl", player.atkDly, 3, 4)
+            put(1, 7, "[${CommonColors.XP}]XP[] %5.0f/%5.0f".format(player.xp!!.curXP, player.xp!!.totXP).toICString())
+        }
     }
 
     private fun drawMsgs() {

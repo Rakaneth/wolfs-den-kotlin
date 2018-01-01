@@ -48,6 +48,10 @@ class Entity(
         get() = armor?.curProt.nz() + oh?.curProt.nz()
     val curShield: Int
         get() = mh?.curProt.nz() + trinket?.curProt.nz()
+    val maxArmor: Int
+        get() = armor?.prot.nz() + oh?.prot.nz()
+    val maxShield: Int
+        get() = mh?.prot.nz() + trinket?.prot.nz()
     var worthXP: Float = 0f
     private val tags: MutableList<String> = mutableListOf()
 
@@ -108,7 +112,7 @@ class Entity(
         tags.remove(tag)
     }
 
-    fun repair (amt: Int) {
+    fun repair(amt: Int) {
         var amtToRepair = armor?.prot.nz() - armor?.curProt.nz()
         var bank = amt
         if (bank > amtToRepair) {
