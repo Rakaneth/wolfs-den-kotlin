@@ -25,7 +25,7 @@
 	<EntityType meta:RefKey="creature">
 		<id>dire</id>
 		<identity name="Great Wolf" desc="A massive monster of a wolf." />
-		<draw glyph="W" color="Dark Grey" />
+		<draw glyph="W" color="Dark Dark Slate Grey" />
 		<vitals>true</vitals>
 		<stats str="6" stam="5" spd="4" skl="4" />
 		<worthXP>500</worthXP>
@@ -47,7 +47,7 @@
 	<EntityType meta:RefKey="creature">
 		<id>revenant</id>
 		<identity name="Fallen Warrior" desc="A fallen warrior, animated by foul magic." />
-		<draw glyph="Z" color="Dark Grey" />
+		<draw glyph="Z" color="Dark Dark Slate Grey" />
 		<vitals>true</vitals>
 		<stats str="4" stam="4" spd="4" skl="4" />
 		<equip mh="ironSword" oh="woodShield" armor="chainMail" />

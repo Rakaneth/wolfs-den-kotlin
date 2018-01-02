@@ -3,8 +3,11 @@ package wolfsden.entity
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.XmlReader
 import squidpony.squidmath.Coord
+import squidpony.squidmath.ProbabilityTable
+import wolfsden.log
 import wolfsden.nz
 import wolfsden.system.GameStore
+import wolfsden.system.WolfRNG
 import java.util.*
 
 object ItemBuilder {
@@ -19,6 +22,11 @@ object ItemBuilder {
         val id = info.getChildByName("identity")
         val draw = info.getChildByName("draw")
         val pos = info.getChildByName("pos")
+        val toGlyph = if (draw["glyph"].length == 1) {
+            draw["glyph"].toCharArray().first()
+        } else {
+            draw["glyph"].toInt(16).toChar()
+        }
 
         val toStart = if (pos == null) {
             start ?: GameStore.getMapByID(mapID).randomFloor()
@@ -27,8 +35,9 @@ object ItemBuilder {
         }
 
         mold.addID(id["name"]!!, id["desc"])
-        mold.addDraw(draw["glyph"].toCharArray().first(), draw["color"])
+        mold.addDraw(toGlyph, draw["color"])
         mold.addPos(toStart, mapID)
+        log(0, "ItemBuilder", "Item $buildID created at ${mold.pos!!.coord} on floor $mapID")
 
         info.nz("eqData") {
             val eq = info.getChildByName("eqData")
@@ -46,8 +55,8 @@ object ItemBuilder {
         info.nz("recoverData") {
             val rc = info.getChildByName("recoverData")
             val type = rc["itemType"]
-            val flatAmt = rc.getAttribute("flatAmt").toInt()
-            val pctAmt = rc.getAttribute("pctAmt").toFloat()
+            val flatAmt = if (rc.hasAttribute("flatAmt")) rc["flatAmt"].toInt() else 0
+            val pctAmt = if (rc.hasAttribute("pctAmt")) rc.getAttribute("pctAmt").toFloat() else 0f
             when (type) {
                 "healing" -> mold.addHeal(flatAmt, pctAmt)
                 "repair" -> mold.addRepair(flatAmt, pctAmt)
@@ -64,5 +73,24 @@ object ItemBuilder {
 
         GameStore.addEntity(mold)
         return mold
+    }
+
+    fun seedItems(mapID: String, vararg tags: String) {
+        val numItems = WolfRNG.wolfRNG.nextInt(25)
+        val table: ProbabilityTable<String> = ProbabilityTable(WolfRNG.wolfRNG)
+        val coll = if (tags.isEmpty()) {
+            itemBP.getChildrenByName("EntityType").filter{it.hasChild("rarity")}
+        } else {
+            itemBP.getChildrenByName("EntityType").filter{
+                it.hasChild("rarity") && it["tags"].split(",").any {tags.contains(it)}
+            }
+        }
+        for (chosen in coll) {
+            table.add(chosen["id"], chosen["rarity"].toInt())
+        }
+
+        for (i in 0.until(numItems)) {
+            build(table.random(), mapID)
+        }
     }
 }

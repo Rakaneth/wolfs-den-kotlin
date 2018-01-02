@@ -9,12 +9,10 @@ import squidpony.squidmath.Coord
 import wolfsden.CommonColors
 import wolfsden.entity.CreatureBuilder
 import wolfsden.entity.EquipStats
+import wolfsden.entity.ItemBuilder
 import wolfsden.map.MapBuilder
-import wolfsden.system.CommandProcessor
-import wolfsden.system.GameStore
+import wolfsden.system.*
 import wolfsden.system.GameStore.curMap
-import wolfsden.system.Location
-import wolfsden.system.Scheduler
 import wolfsden.toICString
 
 object PlayScreen : WolfScreen("main") {
@@ -43,7 +41,6 @@ object PlayScreen : WolfScreen("main") {
             x = 0
             y = msgH
             tcf {
-                base = DefaultResources.getStretchableWideFont()
                 tweakWidth = 1.1f
                 tweakHeight = 1.1f
             }
@@ -164,7 +161,7 @@ object PlayScreen : WolfScreen("main") {
                 val wy = y + cam.y
                 val wc = Coord.get(wx, wy)
                 when {
-                    !m.oob(wc) && (m.light || Location.visible(GameStore.player, wc)) -> {
+                    !m.oob(wc) && (m.light || player.visible(wc)) -> {
                         mapLayers.put(x, y, m.displayMap[wx][wy], m.fgFloats[wx][wy], m.bgFloats[wx][wy])
                     }
                     m.oob(wc) -> mapLayers.put(x, y, ' ', SColor.FLOAT_BLACK)
@@ -260,12 +257,11 @@ object PlayScreen : WolfScreen("main") {
 
     private fun drawEntities() {
         var ec: Coord
-        for (entity in GameStore.curEntities.filter{ it.pos != null}) {
+        val toDraw = GameStore.curEntities.filter{ it.pos != null && it.playerVisible()}
+        for (entity in toDraw) {
             ec = entity.pos!!.coord
             val color = entity.draw!!.color
-            if (Location.visible(GameStore.player, entity.pos!!.coord)) {
-                mapLayers.put(ec.x - cam.x, ec.y - cam.y, entity.draw!!.glyph, Colors.get(color))
-            }
+            mapLayers.put(ec.x - cam.x, ec.y - cam.y, entity.draw!!.glyph, Colors.get(color))
         }
     }
 
@@ -279,8 +275,9 @@ object PlayScreen : WolfScreen("main") {
             build("fighter", true, null, "mine", "Palmyra")
             build("wolf")
         }
+        ItemBuilder.seedItems("mine")
         Scheduler.resume()
-        addMessage("Welcome to [Green][*]Wolf's Den II![]")
+        addMessage("Welcome to [Green][/]Wolf's Den II![]")
         super.enter()
     }
 

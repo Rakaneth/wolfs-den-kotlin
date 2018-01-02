@@ -5,6 +5,8 @@ import wolfsden.entity.Entity
 import wolfsden.map.WolfMap
 import java.io.*
 
+fun Entity.playerVisible(): Boolean = this.visible(GameStore.player)
+
 object GameStore {
     var entityList: MutableMap<String, Entity> = mutableMapOf()
     var mapList: MutableMap<String, WolfMap> = mutableMapOf()
@@ -36,6 +38,7 @@ object GameStore {
 
     fun getByID(eID: String): Entity? = entityList[eID]
     fun getMapByID(mapID: String): WolfMap = mapList[mapID]!!
+
 
     fun saveGame() {
         val savePath = "${System.getProperty("user.home")}/WolfsDenKotlin"
