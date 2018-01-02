@@ -13,29 +13,64 @@ object CommandProcessor {
         FOV.reuseFOV(this.getMap()!!.resistances, this.vision!!.visible, this.pos!!.x, this.pos!!.y, this.vision!!.vision)
     }
 
-    private fun tryMoveBy(entity: Entity, dx: Int, dy: Int): Boolean {
-        val m = entity.getMap()
-        val newC = entity.pos!!.coord.translate(dx, dy)
+    private fun Entity.tryMoveBy(dx: Int, dy: Int): Boolean {
+        val m = this.getMap()
+        val newC = this.pos!!.coord.translate(dx, dy)
         when {
             m!!.walkable(newC) -> {
-                entity.pos!!.x = newC.x
-                entity.pos!!.y = newC.y
-                entity.updateFOV()
+                this.pos!!.x = newC.x
+                this.pos!!.y = newC.y
+                this.updateFOV()
                 return true
             }
             else -> return false //TODO: collision detection
         }
     }
 
-    private fun tryMoveBy(entity: Entity, d: Direction): Boolean {
-        return tryMoveBy(entity, d.deltaX, d.deltaY)
+    private fun Entity.tryMoveBy(d: Direction): Boolean {
+        return this.tryMoveBy(d.deltaX, d.deltaY)
+    }
+
+    private fun Entity.tryUse(item: Entity) {
+        item.heal?.use(this)
+        item.repair?.use(this)
+        item.rest?.use(this)
+        if (this.playerVisible()) {
+            PlayScreen.addMessage("${this.markupString} uses ${item.markupString}.")
+        }
+        this.removeFromBags(item)
+        GameStore.removeEntity(item)
+    }
+
+    private fun Entity.tryEQ(item: Entity) {
+        this.putOn(item)
+        this.inventory.remove(item)
+        if (this.playerVisible()) {
+            PlayScreen.addMessage("${this.markupString} equips ${item.markupString}.")
+        }
+    }
+
+    private fun Entity.pickUp() {
+        val things = GameStore.entityList.values.filter { Location.isOn(this, it) }
+        for (thing in things.filter { it != this}) {
+            when {
+                !this.bagsFull -> {
+                    if (this.playerVisible()) PlayScreen.addMessage("${this.markupString} picks up ${thing.markupString}.")
+                    this.putInBags(thing)
+                }
+                this.isPlayer -> PlayScreen.addMessage("${this.markupString}'s bags are too full for ${thing.markupString}.")
+                else -> {
+                }
+            }
+        }
+        GameStore.update(false, true)
     }
 
     fun process(entity: Entity, cmd: String, target: Any? = null) {
         var result = 0
         when (cmd) {
             "move" -> {
-                if (tryMoveBy(entity, target as Direction)) {
+                if (entity.tryMoveBy(target as Direction)) {
                     result = entity.movDly
                 }
             }
@@ -47,23 +82,12 @@ object CommandProcessor {
                 val tgt = target as Entity
                 when {
                     tgt.heal != null || tgt.repair != null || tgt.rest != null -> {
-                        tgt.heal?.use(entity)
-                        tgt.repair?.use(entity)
-                        tgt.rest?.use(entity)
-                        entity.removeFromBags(tgt)
-                        if (entity.playerVisible()) {
-                            PlayScreen.addMessage("${entity.markupString} uses ${tgt.markupString}.")
-                        }
-                        GameStore.removeEntity(tgt)
+                        entity.tryUse(tgt)
                         result = 10
                     }
                     tgt.eq != null -> {
-                        entity.putOn(tgt)
-                        entity.inventory.remove(tgt)
-                        if (entity.playerVisible()) {
-                            PlayScreen.addMessage("${entity.markupString} equips ${tgt.markupString}.")
-                            result = 10
-                        }
+                        entity.tryEQ(tgt)
+                        result = 10
                     }
                     else -> {
                         log(Scheduler.clock, "CommandProcessor", "${entity.eID} attempts to use unusable item ${tgt.eID}")

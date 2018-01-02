@@ -18,11 +18,11 @@ import wolfsden.toICString
 object PlayScreen : WolfScreen("main") {
     private val mapW = 80
     private val mapH = 30
-    private val statW = 42
+    private val statW = 40
     private val statH = 10
     private val msgW = 40
     private val msgH = 10
-    private val ttW = 38
+    private val ttW = 40
     private val ttH = 10
     private val sklW = 40
     private val sklH = 12
@@ -307,13 +307,13 @@ object PlayScreen : WolfScreen("main") {
     override fun render() {
         if (GameStore.mapDirty) {
             drawDungeon()
+            drawEntities()
             GameStore.mapDirty = false
         }
         if (GameStore.hudDirty) {
             drawHUD()
             GameStore.hudDirty = false
         }
-        drawEntities()
         Scheduler.tick()
         if (input.hasNext()) input.next()
         stage.act()
