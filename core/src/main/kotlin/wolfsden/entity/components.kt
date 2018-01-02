@@ -117,7 +117,7 @@ data class Vision(
     var visible: Array<DoubleArray>? = null
 }
 
-data class AI(
+class AI(
         override val entity: String,
         var delay: Int,
         private var aiTree: String
@@ -125,6 +125,7 @@ data class AI(
     @Transient
     var btree: BehaviorTree<Entity>? = null
     var target: String? = null
+    var leader: String = entity
 
     fun updateBTree(aiName: String? = null) {
         if (aiName != null) aiTree = "data/ai/$aiName.tree"
@@ -139,4 +140,6 @@ data class AI(
             btree!!
         }
     }
+
+    fun getTarget(): Entity? = GameStore.entityList[target]
 }

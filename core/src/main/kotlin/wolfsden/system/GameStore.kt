@@ -8,11 +8,17 @@ import java.io.*
 
 fun Entity.playerVisible(): Boolean = player.visible(this)
 
+interface EntityListener {
+    fun onAdd(entity: Entity)
+    fun onRemove(entity: Entity)
+}
+
 object GameStore {
     var entityList: MutableMap<String, Entity> = mutableMapOf()
     var mapList: MutableMap<String, WolfMap> = mutableMapOf()
     var mapDirty = true
     var hudDirty = true
+    private val listeners: MutableList<EntityListener> = mutableListOf()
 
     val player
         get() = entityList["player"]!!
@@ -20,9 +26,14 @@ object GameStore {
     val curMap
         get() = mapList[player.pos!!.mapID]!!
 
-    val curEntities
-        get() = entityList.values.filter { Location.sameMap(it, player) }
+    val allEntities
+        get() = entityList.values
 
+    val curEntities
+        get() = allEntities.filter { Location.sameMap(it, player) }
+
+    fun addListener(listener: EntityListener) { listeners.add(listener)}
+    fun removeListener(listener: EntityListener) { listeners.remove(listener)}
 
     fun update(map: Boolean = true, hud: Boolean = true) {
         if (map) mapDirty = true
@@ -31,13 +42,13 @@ object GameStore {
 
     fun addEntity(entity: Entity) {
         entityList[entity.eID] = entity
+        for (listener in listeners) { listener.onAdd(entity) }
     }
 
     fun removeEntity(entity: Entity) {
         entityList.remove(entity.eID)
+        for (listener in listeners) { listener.onRemove(entity)}
     }
-
-
 
     fun getByID(eID: String): Entity? = entityList[eID]
     fun getMapByID(mapID: String): WolfMap = mapList[mapID]!!

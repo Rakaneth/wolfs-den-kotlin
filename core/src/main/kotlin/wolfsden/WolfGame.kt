@@ -2,6 +2,8 @@ package wolfsden
 
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.ai.btree.Task
+import com.badlogic.gdx.ai.btree.TaskCloner
 import com.badlogic.gdx.graphics.GL20
 import squidpony.squidgrid.gui.gdx.SColor
 import wolfsden.screen.TitleScreen
