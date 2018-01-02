@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import squidpony.panel.IColoredString
-import squidpony.squidgrid.gui.gdx.GDXMarkup
 import squidpony.squidgrid.gui.gdx.SquidInput
 import wolfsden.toICString
 

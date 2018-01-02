@@ -64,8 +64,8 @@ class Entity(
         id = Identity(eID, name, desc)
     }
 
-    fun addDraw(glyph: Char, color: String) {
-        draw = Drawing(eID, glyph, color)
+    fun addDraw(glyph: Char, color: String, layer: Int) {
+        draw = Drawing(eID, glyph, color, layer)
     }
 
     fun addPos(c: Coord, mapID: String) {
@@ -128,13 +128,14 @@ class Entity(
                 takeOff(Slot.OH)
                 equip(item, Slot.MH)
             }
-            Slot.AMBI ->  {
-                if (mh != null) {
-                    takeOff(Slot.MH)
-                    equip(item, Slot.MH)
-                } else {
-                    takeOff(Slot.OH)
-                    equip(item, Slot.OH)
+            Slot.AMBI -> {
+                when {
+                    mh == null -> equip(item, Slot.MH)
+                    mh != null && oh == null -> equip(item, Slot.OH)
+                    else -> {
+                        takeOff(Slot.MH)
+                        equip(item, Slot.MH)
+                    }
                 }
             }
             else -> {
@@ -147,10 +148,18 @@ class Entity(
     fun takeOff(slot: Slot) {
         var toProcess: EquipStats?
         when (slot) {
-            Slot.MH -> {toProcess = mh; mh = null}
-            Slot.OH -> {toProcess = oh; oh = null}
-            Slot.ARMOR -> {toProcess = armor; armor = null}
-            else -> {toProcess = trinket; trinket = null}
+            Slot.MH -> {
+                toProcess = mh; mh = null
+            }
+            Slot.OH -> {
+                toProcess = oh; oh = null
+            }
+            Slot.ARMOR -> {
+                toProcess = armor; armor = null
+            }
+            else -> {
+                toProcess = trinket; trinket = null
+            }
         }
         if (toProcess != null) {
             if (bagsFull) {
@@ -205,7 +214,7 @@ class Entity(
     }
 
     fun restore(flatAmt: Int = 0, pctAmt: Float = 0f) {
-        val tEnd = ((pctAmt * maxVit) +  flatAmt).toInt()
+        val tEnd = ((pctAmt * maxVit) + flatAmt).toInt()
         if (vit == null) {
             return
         } else {

@@ -11,7 +11,7 @@ import wolfsden.system.WolfRNG
 import java.util.*
 
 object ItemBuilder {
-    private val reader= XmlReader()
+    private val reader = XmlReader()
     private const val itemFile = "data/equipment.xml"
     private val itemBP = reader.parse(Gdx.files.internal(itemFile))
 
@@ -35,7 +35,7 @@ object ItemBuilder {
         }
 
         mold.addID(id["name"]!!, id["desc"])
-        mold.addDraw(toGlyph, draw["color"])
+        mold.addDraw(toGlyph, draw["color"], 1)
         mold.addPos(toStart, mapID)
         log(0, "ItemBuilder", "Item $buildID created at ${mold.pos!!.coord} on floor $mapID")
 
@@ -71,6 +71,7 @@ object ItemBuilder {
         }
         mold.addTag(info["meta:RefKey"])
 
+        mold.blocking = false
         GameStore.addEntity(mold)
         return mold
     }
@@ -79,10 +80,10 @@ object ItemBuilder {
         val numItems = WolfRNG.wolfRNG.nextInt(25)
         val table: ProbabilityTable<String> = ProbabilityTable(WolfRNG.wolfRNG)
         val coll = if (tags.isEmpty()) {
-            itemBP.getChildrenByName("EntityType").filter{it.hasChild("rarity")}
+            itemBP.getChildrenByName("EntityType").filter { it.hasChild("rarity") }
         } else {
-            itemBP.getChildrenByName("EntityType").filter{
-                it.hasChild("rarity") && it["tags"].split(",").any {tags.contains(it)}
+            itemBP.getChildrenByName("EntityType").filter {
+                it.hasChild("rarity") && it["tags"].split(",").any { tags.contains(it) }
             }
         }
         for (chosen in coll) {

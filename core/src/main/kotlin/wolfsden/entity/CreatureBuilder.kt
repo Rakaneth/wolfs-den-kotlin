@@ -12,7 +12,7 @@ import java.util.*
 object CreatureBuilder {
     private val reader = XmlReader()
     private const val creatureFile = "data/monsters.xml"
-    val creatureBP = reader.parse(Gdx.files.internal(creatureFile))
+    private val creatureBP: XmlReader.Element = reader.parse(Gdx.files.internal(creatureFile))
 
     fun build(buildID: String, isPlayer: Boolean = false, start: Coord? = null, mapID: String? = null, name: String? = null): Entity? {
         val info = creatureBP.getChildrenByName("EntityType").filter { it["id"] == buildID }.firstOrNull() ?: return null
@@ -25,7 +25,7 @@ object CreatureBuilder {
         val toName = name ?: id["name"]
 
         foetus.addID(toName, id["desc"])
-        foetus.addDraw(draw["glyph"].toCharArray().first(), draw["color"])
+        foetus.addDraw(draw["glyph"].toCharArray().first(), draw["color"], 2)
         info.nz("stats") {
             foetus.addStats(stats["str"].toInt(), stats["stam"].toInt(), stats["spd"].toInt(), stats["skl"].toInt())
         }

@@ -43,7 +43,8 @@ data class Vitals(
 data class Drawing(
         override val entity: String,
         val glyph: Char = '@',
-        val color: String = "White"
+        val color: String = "White",
+        val layer: Int = 1
 ) : Component(entity)
 
 data class Position(

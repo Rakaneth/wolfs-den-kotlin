@@ -22,7 +22,7 @@ class EntityTestSource {
 
     @Test
     fun testDraw() {
-        e1.addDraw('$', "Silver")
+        e1.addDraw('$', "Silver", 1)
         assertEquals('$', e1.draw?.glyph)
         assertEquals("Silver", e1.draw?.color)
     }

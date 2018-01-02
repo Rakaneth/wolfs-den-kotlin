@@ -3,9 +3,10 @@ package wolfsden.system
 import squidpony.squidmath.StatefulRNG
 import wolfsden.entity.Entity
 import wolfsden.map.WolfMap
+import wolfsden.system.GameStore.player
 import java.io.*
 
-fun Entity.playerVisible(): Boolean = this.visible(GameStore.player)
+fun Entity.playerVisible(): Boolean = player.visible(this)
 
 object GameStore {
     var entityList: MutableMap<String, Entity> = mutableMapOf()

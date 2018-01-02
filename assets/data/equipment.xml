@@ -26,7 +26,7 @@
 	<EntityType meta:RefKey="equipment">
 		<id>dagger</id>
 		<identity name="Dagger" desc="A short, common dagger." />
-		<draw glyph="|" color="White" />
+		<draw glyph="2020" color="White" />
 		<eqData slot="ambi" atk="1" dfp="0" dmg="1" sav="0" dly="4" />
 		<rarity>35</rarity>
 		<tags>melee,close,stab,slash</tags>
@@ -34,7 +34,7 @@
 	<EntityType meta:RefKey="equipment">
 		<id>mace</id>
 		<identity name="Mace" desc="An intimidating iron mace." />
-		<draw glyph="0189" color="Dark Slate Grey" />
+		<draw glyph="0189" color="Silver" />
 		<eqData slot="mh" atk="0" dfp="0" dmg="3" sav="0" dly="6" />
 		<rarity>15</rarity>
 		<tags>melee,bash</tags>
@@ -65,7 +65,7 @@
 	<EntityType meta:RefKey="equipment">
 		<id>chainMail</id>
 		<identity name="Chainmail" desc="A heavy chain hauberk." />
-		<draw glyph="]" color="Dark Slate Grey" />
+		<draw glyph="]" color="Silver" />
 		<eqData slot="armor" atk="0" dfp="0" dmg="0" sav="0" dly="7" prot="20" curProt="20" />
 		<rarity>15</rarity>
 	</EntityType>
@@ -102,7 +102,7 @@
 	<EntityType meta:RefKey="equipment">
 		<id>ravenSymbol</id>
 		<identity name="Raven Medallion" desc="A holy symbol of the Raven." />
-		<draw glyph="=" color="Dark Dark Slate Grey" />
+		<draw glyph="=" color="Dark Silver" />
 		<eqData slot="trinket" atk="1" dfp="0" dmg="1" sav="0" dly="0" prot="5" curProt="5" />
 		<rarity>5</rarity>
 		<tags>holy,war,death</tags>
@@ -117,7 +117,7 @@
 	<EntityType meta:RefKey="item">
 		<id>Scraps</id>
 		<identity name="Armor Scraps" desc="Armor scraps left behind from previous battles. Can be used to repair armor." />
-		<draw glyph="(" color="Dark Slate Grey" />
+		<draw glyph="(" color="Silver" />
 		<recoverData itemType="repair" flatAmt="10" />
 		<rarity>20</rarity>
 	</EntityType>

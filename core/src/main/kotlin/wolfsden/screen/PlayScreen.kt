@@ -11,8 +11,11 @@ import wolfsden.entity.CreatureBuilder
 import wolfsden.entity.EquipStats
 import wolfsden.entity.ItemBuilder
 import wolfsden.map.MapBuilder
-import wolfsden.system.*
+import wolfsden.system.CommandProcessor
+import wolfsden.system.GameStore
 import wolfsden.system.GameStore.curMap
+import wolfsden.system.Scheduler
+import wolfsden.system.playerVisible
 import wolfsden.toICString
 
 object PlayScreen : WolfScreen("main") {
@@ -136,6 +139,11 @@ object PlayScreen : WolfScreen("main") {
             SquidInput.DOWN_LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.DOWN_LEFT)
             SquidInput.LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.LEFT)
             SquidInput.UP_LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.UP_LEFT)
+            't' -> {
+                val dgr = ItemBuilder.build("dagger", curMap.id)
+                player.putOn(dgr)
+                GameStore.update()
+            }
         }
     })
     val cam: Coord
@@ -155,24 +163,33 @@ object PlayScreen : WolfScreen("main") {
     private fun drawDungeon() {
         mapLayers.clear()
         val m = GameStore.curMap
+        val GF = SColor.GRAY.toFloatBits()
         for (x in 0.until(mapW)) {
             for (y in 0.until(mapH)) {
                 val wx = x + cam.x
                 val wy = y + cam.y
                 val wc = Coord.get(wx, wy)
-                when {
-                    !m.oob(wc) && (m.light || player.visible(wc)) -> {
-                        mapLayers.put(x, y, m.displayMap[wx][wy], m.fgFloats[wx][wy], m.bgFloats[wx][wy])
+                if (!m.oob(wc)) {
+                    val c = m.displayMap[wx][wy]
+                    val fg = m.fgFloats[wx][wy]
+                    val bg = m.bgFloats[wx][wy]
+                    when {
+                        player.visible(wc) -> {
+                            mapLayers.put(x, y, c, fg, bg)
+                        }
+                        m.light -> {
+                            mapLayers.put(x, y, c, fg, SColor.lerpFloatColors(bg, GF, -0.5f))
+                        }
+                        else -> {
+                        }
                     }
-                    m.oob(wc) -> mapLayers.put(x, y, ' ', SColor.FLOAT_BLACK)
                 }
             }
         }
-        drawEntities()
     }
 
     private fun drawStats() {
-        val markupStat = {label: String, stat: Number, col: Int, y: Int ->
+        val markupStat = { label: String, stat: Number, col: Int, y: Int ->
             var placement = Pair(0, 0)
             when (col) {
                 1 -> placement = Pair(1, 5)
@@ -182,7 +199,7 @@ object PlayScreen : WolfScreen("main") {
             statPanel.put(placement.first, y, markup(label, CommonColors.INFO))
             statPanel.put(placement.second, y, stat.toString())
         }
-        val markupTemper = {label: String, tMin: Number, tMax: Number, startx: Int, y: Int, color: String ->
+        val markupTemper = { label: String, tMin: Number, tMax: Number, startx: Int, y: Int, color: String ->
             val numFormat = when (tMin) {
                 is Int -> "%4d/%4d"
                 else -> "%5.0f/%5.0f"
@@ -230,18 +247,21 @@ object PlayScreen : WolfScreen("main") {
     private fun drawInv() {
         invPanel.erase()
         invPanel.putBorders(FW, "Inventory")
+        for ((idx, item) in player.inventory.withIndex()) {
+            invPanel.put(1, 1 + idx, "$idx: ${item.markupString}".toICString())
+        }
     }
 
     private fun drawEQ() {
         with(eqPanel) {
             erase()
             putBorders(FW, "Equipment")
-            val markupEQ = { label: String, y: Int, eq: EquipStats?  ->
+            val markupEQ = { label: String, y: Int, eq: EquipStats? ->
                 eqPanel.put(1, y, "[${CommonColors.INFO}]%8s[]: ${eq?.name ?: "Nothing"}".format(label).toICString())
             }
             markupEQ("Mainhand", 1, player.mh)
             markupEQ("Offhand", 2, player.oh)
-            markupEQ("Armor",3, player.armor)
+            markupEQ("Armor", 3, player.armor)
             markupEQ("Trinket", 4, player.trinket)
         }
     }
@@ -257,11 +277,11 @@ object PlayScreen : WolfScreen("main") {
 
     private fun drawEntities() {
         var ec: Coord
-        val toDraw = GameStore.curEntities.filter{ it.pos != null && it.playerVisible()}
-        for (entity in toDraw) {
+        val toDraw = GameStore.curEntities.filter { it.pos != null && it.playerVisible() }
+        for (entity in toDraw.sortedBy { it.draw!!.layer }) {
             ec = entity.pos!!.coord
             val color = entity.draw!!.color
-            mapLayers.put(ec.x - cam.x, ec.y - cam.y, entity.draw!!.glyph, Colors.get(color))
+            mapLayers.put(ec.x - cam.x, ec.y - cam.y, entity.draw!!.glyph, Colors.get(color).toFloatBits())
         }
     }
 
@@ -290,6 +310,7 @@ object PlayScreen : WolfScreen("main") {
             drawHUD()
             GameStore.hudDirty = false
         }
+        drawEntities()
         Scheduler.tick()
         if (input.hasNext()) input.next()
         stage.act()
