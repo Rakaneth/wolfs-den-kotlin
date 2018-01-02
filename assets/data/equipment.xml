@@ -18,7 +18,7 @@
 	<EntityType meta:RefKey="equipment">
 		<id>ironSword</id>
 		<identity name="Iron Sword" desc="A serviceable, sturdy shortsword." />
-		<draw glyph="2356" color="Purple" />
+		<draw glyph="2356" color="DB Iron" />
 		<eqData slot="mh" atk="2" dfp="0" dmg="1" sav="0" dly="5" />
 		<rarity>20</rarity>
 		<tags>melee,slash,stab</tags>
