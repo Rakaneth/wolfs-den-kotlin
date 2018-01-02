@@ -3,7 +3,9 @@ package wolfsden.system
 import squidpony.squidgrid.Direction
 import squidpony.squidgrid.FOV
 import wolfsden.entity.Entity
+import wolfsden.log
 import wolfsden.map.WolfMap
+import wolfsden.screen.PlayScreen
 
 object CommandProcessor {
     fun Entity.getMap(): WolfMap? = GameStore.mapList[this.pos?.mapID]
@@ -29,18 +31,50 @@ object CommandProcessor {
         return tryMoveBy(entity, d.deltaX, d.deltaY)
     }
 
-    fun process(entity: Entity, cmd: String, target: Any) {
+    fun process(entity: Entity, cmd: String, target: Any? = null) {
         var result = 0
         when (cmd) {
             "move" -> {
                 if (tryMoveBy(entity, target as Direction)) {
-                    GameStore.update()
                     result = entity.movDly
+                }
+            }
+            "pickup" -> {
+                entity.pickUp()
+                result = 10
+            }
+            "use" -> {
+                val tgt = target as Entity
+                when {
+                    tgt.heal != null || tgt.repair != null || tgt.rest != null -> {
+                        tgt.heal?.use(entity)
+                        tgt.repair?.use(entity)
+                        tgt.rest?.use(entity)
+                        entity.removeFromBags(tgt)
+                        if (entity.playerVisible()) {
+                            PlayScreen.addMessage("${entity.markupString} uses ${tgt.markupString}.")
+                        }
+                        GameStore.removeEntity(tgt)
+                        result = 10
+                    }
+                    tgt.eq != null -> {
+                        entity.putOn(tgt)
+                        entity.inventory.remove(tgt)
+                        if (entity.playerVisible()) {
+                            PlayScreen.addMessage("${entity.markupString} equips ${tgt.markupString}.")
+                            result = 10
+                        }
+                    }
+                    else -> {
+                        log(Scheduler.clock, "CommandProcessor", "${entity.eID} attempts to use unusable item ${tgt.eID}")
+                    }
                 }
             }
             else -> {
             } //TODO: other cmds
         }
+
+        GameStore.update()
         if (result > 0 && entity.isPlayer) Scheduler.resume()
         entity.ai!!.delay = result
     }

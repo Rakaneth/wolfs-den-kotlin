@@ -37,6 +37,8 @@ object GameStore {
         entityList.remove(entity.eID)
     }
 
+
+
     fun getByID(eID: String): Entity? = entityList[eID]
     fun getMapByID(mapID: String): WolfMap = mapList[mapID]!!
 

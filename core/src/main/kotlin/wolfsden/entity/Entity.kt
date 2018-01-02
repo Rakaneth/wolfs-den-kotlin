@@ -222,6 +222,8 @@ class Entity(
         }
     }
 
+
+
     fun hasTag(tag: String): Boolean = tags.contains(tag)
 
     override fun toString(): String = "${id?.name}-${eID}"

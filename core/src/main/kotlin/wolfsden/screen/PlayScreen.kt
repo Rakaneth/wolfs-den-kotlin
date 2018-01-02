@@ -11,11 +11,8 @@ import wolfsden.entity.CreatureBuilder
 import wolfsden.entity.EquipStats
 import wolfsden.entity.ItemBuilder
 import wolfsden.map.MapBuilder
-import wolfsden.system.CommandProcessor
-import wolfsden.system.GameStore
+import wolfsden.system.*
 import wolfsden.system.GameStore.curMap
-import wolfsden.system.Scheduler
-import wolfsden.system.playerVisible
 import wolfsden.toICString
 
 object PlayScreen : WolfScreen("main") {
@@ -139,6 +136,12 @@ object PlayScreen : WolfScreen("main") {
             SquidInput.DOWN_LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.DOWN_LEFT)
             SquidInput.LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.LEFT)
             SquidInput.UP_LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.UP_LEFT)
+            'G' -> CommandProcessor.process(player, "pickup")
+            '0', '1', '2', '3', '4', '5', '6', '7','8', '9' -> {
+                val numSlot = key.toString().toInt()
+                if (player.inventory.size >= (numSlot+ 1)) CommandProcessor.process(player, "use", player.inventory[numSlot])
+                else addMessage("No item to use/equip in that slot.")
+            }
             't' -> {
                 val dgr = ItemBuilder.build("dagger", curMap.id)
                 player.putOn(dgr)
