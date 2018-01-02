@@ -20,7 +20,7 @@
 		<gainsXP>true</gainsXP>
 		<vision>13</vision>
 		<ai>alpha</ai>
-		<tags>wolf</tags>
+		<tags>wolf,leader</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>dire</id>
@@ -32,7 +32,7 @@
 		<vision>15</vision>
 		<ai>wolf</ai>
 		<rarity>20</rarity>
-		<tags>wolf</tags>
+		<tags>wolf,leader</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>direAlpha</id>
@@ -42,7 +42,7 @@
 		<worthXP>1000</worthXP>
 		<vision>15</vision>
 		<ai>alpha</ai>
-		<tags>wolf</tags>
+		<tags>wolf,leader</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>revenant</id>
@@ -55,7 +55,7 @@
 		<vision>6</vision>
 		<ai>hunt</ai>
 		<rarity>15</rarity>
-		<tags>undead,door</tags>
+		<tags>undead,door,leader</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>wolfLord</id>
@@ -67,7 +67,7 @@
 		<worthXP>1000</worthXP>
 		<vision>10</vision>
 		<ai>alpha</ai>
-		<tags>wolf,door</tags>
+		<tags>wolf,door,leader</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>banshee</id>
@@ -78,7 +78,7 @@
 		<worthXP>800</worthXP>
 		<vision>6</vision>
 		<ai>hunt</ai>
-		<tags>undead</tags>
+		<tags>undead,leader</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>margrave</id>
@@ -90,7 +90,7 @@
 		<worthXP>5000</worthXP>
 		<vision>8</vision>
 		<ai>hunt</ai>
-		<tags>undead,door</tags>
+		<tags>undead,door,leader</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>fighter</id>
@@ -104,7 +104,7 @@
 		<vision>6</vision>
 		<ai>hunt</ai>
 		<rarity>5</rarity>
-		<tags>hero,door</tags>
+		<tags>hero,door,leader</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>rogue</id>
@@ -118,7 +118,7 @@
 		<vision>6</vision>
 		<ai>hunt</ai>
 		<rarity>5</rarity>
-		<tags>hero,door</tags>
+		<tags>hero,door,leader</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>cleric</id>
@@ -132,6 +132,6 @@
 		<vision>6</vision>
 		<ai>hunt</ai>
 		<rarity>5</rarity>
-		<tags>hero,door</tags>
+		<tags>hero,door,leader</tags>
 	</EntityType>
 </Entities>

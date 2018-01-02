@@ -9,8 +9,8 @@ import java.io.*
 fun Entity.playerVisible(): Boolean = player.visible(this)
 
 interface EntityListener {
-    fun onAdd(entity: Entity)
-    fun onRemove(entity: Entity)
+    fun onAdd(entity: Entity) {}
+    fun onRemove(entity: Entity) {}
 }
 
 object GameStore {

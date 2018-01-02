@@ -6,6 +6,7 @@ import squidpony.ArrayTools
 import squidpony.squidgrid.FOV
 import squidpony.squidmath.Coord
 import wolfsden.nz
+import wolfsden.system.Faction
 import wolfsden.system.GameStore
 import java.util.*
 
@@ -40,6 +41,8 @@ object CreatureBuilder {
             }
         }
         foetus.addTag("creature")
+
+        if (foetus.hasTag("leader")) Faction.addFaction(foetus.eID)
 
         var toStart: Coord
         var toMap: String

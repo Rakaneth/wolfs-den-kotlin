@@ -31,8 +31,6 @@ object Faction: EntityListener {
         GameStore.addListener(this)
     }
 
-    override fun onAdd(entity: Entity) {}
-
     override fun onRemove(entity: Entity) {
         if (entity.isLeader()) removeFaction(entity.eID)
     }
