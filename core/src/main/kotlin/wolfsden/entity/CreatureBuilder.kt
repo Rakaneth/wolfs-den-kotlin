@@ -42,8 +42,6 @@ object CreatureBuilder {
         }
         foetus.addTag("creature")
 
-        if (foetus.hasTag("leader")) Faction.addFaction(foetus.eID)
-
         var toStart: Coord
         var toMap: String
 
@@ -73,6 +71,7 @@ object CreatureBuilder {
         }
 
         GameStore.addEntity(foetus)
+        if (foetus.hasTag("leader")) Faction.addFaction(foetus.eID)
         return foetus
     }
 }

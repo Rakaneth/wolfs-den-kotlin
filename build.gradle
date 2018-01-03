@@ -29,7 +29,7 @@ configure(subprojects) {
 }
 
 subprojects {
-  version = '0.0.1-SNAPSHOT'
+  version = '0.4.0-SNAPSHOT'
   ext.appName = 'wolfs-den-kotlin'
   repositories {
     mavenLocal()

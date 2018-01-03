@@ -12,7 +12,7 @@ object Scheduler {
             for (creature in curEntities.filter { it.hasTag("creature") }.sortedByDescending { it.stats!!.spd }) {
                 creature.ai!!.delay--
                 if (creature.ai!!.delay <= 0) {
-                    log(clock, "Scheduler", "$creature acting on tick $clock")
+                    //log(clock, "Scheduler", "$creature acting on tick $clock")
                     when {
                         creature.isPlayer -> pause() //process player shit
                         else -> {/*creature.ai!!.getBTree().step()*/
