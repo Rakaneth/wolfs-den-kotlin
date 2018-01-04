@@ -1,7 +1,11 @@
 package wolfsden.entity
 
+import com.badlogic.gdx.graphics.Color
+import squidpony.panel.IColoredString
 import squidpony.squidmath.Coord
+import wolfsden.CommonColors
 import wolfsden.nz
+import wolfsden.toICString
 import java.io.Serializable
 
 val BESTIARY: MutableMap<String, Entity> = mutableMapOf()
@@ -58,6 +62,18 @@ class Entity(
     val inventory: MutableList<Entity> = mutableListOf()
     val bagsFull
         get() = inventory.size >= 10
+    private fun markupEQ(label: String, eq: EquipStats?): IColoredString<Color> {
+        return "[${CommonColors.INFO}]%8s[]: ${eq?.name ?: "Nothing"}".format(label).toICString()
+    }
+    val armorMarkup
+        get() =  markupEQ("Mainhand", armor)
+    val trinketMarkup
+        get() = markupEQ("Trinket", trinket)
+    val mhMarkup
+        get() = markupEQ("Mainhand", mh)
+    val ohMarkup
+        get() = markupEQ("Offhand", oh)
+
 
 
     fun addID(name: String, desc: String) {

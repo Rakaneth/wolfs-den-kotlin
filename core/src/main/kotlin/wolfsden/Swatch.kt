@@ -1,14 +1,14 @@
 package wolfsden
 
 object Chars {
-    val WALL = '\u2588'
-    val FLOOR = '\u00A0'
-    val UP = '<'
-    val DOWN = '>'
-    val OUT = '\u2581'
-    val CLOSED = '+'
-    val OPEN = '\\'
-    val BRIDGE = ':'
+    const val WALL = '\u2588'
+    const val FLOOR = '\u00A0'
+    const val UP = '<'
+    const val DOWN = '>'
+    const val OUT = '\u2581'
+    const val CLOSED = '+'
+    const val OPEN = '\\'
+    const val BRIDGE = ':'
 }
 
 object CommonColors {

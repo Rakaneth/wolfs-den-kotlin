@@ -259,13 +259,10 @@ object PlayScreen : WolfScreen("main") {
         with(eqPanel) {
             erase()
             putBorders(FW, "Equipment")
-            val markupEQ = { label: String, y: Int, eq: EquipStats? ->
-                eqPanel.put(1, y, "[${CommonColors.INFO}]%8s[]: ${eq?.name ?: "Nothing"}".format(label).toICString())
-            }
-            markupEQ("Mainhand", 1, player.mh)
-            markupEQ("Offhand", 2, player.oh)
-            markupEQ("Armor", 3, player.armor)
-            markupEQ("Trinket", 4, player.trinket)
+            put(1, 1, player.mhMarkup)
+            put(1, 2, player.ohMarkup)
+            put(1, 3, player.armorMarkup)
+            put(1, 4, player.trinketMarkup)
         }
     }
 
