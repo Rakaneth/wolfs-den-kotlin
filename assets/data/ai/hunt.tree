@@ -7,15 +7,12 @@ import getTarget: "wolfsden.ai.tasks.GetTargetTask"
 import moveTowardsPrey: "wolfsden.ai.tasks.MoveTowardsPreyTask"
 import preyAdjacent?: "wolfsden.ai.conditions.PreyAdjacentCondition"
 import attackPrey: "wolfsden.ai.tasks.AttackPreyTask"
-import preyNull?: "wolfsden.ai.conditions.PreyNullCondition"
 import preyAlive?: "wolfsden.ai.conditions.PreyAliveCondition"
 import preySameLevel?: "wolfsden.ai.conditions.PreySameLevelCondition"
 
 #Check for prey existence
 subtree name: "preyExists?"
 	sequence
-		invert
-			preyNull?
 		preySameLevel?
 		preyAlive?
 

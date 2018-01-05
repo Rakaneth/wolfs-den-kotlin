@@ -11,12 +11,11 @@ import wolfsden.system.WolfRNG
 import java.util.*
 
 object ItemBuilder {
-    private val reader = XmlReader()
     private const val itemFile = "data/equipment.xml"
-    private val itemBP = reader.parse(Gdx.files.internal(itemFile))
+    private val itemBP = XmlReader().parse(Gdx.files.internal(itemFile))
 
     fun build(buildID: String, mapID: String, start: Coord? = null): Entity {
-        val info = itemBP.getChildrenByName("EntityType").filter { it["id"] == buildID }.first()
+        val info = itemBP.getChildrenByName("EntityType").first { it["id"] == buildID }
         val mold = Entity(UUID.randomUUID().toString())
 
         val id = info.getChildByName("identity")

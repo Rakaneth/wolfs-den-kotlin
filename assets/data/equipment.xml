@@ -18,7 +18,7 @@
 	<EntityType meta:RefKey="equipment">
 		<id>ironSword</id>
 		<identity name="Iron Sword" desc="A serviceable, sturdy shortsword." />
-		<draw glyph="2356" color="DB Iron" />
+		<draw glyph="2020" color="DB Iron" />
 		<eqData slot="mh" atk="2" dfp="0" dmg="1" sav="0" dly="5" />
 		<rarity>20</rarity>
 		<tags>melee,slash,stab</tags>
@@ -26,7 +26,7 @@
 	<EntityType meta:RefKey="equipment">
 		<id>dagger</id>
 		<identity name="Dagger" desc="A short, common dagger." />
-		<draw glyph="2020" color="White" />
+		<draw glyph="2356" color="White" />
 		<eqData slot="ambi" atk="1" dfp="0" dmg="1" sav="0" dly="4" />
 		<rarity>35</rarity>
 		<tags>melee,close,stab,slash</tags>
@@ -51,7 +51,7 @@
 		<id>wolfFur</id>
 		<identity name="Wolf Furs" desc="A thick layer of shaggy wolf fur." />
 		<draw glyph=")" color="CW Light Brown" />
-		<eqData slot="armor" atk="0" dfp="0" dmg="0" sav="1" dly="2" prot="10" curProt="10" />
+		<eqData slot="armor" atk="0" dfp="0" dmg="0" sav="1" dly="5" prot="10" curProt="10" />
 		<rarity>35</rarity>
 		<tags>natural,wolf</tags>
 	</EntityType>

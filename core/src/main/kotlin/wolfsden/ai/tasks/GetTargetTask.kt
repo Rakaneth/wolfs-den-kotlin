@@ -12,11 +12,11 @@ class GetTargetTask: LeafTask<Entity>() {
         val prey = `object`.visibleEnemies()
         val closest = prey.minBy { `object`.pos!!.coord.distance(it.pos?.coord)}
         return if (closest == null) {
-            log(clock, "AI", "${`object`.eID} cannot get target")
+            log(clock, "AI", "$`object` cannot get target")
             Status.FAILED
         } else {
             `object`.ai!!.target = closest.eID
-            log(clock, "AI", "${`object`.eID} gets target ${closest.eID}")
+            log(clock, "AI", "$`object` gets target $closest")
             Status.SUCCEEDED
         }
     }

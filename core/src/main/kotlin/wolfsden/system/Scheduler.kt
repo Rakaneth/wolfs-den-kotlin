@@ -15,8 +15,7 @@ object Scheduler {
                     //log(clock, "Scheduler", "$creature acting on tick $clock")
                     when {
                         creature.isPlayer -> pause() //process player shit
-                        else -> {/*creature.ai!!.getBTree().step()*/
-                        }
+                        else -> { creature.ai!!.getBTree().step() }
                     }
                 }
             }

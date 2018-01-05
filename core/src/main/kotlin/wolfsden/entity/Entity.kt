@@ -208,7 +208,7 @@ class Entity(
 
     fun visible(c: Coord): Boolean = if (vision == null) false else vision!!.visible!![c.x][c.y] > 0.0
 
-    fun visible(other: Entity): Boolean = visible(other.pos!!.coord)
+    fun visible(other: Entity): Boolean = if (other.pos == null) false else visible(other.pos!!.coord)
 
     fun repair(flatAmt: Int = 0, pctAmt: Float = 0f) {
         val cArm = (pctAmt * armor?.prot.nz()).toInt()
@@ -238,10 +238,8 @@ class Entity(
         }
     }
 
-
-
     fun hasTag(tag: String): Boolean = tags.contains(tag)
 
-    override fun toString(): String = "${id?.name}-${eID}"
+    override fun toString(): String = "${id?.name}-${eID.substringBefore("-")}"
 
 }

@@ -5,10 +5,11 @@
 		<draw glyph="W" color="CW Light Brown" />
 		<vitals>true</vitals>
 		<stats str="2" stam="2" spd="2" skl="1" />
+		<equip mh="wolfFangs" oh="wolfClaws" armor="wolfFur" />
 		<worthXP>100</worthXP>
 		<vision>10</vision>
-		<ai>wolf</ai>
-		<tags>wolf</tags>
+		<ai>hunt</ai>
+		<tags>wolf,leader</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>alpha</id>
@@ -16,6 +17,7 @@
 		<draw glyph="W" color="Burnt Umber" />
 		<vitals>true</vitals>
 		<stats str="4" stam="3" spd="3" skl="2" />
+		<equip mh="wolfFangs" oh="wolfClaws" armor="wolfFur" />
 		<worthXP>300</worthXP>
 		<gainsXP>true</gainsXP>
 		<vision>13</vision>
@@ -28,6 +30,7 @@
 		<draw glyph="W" color="Dark Silver" />
 		<vitals>true</vitals>
 		<stats str="6" stam="5" spd="4" skl="4" />
+		<equip mh="wolfFangs" oh="wolfClaws" armor="wolfFur" />
 		<worthXP>500</worthXP>
 		<vision>15</vision>
 		<ai>wolf</ai>
@@ -39,6 +42,7 @@
 		<identity name="Great Wolf Alpha" desc="The mightiest among wolves, these lupine titans lead packs of great wolves." />
 		<vitals>true</vitals>
 		<stats str="9" stam="8" spd="8" skl="7" />
+		<equip mh="wolfFangs" oh="wolfClaws" armor="wolfFur" />
 		<worthXP>1000</worthXP>
 		<vision>15</vision>
 		<ai>alpha</ai>
