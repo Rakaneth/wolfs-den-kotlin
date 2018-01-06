@@ -24,3 +24,4 @@ village of Jommund.
 - [ ] Simple combat mechanics
 - [ ] Character abilities
 - [ ] Expand character options
+- [ ] Playable alpha
