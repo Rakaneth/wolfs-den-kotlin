@@ -1,7 +1,7 @@
 # Wolf's Den II
 
-A roguelike game  made using [SquidLib]("https://github.com/SquidPony/SquidLib")
-and https://github.com/libgdx/gdx-ai.
+A roguelike game  made using [SquidLib](https://github.com/SquidPony/SquidLib)
+and [gdx-ai](https://github.com/libgdx/gdx-ai).
 
 ## Story
 
