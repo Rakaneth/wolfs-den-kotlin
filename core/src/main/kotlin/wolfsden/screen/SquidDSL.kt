@@ -12,7 +12,7 @@ fun layout(vport: StretchViewport, block: Layout.() -> Unit): Layout = Layout(vp
 
 class Layout(vport: StretchViewport) {
     private val stage = Stage(vport, batch)
-    val actors: MutableMap<String, Actor> = mutableMapOf()
+    private val actors: MutableMap<String, Actor> = mutableMapOf()
     fun panel(block: PanelBuilder.() -> Unit) {
         val pb = PanelBuilder().apply(block)
         actors[pb.id] = pb.build()
@@ -30,6 +30,10 @@ class Layout(vport: StretchViewport) {
         actors[mb.id] = mb.build()
         stage.addActor(actors[mb.id])
     }
+
+    fun toSquidPanel(id: String) = actors[id] as SquidPanel
+    fun toMessageBox(id: String) = actors[id] as SquidMessageBox
+    fun toSparseLayers(id: String) = actors[id] as SparseLayers
 
     fun build(): Stage = stage
 }

@@ -7,10 +7,10 @@ import wolfsden.log
 import wolfsden.system.Scheduler.clock
 import wolfsden.system.visibleEnemies
 
-class GetTargetTask: LeafTask<Entity>() {
+class GetTargetTask : LeafTask<Entity>() {
     override fun execute(): Status {
         val prey = `object`.visibleEnemies()
-        val closest = prey.minBy { `object`.pos!!.coord.distance(it.pos?.coord)}
+        val closest = prey.minBy { `object`.pos!!.coord.distance(it.pos?.coord) }
         return if (closest == null) {
             log(clock, "AI", "$`object` cannot get target")
             Status.FAILED

@@ -64,11 +64,13 @@ class Entity(
     val inventory: MutableList<Entity> = mutableListOf()
     val bagsFull
         get() = inventory.size >= 10
+
     private fun markupEQ(label: String, eq: EquipStats?): IColoredString<Color> {
         return "[${CommonColors.INFO}]%8s[]: ${eq?.name ?: "Nothing"}".format(label).toICString()
     }
+
     val armorMarkup
-        get() =  markupEQ("Mainhand", armor)
+        get() = markupEQ("Mainhand", armor)
     val trinketMarkup
         get() = markupEQ("Trinket", trinket)
     val mhMarkup
@@ -77,7 +79,6 @@ class Entity(
         get() = markupEQ("Offhand", oh)
     val dualWield
         get() = mh != null && (oh != null && !oh!!.getEntity.hasTag("shield"))
-
 
 
     fun addID(name: String, desc: String) {

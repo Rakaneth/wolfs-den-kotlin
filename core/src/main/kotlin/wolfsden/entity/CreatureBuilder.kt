@@ -43,7 +43,7 @@ object CreatureBuilder {
 
         info.nz("weak") {
             for (weakness in info["weak"].split(",")) {
-            foetus.updateTag("weakness", weakness)
+                foetus.updateTag("weakness", weakness)
             }
         }
 

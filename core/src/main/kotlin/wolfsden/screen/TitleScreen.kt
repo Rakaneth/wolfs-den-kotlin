@@ -7,14 +7,13 @@ import squidpony.squidgrid.gui.gdx.DefaultResources
 import squidpony.squidgrid.gui.gdx.SColor
 import squidpony.squidgrid.gui.gdx.SquidInput
 import squidpony.squidgrid.gui.gdx.SquidPanel
-import wolfsden.WolfGame
 
 object TitleScreen : WolfScreen("title") {
     override val vport = StretchViewport(fullPixelW, fullPixelH)
     override val stage = Stage(vport, batch)
     override val input = SquidInput({ key, alt, ctrl, shift ->
         when (key) {
-            'n', 'N' -> (Gdx.app.applicationListener as WolfGame).setScreen(PlayScreen)
+            'n', 'N' -> WolfScreen.setScreen(CCScreen)
             SquidInput.ESCAPE -> Gdx.app.exit()
             else -> {
             }

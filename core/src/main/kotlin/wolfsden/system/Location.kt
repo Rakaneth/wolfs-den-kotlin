@@ -2,8 +2,6 @@ package wolfsden.system
 
 import squidpony.squidmath.Coord
 import wolfsden.entity.Entity
-import wolfsden.screen.PlayScreen
-
 
 
 object Location {

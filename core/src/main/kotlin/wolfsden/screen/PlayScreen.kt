@@ -4,15 +4,18 @@ import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import squidpony.squidgrid.Direction
-import squidpony.squidgrid.gui.gdx.*
+import squidpony.squidgrid.gui.gdx.SColor
+import squidpony.squidgrid.gui.gdx.SquidInput
 import squidpony.squidmath.Coord
 import wolfsden.CommonColors
 import wolfsden.entity.CreatureBuilder
-import wolfsden.entity.EquipStats
 import wolfsden.entity.ItemBuilder
 import wolfsden.map.MapBuilder
-import wolfsden.system.*
+import wolfsden.system.CommandProcessor
+import wolfsden.system.GameStore
 import wolfsden.system.GameStore.curMap
+import wolfsden.system.Scheduler
+import wolfsden.system.playerVisible
 import wolfsden.toICString
 
 object PlayScreen : WolfScreen("main") {
@@ -113,13 +116,13 @@ object PlayScreen : WolfScreen("main") {
         }
     }
 
-    private val mapLayers = playLayout.actors["map"] as SparseLayers
-    private val statPanel = playLayout.actors["stats"] as SquidPanel
-    private val msgPanel = playLayout.actors["messages"] as SquidMessageBox
-    private val ttPanel = playLayout.actors["tt"] as SquidPanel
-    private val sklPanel = playLayout.actors["skills"] as SquidPanel
-    private val invPanel = playLayout.actors["inventory"] as SquidPanel
-    private val eqPanel = playLayout.actors["equip"] as SquidPanel
+    private val mapLayers = playLayout.toSparseLayers("map")
+    private val statPanel = playLayout.toSquidPanel("stats")
+    private val msgPanel = playLayout.toMessageBox("messages")
+    private val ttPanel = playLayout.toSquidPanel("tt")
+    private val sklPanel = playLayout.toSquidPanel("skills")
+    private val invPanel = playLayout.toSquidPanel("inventory")
+    private val eqPanel = playLayout.toSquidPanel("equip")
     private const val FW = SColor.FLOAT_WHITE
     private val player
         get() = GameStore.player
@@ -137,9 +140,9 @@ object PlayScreen : WolfScreen("main") {
             SquidInput.LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.LEFT)
             SquidInput.UP_LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.UP_LEFT)
             'G' -> CommandProcessor.process(player, "pickup")
-            '0', '1', '2', '3', '4', '5', '6', '7','8', '9' -> {
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
                 val numSlot = key.toString().toInt()
-                if (player.inventory.size >= (numSlot+ 1)) CommandProcessor.process(player, "use", player.inventory[numSlot])
+                if (player.inventory.size >= (numSlot + 1)) CommandProcessor.process(player, "use", player.inventory[numSlot])
                 else addMessage("No item to use/equip in that slot.")
             }
             't' -> {

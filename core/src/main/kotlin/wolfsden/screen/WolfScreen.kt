@@ -15,10 +15,16 @@ abstract class WolfScreen(val name: String) {
         const val cellWidth = 16f
         const val cellHeight = 20f
         const val fullGridW = 120
-        const val fulllGridH = 40
-        const val fullPixelW = 120f * cellWidth
-        const val fullPixelH = 40f * cellHeight
+        const val fullGridH = 40
+        const val fullPixelW = fullGridW * cellWidth
+        const val fullPixelH = fullGridH * cellHeight
         val batch = SpriteBatch()
+        var curScreen: WolfScreen? = null
+        fun setScreen(screen: WolfScreen) {
+            curScreen?.exit()
+            curScreen = screen
+            curScreen?.enter()
+        }
     }
 
     abstract val stage: Stage

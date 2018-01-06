@@ -6,7 +6,7 @@ import wolfsden.entity.Entity
 import wolfsden.log
 import wolfsden.system.Scheduler.clock
 
-class PreyAliveCondition: LeafTask<Entity>() {
+class PreyAliveCondition : LeafTask<Entity>() {
     override fun copyTo(task: Task<Entity>?): Task<Entity> {
         return task!!
     }

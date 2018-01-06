@@ -32,8 +32,13 @@ object GameStore {
     val curEntities
         get() = allEntities.filter { Location.sameMap(it, player) }
 
-    fun addListener(listener: EntityListener) { listeners.add(listener)}
-    fun removeListener(listener: EntityListener) { listeners.remove(listener)}
+    fun addListener(listener: EntityListener) {
+        listeners.add(listener)
+    }
+
+    fun removeListener(listener: EntityListener) {
+        listeners.remove(listener)
+    }
 
     fun update(map: Boolean = true, hud: Boolean = true) {
         if (map) mapDirty = true
@@ -42,12 +47,16 @@ object GameStore {
 
     fun addEntity(entity: Entity) {
         entityList[entity.eID] = entity
-        for (listener in listeners) { listener.onAdd(entity) }
+        for (listener in listeners) {
+            listener.onAdd(entity)
+        }
     }
 
     fun removeEntity(entity: Entity) {
         entityList.remove(entity.eID)
-        for (listener in listeners) { listener.onRemove(entity)}
+        for (listener in listeners) {
+            listener.onRemove(entity)
+        }
     }
 
     fun getByID(eID: String): Entity? = entityList[eID]

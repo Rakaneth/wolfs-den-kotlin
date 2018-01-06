@@ -15,12 +15,12 @@ object CommandProcessor {
         FOV.reuseFOV(this.getMap()!!.resistances, this.vision!!.visible, this.pos!!.x, this.pos!!.y, this.vision!!.vision)
     }
 
-    enum class CollideResults { ENEMY, ALLY, DOOR, NONE}
+    enum class CollideResults { ENEMY, ALLY, DOOR, NONE }
 
     private fun Entity.tryMoveBy(dx: Int, dy: Int): Pair<CollideResults, Any?> {
         val m = this.getMap()
         val newC = this.pos!!.coord.translate(dx, dy)
-        var collider = thingsAt(newC, m!!.id).firstOrNull { it.blocking && it.hasTag("creature")}
+        var collider = thingsAt(newC, m!!.id).firstOrNull { it.blocking && it.hasTag("creature") }
         return when {
             m!!.walkable(newC) -> {
                 this.pos!!.x = newC.x
@@ -29,7 +29,7 @@ object CommandProcessor {
                 Pair(CollideResults.NONE, null)
             }
             collider != null -> {
-                when  {
+                when {
                     this.isEnemy(collider) -> Pair(CollideResults.ENEMY, collider)
                     else -> Pair(CollideResults.ALLY, collider)
                 }
@@ -64,7 +64,7 @@ object CommandProcessor {
 
     private fun Entity.pickUp() {
         val things = GameStore.entityList.values.filter { Location.isOn(this, it) }
-        for (thing in things.filter { it != this}) {
+        for (thing in things.filter { it != this }) {
             when {
                 !this.bagsFull -> {
                     if (this.playerVisible()) PlayScreen.addMessage("${this.markupString} picks up ${thing.markupString}.")

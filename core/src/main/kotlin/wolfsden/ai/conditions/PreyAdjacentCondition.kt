@@ -6,7 +6,7 @@ import wolfsden.entity.Entity
 import wolfsden.log
 import wolfsden.system.Scheduler.clock
 
-class PreyAdjacentCondition: LeafTask<Entity>() {
+class PreyAdjacentCondition : LeafTask<Entity>() {
     override fun execute(): Status {
         val subject = `object`
         var target = subject.ai!!.getTarget()
