@@ -6,7 +6,7 @@ and [gdx-ai](https://github.com/libgdx/gdx-ai).
 ## Story
 
 You are one of several heroes chosen to face the **Wolflords**,
-an ever-presnt, constant threat from the terrible Wildlands to the
+an ever-present, constant threat from the terrible Wildlands to the
 village of Jommund.
 
 ## Screenshots
@@ -23,4 +23,4 @@ village of Jommund.
 - [ ] Saving and loading
 - [ ] Simple combat mechanics
 - [ ] Character abilities
-- [ ] Expand options
+- [ ] Expand character options
