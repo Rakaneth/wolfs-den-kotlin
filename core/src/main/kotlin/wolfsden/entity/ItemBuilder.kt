@@ -65,10 +65,10 @@ object ItemBuilder {
 
         info.nz("tags") {
             for (tag in info["tags"].split(",")) {
-                mold.addTag(tag)
+                mold.updateTag("tags", tag)
             }
         }
-        mold.addTag(info["meta:RefKey"])
+        mold.updateTag("tags", info["meta:RefKey"])
 
         mold.blocking = false
         GameStore.addEntity(mold)

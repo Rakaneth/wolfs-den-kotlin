@@ -149,7 +149,7 @@ object PlayScreen : WolfScreen("main") {
             }
         }
     })
-    val cam: Coord
+    private val cam: Coord
         get() {
             val m = GameStore.curMap
             val c = GameStore.player.pos!!.coord
@@ -244,12 +244,12 @@ object PlayScreen : WolfScreen("main") {
 
     private fun drawSkl() {
         sklPanel.erase()
-        sklPanel.putBorders(FW, "Skills")
+        sklPanel.putBorders(FW, "Skills(Shift: use)")
     }
 
     private fun drawInv() {
         invPanel.erase()
-        invPanel.putBorders(FW, "Inventory")
+        invPanel.putBorders(FW, "Inventory(number: use, Alt: describe)")
         for ((idx, item) in player.inventory.withIndex()) {
             invPanel.put(1, 1 + idx, "$idx: ${item.markupString}".toICString())
         }

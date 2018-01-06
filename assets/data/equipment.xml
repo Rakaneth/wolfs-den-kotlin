@@ -73,7 +73,7 @@
 		<id>woodShield</id>
 		<identity name="Wooden Shield" desc="A sturdy wooden shield, embossed with bronze." />
 		<draw glyph="[" color="Burnt Umber" />
-		<eqData slot="oh" atk="0" dfp="2" dmg="0" sav="2" dly="4" />
+		<eqData slot="oh" atk="0" dfp="2" dmg="0" sav="2" dly="4" prot="5" curProt="5" />
 		<rarity>15</rarity>
 		<tags>shield</tags>
 	</EntityType>

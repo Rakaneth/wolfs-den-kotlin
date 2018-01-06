@@ -32,7 +32,7 @@ class Entity(
         var blocking: Boolean = true
 ) : Serializable {
     val atk: Int
-        get() = stats?.skl.nz() + armor?.atk.nz() + mh?.atk.nz() + oh?.atk.nz() + trinket?.atk.nz()
+        get() = stats?.skl.nz() + armor?.atk.nz() + mh?.atk.nz() + oh?.atk.nz() + trinket?.atk.nz() - if (dualWield) 2 else 0
     val dfp: Int
         get() = stats?.spd.nz() + armor?.dfp.nz() + mh?.dfp.nz() + oh?.dfp.nz() + trinket?.dfp.nz()
     val dmg: Int
@@ -59,6 +59,8 @@ class Entity(
         get() = mh?.prot.nz() + trinket?.prot.nz()
     var worthXP: Float = 0f
     private val tags: MutableList<String> = mutableListOf()
+    private val weakness: MutableList<String> = mutableListOf()
+    private val resistance: MutableList<String> = mutableListOf()
     val inventory: MutableList<Entity> = mutableListOf()
     val bagsFull
         get() = inventory.size >= 10
@@ -73,6 +75,8 @@ class Entity(
         get() = markupEQ("Mainhand", mh)
     val ohMarkup
         get() = markupEQ("Offhand", oh)
+    val dualWield
+        get() = mh != null && (oh != null && !oh!!.getEntity.hasTag("shield"))
 
 
 
@@ -129,13 +133,16 @@ class Entity(
         rest = RestoreItem(eID, pctAmt, flatAmt)
     }
 
-    fun addTag(tag: String) {
-        tags.add(tag)
+    fun updateTag(tagList: String, tag: String, adding: Boolean = true) {
+        val toAdd = when (tagList) {
+            "weakness" -> weakness
+            "resistance" -> resistance
+            else -> tags
+        }
+        if (adding) toAdd.add(tag)
+        else toAdd.remove(tag)
     }
 
-    fun removeTag(tag: String) {
-        tags.remove(tag)
-    }
 
     fun putOn(item: Entity) {
         when (item.eq!!.slot) {
@@ -146,6 +153,10 @@ class Entity(
             }
             Slot.AMBI -> {
                 when {
+                    mh != null && mh!!.slot == Slot.TWOH -> {
+                        takeOff(Slot.MH)
+                        equip(item, Slot.MH)
+                    }
                     mh == null -> equip(item, Slot.MH)
                     mh != null && oh == null -> equip(item, Slot.OH)
                     else -> {
@@ -162,7 +173,7 @@ class Entity(
     }
 
     fun takeOff(slot: Slot) {
-        var toProcess: EquipStats?
+        val toProcess: EquipStats?
         when (slot) {
             Slot.MH -> {
                 toProcess = mh; mh = null
@@ -179,9 +190,9 @@ class Entity(
         }
         if (toProcess != null) {
             if (bagsFull) {
-                toProcess?.getEntity!!.addPos(pos!!.coord, pos!!.mapID)
+                toProcess.getEntity.addPos(pos!!.coord, pos!!.mapID)
             } else {
-                putInBags(toProcess?.getEntity!!)
+                putInBags(toProcess.getEntity)
             }
         }
     }
@@ -207,7 +218,6 @@ class Entity(
     }
 
     fun visible(c: Coord): Boolean = if (vision == null) false else vision!!.visible!![c.x][c.y] > 0.0
-
     fun visible(other: Entity): Boolean = if (other.pos == null) false else visible(other.pos!!.coord)
 
     fun repair(flatAmt: Int = 0, pctAmt: Float = 0f) {
@@ -238,7 +248,9 @@ class Entity(
         }
     }
 
-    fun hasTag(tag: String): Boolean = tags.contains(tag)
+    fun hasTag(tag: String) = tags.contains(tag)
+    fun hasWeakness(weakness: String) = weakness.contains(weakness)
+    fun hasResistance(resist: String) = resistance.contains(resist)
 
     override fun toString(): String = "${id?.name}-${eID.substringBefore("-")}"
 

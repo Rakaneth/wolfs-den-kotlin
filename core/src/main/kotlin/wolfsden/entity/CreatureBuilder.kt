@@ -16,7 +16,7 @@ object CreatureBuilder {
     private val creatureBP: XmlReader.Element = reader.parse(Gdx.files.internal(creatureFile))
 
     fun build(buildID: String, isPlayer: Boolean = false, start: Coord? = null, mapID: String? = null, name: String? = null): Entity? {
-        val info = creatureBP.getChildrenByName("EntityType").filter { it["id"] == buildID }.firstOrNull() ?: return null
+        val info = creatureBP.getChildrenByName("EntityType").firstOrNull { it["id"] == buildID } ?: return null
         val eID = if (isPlayer) "player" else UUID.randomUUID().toString()
         val foetus = Entity(eID)
         val id = info.getChildByName("identity")
@@ -37,13 +37,25 @@ object CreatureBuilder {
 
         info.nz("tags") {
             for (tag in info["tags"].split(",")) {
-                foetus.addTag(tag)
+                foetus.updateTag("tags", tag)
             }
         }
-        foetus.addTag("creature")
 
-        var toStart: Coord
-        var toMap: String
+        info.nz("weak") {
+            for (weakness in info["weak"].split(",")) {
+            foetus.updateTag("weakness", weakness)
+            }
+        }
+
+        info.nz("strong") {
+            for (resistance in info["strong"].split(",")) {
+                foetus.updateTag("resistance", resistance)
+            }
+        }
+        foetus.updateTag("tags", "creature")
+
+        val toStart: Coord
+        val toMap: String
 
         if (pos == null) {
             toMap = mapID ?: GameStore.curMap.id
