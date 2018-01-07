@@ -5,10 +5,10 @@ and [gdx-ai](https://github.com/libgdx/gdx-ai).
 
 ## Story
 
-You are one of several heroes chosen to face the **Wolflords**,
-an ever-present, constant threat from the terrible Wildlands to the
-village of Jommund. Their lair is said to be in an old mine once claimed
-by the mighty Jarl Thorkell, a hero of the Great Taming of a hundred
+You are one of several heroes chosen to face the *Wolflords*,
+an ever-present, constant threat from the terrible *Wildlands* to the
+village of *Jommund.* Their lair is said to be in an old mine once claimed
+by the mighty *Jarl Thorkell*, a hero of the *Great Taming* of a hundred
 years ago.
 
 ## Screenshots
