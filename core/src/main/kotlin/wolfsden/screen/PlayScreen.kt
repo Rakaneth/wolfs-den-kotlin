@@ -8,9 +8,7 @@ import squidpony.squidgrid.gui.gdx.SColor
 import squidpony.squidgrid.gui.gdx.SquidInput
 import squidpony.squidmath.Coord
 import wolfsden.CommonColors
-import wolfsden.entity.CreatureBuilder
 import wolfsden.entity.ItemBuilder
-import wolfsden.map.MapBuilder
 import wolfsden.system.CommandProcessor
 import wolfsden.system.GameStore
 import wolfsden.system.GameStore.curMap
@@ -19,20 +17,20 @@ import wolfsden.system.playerVisible
 import wolfsden.toICString
 
 object PlayScreen : WolfScreen("main") {
-    private val mapW = 80
-    private val mapH = 30
-    private val statW = 40
-    private val statH = 10
-    private val msgW = 40
-    private val msgH = 10
-    private val ttW = 40
-    private val ttH = 10
-    private val sklW = 40
-    private val sklH = 12
-    private val invW = 40
-    private val invH = 12
-    private val eqW = 40
-    private val eqH = 6
+    private const val mapW = 80
+    private const val mapH = 30
+    private const val statW = 40
+    private const val statH = 10
+    private const val msgW = 40
+    private const val msgH = 10
+    private const val ttW = 40
+    private const val ttH = 10
+    private const val sklW = 40
+    private const val sklH = 12
+    private const val invW = 40
+    private const val invH = 12
+    private const val eqW = 40
+    private const val eqH = 6
 
     override val vport = StretchViewport(fullPixelW, fullPixelH)
 
@@ -290,18 +288,6 @@ object PlayScreen : WolfScreen("main") {
 
     fun addMessage(msg: String) {
         msgPanel.appendWrappingMessage(msg.toICString())
-    }
-
-    override fun enter() {
-        MapBuilder.build("mine")
-        with(CreatureBuilder) {
-            build("cleric", true, null, "mine", "Barnabas")
-            build("banshee")
-        }
-        ItemBuilder.seedItems("mine")
-        Scheduler.resume()
-        addMessage("Welcome to [Green][/]Wolf's Den II![]")
-        super.enter()
     }
 
     override fun render() {

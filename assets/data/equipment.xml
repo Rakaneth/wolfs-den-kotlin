@@ -102,7 +102,7 @@
 	<EntityType meta:RefKey="equipment">
 		<id>ravenSymbol</id>
 		<identity name="Raven Medallion" desc="A holy symbol of the Raven." />
-		<draw glyph="=" color="Dark Silver" />
+		<draw glyph="=" color="Silver Grey" />
 		<eqData slot="trinket" atk="1" dfp="0" dmg="1" sav="0" dly="0" prot="5" curProt="5" />
 		<rarity>5</rarity>
 		<tags>holy,war,death</tags>
@@ -110,7 +110,7 @@
 	<EntityType meta:RefKey="item">
 		<id>rations</id>
 		<identity name="Rations" desc="Salted meat and hard tack, surprisingly still edible." />
-		<draw glyph="&quot;" color="CW Light Brown" />
+		<draw glyph="003B" color="CW Light Brown" />
 		<recoverData itemType="restore" pctAmt="0.2" />
 		<rarity>20</rarity>
 	</EntityType>

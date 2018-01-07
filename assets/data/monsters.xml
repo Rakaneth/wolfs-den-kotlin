@@ -9,7 +9,7 @@
 		<worthXP>100</worthXP>
 		<vision>10</vision>
 		<ai>hunt</ai>
-		<tags>wolf,leader</tags>
+		<tags>wolf</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
 		<id>alpha</id>
@@ -72,6 +72,7 @@
 		<worthXP>1000</worthXP>
 		<vision>10</vision>
 		<ai>alpha</ai>
+		<weak>dark</weak>
 		<tags>wolf,door,leader</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
@@ -84,6 +85,7 @@
 		<vision>6</vision>
 		<ai>hunt</ai>
 		<weak>holy</weak>
+		<strong>natural</strong>
 		<tags>undead,leader</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
@@ -97,6 +99,7 @@
 		<vision>8</vision>
 		<ai>hunt</ai>
 		<weak>holy</weak>
+		<strong>natural</strong>
 		<tags>undead,door,leader</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">

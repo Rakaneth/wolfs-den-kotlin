@@ -1,9 +1,6 @@
 package wolfsden.system
 
-import com.badlogic.gdx.graphics.Color
-import squidpony.panel.IColoredString
 import squidpony.squidgrid.Direction
-import squidpony.squidgrid.FOV
 import squidpony.squidmath.Coord
 import wolfsden.CommonColors
 import wolfsden.entity.Entity
@@ -12,14 +9,8 @@ import wolfsden.log
 import wolfsden.map.WolfMap
 import wolfsden.screen.PlayScreen
 import wolfsden.system.Location.thingsAt
-import wolfsden.toICString
 
 object CommandProcessor {
-    fun Entity.getMap(): WolfMap? = GameStore.mapList[this.pos?.mapID]
-    fun Entity.updateFOV() {
-        FOV.reuseFOV(this.getMap()!!.resistances, this.vision!!.visible, this.pos!!.x, this.pos!!.y, this.vision!!.vision)
-    }
-
     enum class CollideResults { ENEMY, ALLY, DOOR, NONE }
 
     data class CombatResults(
@@ -33,7 +24,7 @@ object CommandProcessor {
     )
 
     private fun describeCombat(result: CombatResults) {
-        with (result) {
+        with(result) {
             val warning = CommonColors.WARNING
             val info = CommonColors.INFO
             val vit = CommonColors.VIT
@@ -64,7 +55,7 @@ object CommandProcessor {
                 ""
             }
             val dm = if (hit && dmg > 0) ", dealing [$vit]$dmg damage[]" else ""
-            val finalString = attacker.markupString + " " + verb + " " +defender.markupString + wk + res + dm + "!"
+            val finalString = attacker.markupString + " " + verb + " " + defender.markupString + wk + res + dm + "!"
             PlayScreen.addMessage(finalString)
         }
     }
@@ -148,7 +139,7 @@ object CommandProcessor {
         val wk: MutableList<String> = mutableListOf()
         val res: MutableList<String> = mutableListOf()
         this.atkTags.forEach {
-            when{
+            when {
                 other.hasWeakness(it) -> {
                     wk.add(it)
                     dmg = (dmg * 1.5).toInt()
@@ -157,7 +148,8 @@ object CommandProcessor {
                     res.add(it)
                     dmg = (dmg * 0.5).toInt()
                 }
-                else -> {}
+                else -> {
+                }
             }
         }
         //other.takeDmg(dmg)
@@ -211,6 +203,11 @@ object CommandProcessor {
                 val tgt = target as Entity
                 entity.autoAttack(tgt)
                 result = entity.atkDly
+            }
+            "stairs" -> {
+                val tgt = target as WolfMap.Connection
+                entity.changeLevel(tgt)
+                result = entity.movDly
             }
             else -> {
             } //TODO: other cmds

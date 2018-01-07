@@ -1,12 +1,17 @@
 package wolfsden.system
 
 import squidpony.squidmath.StatefulRNG
+import wolfsden.entity.CreatureBuilder
 import wolfsden.entity.Entity
+import wolfsden.entity.ItemBuilder
+import wolfsden.map.MapBuilder
 import wolfsden.map.WolfMap
+import wolfsden.screen.PlayScreen
 import wolfsden.system.GameStore.player
 import java.io.*
 
 fun Entity.playerVisible(): Boolean = player.visible(this)
+fun Entity.getMap(): WolfMap? = GameStore.mapList[this.pos?.mapID]
 
 interface EntityListener {
     fun onAdd(entity: Entity) {}
@@ -114,6 +119,14 @@ object GameStore {
     }
 
     fun newGame(playerClass: String, playerName: String) {
-
+        MapBuilder.buildAll()
+        with(CreatureBuilder) {
+            build(playerClass, true, null, "mine", playerName)
+            build("banshee")
+            build("revenant")
+        }
+        ItemBuilder.seedItems("mine")
+        Scheduler.resume()
+        PlayScreen.addMessage("Welcome to [Green][/]Wolf's Den II![]")
     }
 }

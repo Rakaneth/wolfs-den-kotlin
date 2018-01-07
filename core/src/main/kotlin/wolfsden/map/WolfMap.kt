@@ -72,8 +72,8 @@ class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, v
     fun changeMap(c: Coord, baseChar: Char, displayChar: Char) {
         baseMap[c.x][c.y] = baseChar
         displayMap[c.x][c.y] = displayChar
-        fgFloats = MapUtility.generateDefaultBGColorsFloat(displayMap)
-        bgFloats = MapUtility.generateDefaultColorsFloat(displayMap)
+        fgFloats = MapUtility.generateDefaultColorsFloat(baseMap)
+        bgFloats = MapUtility.generateDefaultBGColorsFloat(baseMap)
         resistances = DungeonUtility.generateResistances(baseMap)
     }
 

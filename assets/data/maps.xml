@@ -4,30 +4,25 @@
 			<connection meta:RefKey="connection">
 				<mapID>mine2</mapID>
 				<direction>down</direction>
+				<twoWay>true</twoWay>
 			</connection>
 		</connections>
 	</WolfMap>
 	<WolfMap id="mine2" name="Mine - Lower Level" width="50" height="50" roomCarvers="1" caveCarvers="2" boxCarvers="1" doors="3" light="True" water="5" meta:RefKey="WolfMap">
 		<connections>
 			<connection meta:RefKey="connection">
-				<mapID>mine</mapID>
-				<direction>up</direction>
-			</connection>
-			<connection meta:RefKey="connection">
 				<mapID>cave</mapID>
 				<direction>down</direction>
+				<twoWay>true</twoWay>
 			</connection>
 		</connections>
 	</WolfMap>
 	<WolfMap id="cave" name="Cave - Upper Cave" width="150" height="150" caveCarvers="3" boxCarvers="0" doors="0" light="False" water="10" meta:RefKey="WolfMap">
 		<connections>
 			<connection meta:RefKey="connection">
-				<mapID>mine2</mapID>
-				<direction>up</direction>
-			</connection>
-			<connection meta:RefKey="connection">
 				<mapID>cave2</mapID>
 				<direction>down</direction>
+				<twoWay>true</twoWay>
 			</connection>
 		</connections>
 	</WolfMap>
@@ -36,31 +31,18 @@
 			<connection meta:RefKey="connection">
 				<mapID>cave3</mapID>
 				<direction>down</direction>
-			</connection>
-			<connection meta:RefKey="connection">
-				<mapID>cave1</mapID>
-				<direction>up</direction>
+				<twoWay>true</twoWay>
 			</connection>
 		</connections>
 	</WolfMap>
 	<WolfMap id="cave3" name="Cave - Deep Caves" width="150" height="150" caveCarvers="5" boxCarvers="0" doors="0" light="False" water="15" meta:RefKey="WolfMap">
 		<connections>
 			<connection meta:RefKey="connection">
-				<mapID>cave2</mapID>
-				<direction>up</direction>
-			</connection>
-			<connection meta:RefKey="connection">
 				<mapID>lair</mapID>
 				<direction>down</direction>
+				<twoWay>true</twoWay>
 			</connection>
 		</connections>
 	</WolfMap>
-	<WolfMap id="lair" name="Crypt" width="225" height="225" roomCarvers="2" caveCarvers="5" boxCarvers="2" doors="10" doubleDoors="True" light="True" water="20" meta:RefKey="WolfMap">
-		<connections>
-			<connection meta:RefKey="connection">
-				<mapID>cave3</mapID>
-				<direction>up</direction>
-			</connection>
-		</connections>
-	</WolfMap>
+	<WolfMap id="lair" name="Crypt" width="225" height="225" roomCarvers="2" caveCarvers="5" boxCarvers="2" doors="10" doubleDoors="True" light="True" water="20" meta:RefKey="WolfMap" />
 </WolfMaps>

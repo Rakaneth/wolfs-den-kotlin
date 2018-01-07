@@ -1,14 +1,16 @@
 package wolfsden.entity
 
 import com.badlogic.gdx.graphics.Color
+import squidpony.ArrayTools
 import squidpony.panel.IColoredString
+import squidpony.squidgrid.FOV
 import squidpony.squidmath.Coord
 import wolfsden.CommonColors
+import wolfsden.map.WolfMap
 import wolfsden.nz
+import wolfsden.system.getMap
 import wolfsden.toICString
 import java.io.Serializable
-
-val BESTIARY: MutableMap<String, Entity> = mutableMapOf()
 
 class Entity(
         val eID: String,
@@ -42,7 +44,7 @@ class Entity(
     val atkDly: Int
         get() = maxOf(5 + maxOf(mh?.dly.nz(), oh?.dly.nz()) - stats?.skl.nz(), 1)
     val movDly: Int
-        get() = maxOf(5 + armor?.dly.nz() - stats?.spd.nz(), 1)
+        get() = maxOf(10 + armor?.dly.nz() - stats?.spd.nz(), 1)
     val markupString: String?
         get() = if (draw == null || id == null) null else "[${draw?.color}]${id?.name}[]"
     val maxVit: Int
@@ -80,12 +82,11 @@ class Entity(
     val dualWield
         get() = mh != null && (oh != null && !oh!!.getEntity.hasTag("shield"))
     val atkTags: Set<String>
-        get(): Set<String>{
+        get(): Set<String> {
             return (mh?.getEntity?.tags ?: emptyList<String>()) union
                     (oh?.getEntity?.tags ?: emptyList()) union
                     (trinket?.getEntity?.tags ?: emptyList())
         }
-
 
 
     fun addID(name: String, desc: String) {
@@ -259,6 +260,23 @@ class Entity(
     fun hasTag(tag: String) = tags.contains(tag)
     fun hasWeakness(weak: String) = weakness.contains(weak)
     fun hasResistance(resist: String) = resistance.contains(resist)
+
+    fun updateFOV() {
+        FOV.reuseFOV(getMap()!!.resistances, vision!!.visible, pos!!.x, pos!!.y, vision!!.vision)
+    }
+
+    fun resetFOV() {
+        vision!!.visible = ArrayTools.fill(0.0, getMap()!!.baseMap.size, getMap()!!.baseMap[0].size)
+        updateFOV()
+    }
+
+    fun changeLevel(conn: WolfMap.Connection) {
+        pos?.mapID = conn.mapID
+        pos?.x = conn.to.x
+        pos?.y = conn.to.y
+        //TODO: minions change level
+        resetFOV()
+    }
 
     override fun toString(): String = "${id?.name}-${eID.substringBefore("-")}"
 

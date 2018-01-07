@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport
 import squidpony.squidgrid.gui.gdx.SColor
 import squidpony.squidgrid.gui.gdx.SquidInput
 import wolfsden.CommonColors
+import wolfsden.system.GameStore
 import wolfsden.toICString
 
 object CCScreen : WolfScreen("character creation") {
@@ -37,7 +38,15 @@ object CCScreen : WolfScreen("character creation") {
     override val input = SquidInput { key, alt, ctrl, shift ->
         when (key) {
             in ('1'..'3') -> selected = key.toString().toInt()
-            SquidInput.ENTER -> WolfScreen.setScreen(PlayScreen)
+            SquidInput.ENTER -> {
+                val selections = mapOf(
+                        1 to ("fighter" to "Palmyra"),
+                        2 to ("rogue" to "Poe"),
+                        3 to ("cleric" to "Barnabas")
+                )
+                GameStore.newGame(selections[selected]!!.first, selections[selected]!!.second)
+                WolfScreen.setScreen(PlayScreen)
+            }
             else -> {
             }
         }

@@ -21,7 +21,8 @@ years ago.
 - [x] Basic Story
 - [x] Screen interface
 - [x] Data file handling
-- [ ] Multiple levels
+- [x] Basic character generation
+- [ ] Multiple levels - in testing
 - [ ] Saving and loading
 - [x] Simple combat mechanics
 - [ ] Character abilities

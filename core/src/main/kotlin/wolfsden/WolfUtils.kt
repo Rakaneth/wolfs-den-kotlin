@@ -36,7 +36,7 @@ fun List<String>.joinWithAnd(): String {
         2 -> accum = "${this[0]} and ${this[1]}"
         else ->
             for (idx in this.indices) {
-                accum += if (idx in 0..this.size-2) "${this[idx]}, "  else "and ${this[idx]}"
+                accum += if (idx in 0..this.size - 2) "${this[idx]}, " else "and ${this[idx]}"
             }
     }
     return accum
