@@ -1,13 +1,18 @@
 package wolfsden.system
 
+import com.badlogic.gdx.graphics.Color
+import squidpony.panel.IColoredString
 import squidpony.squidgrid.Direction
 import squidpony.squidgrid.FOV
 import squidpony.squidmath.Coord
+import wolfsden.CommonColors
 import wolfsden.entity.Entity
+import wolfsden.joinWithAnd
 import wolfsden.log
 import wolfsden.map.WolfMap
 import wolfsden.screen.PlayScreen
 import wolfsden.system.Location.thingsAt
+import wolfsden.toICString
 
 object CommandProcessor {
     fun Entity.getMap(): WolfMap? = GameStore.mapList[this.pos?.mapID]
@@ -17,12 +22,59 @@ object CommandProcessor {
 
     enum class CollideResults { ENEMY, ALLY, DOOR, NONE }
 
+    data class CombatResults(
+            val attacker: Entity,
+            val defender: Entity,
+            val hit: Boolean = false,
+            val hitBy: Int = 0,
+            val dmg: Int = 0,
+            val weakness: List<String> = listOf(),
+            val resistance: List<String> = listOf()
+    )
+
+    private fun describeCombat(result: CombatResults) {
+        with (result) {
+            val warning = CommonColors.WARNING
+            val info = CommonColors.INFO
+            val vit = CommonColors.VIT
+            val verb: String = if (hit) {
+                val pctDmg = maxOf(dmg * 100 / defender.maxVit, 0)
+                when (pctDmg) {
+                    0 -> "[$warning]fails to harm[]"
+                    in (1 until 10) -> "[$warning]nicks[]"
+                    in (10 until 30) -> "[$warning]strikes[]"
+                    in (30 until 50) -> "[$warning]soundly strikes[]"
+                    else -> "[$vit]wrecks[]"
+                }
+            } else {
+                when (result.hitBy) {
+                    in (1 until defender.stats!!.spd) -> "[$warning]barely misses[]"
+                    in (defender.stats!!.spd until defender.dfp) -> "[$warning]clashes with[]"
+                    else -> "[$warning]misses[]"
+                }
+            }
+            val wk = if (weakness.isNotEmpty()) {
+                ", exposing ${defender.markupString}'s ${weakness.joinWithAnd()} weakness"
+            } else {
+                ""
+            }
+            val res = if (resistance.isNotEmpty()) {
+                ", meeting ${defender.markupString}'s ${resistance.joinWithAnd()} resistance"
+            } else {
+                ""
+            }
+            val dm = if (hit && dmg > 0) ", dealing [$vit]$dmg damage[]" else ""
+            val finalString = attacker.markupString + " " + verb + " " +defender.markupString + wk + res + dm + "!"
+            PlayScreen.addMessage(finalString)
+        }
+    }
+
     private fun Entity.tryMoveBy(dx: Int, dy: Int): Pair<CollideResults, Any?> {
         val m = this.getMap()
         val newC = this.pos!!.coord.translate(dx, dy)
-        var collider = thingsAt(newC, m!!.id).firstOrNull { it.blocking && it.hasTag("creature") }
+        val collider = thingsAt(newC, m!!.id).firstOrNull { it.blocking && it.hasTag("creature") }
         return when {
-            m!!.walkable(newC) -> {
+            m.walkable(newC) -> {
                 this.pos!!.x = newC.x
                 this.pos!!.y = newC.y
                 this.updateFOV()
@@ -34,7 +86,7 @@ object CommandProcessor {
                     else -> Pair(CollideResults.ALLY, collider)
                 }
             }
-            m!!.isDoor(newC) -> Pair(CollideResults.DOOR, newC)
+            m.isDoor(newC) -> Pair(CollideResults.DOOR, newC)
             else -> return Pair(CollideResults.NONE, null)
         }
     }
@@ -88,7 +140,28 @@ object CommandProcessor {
 
     private fun Entity.autoAttack(other: Entity) {
         //TODO: remove temp implementation
-        PlayScreen.addMessage("${this.markupString} glares viciously at ${other.markupString}")
+        val hitPair = WolfRNG.roll(this.atk, other.dfp)
+        val hit = hitPair.first > 0
+        val hitBy = hitPair.second
+        val dmgPair = if (hit) WolfRNG.roll((hitPair.first - 1) * 2 + this.dmg) else 0 to 0
+        var dmg = dmgPair.first
+        val wk: MutableList<String> = mutableListOf()
+        val res: MutableList<String> = mutableListOf()
+        this.atkTags.forEach {
+            when{
+                other.hasWeakness(it) -> {
+                    wk.add(it)
+                    dmg = (dmg * 1.5).toInt()
+                }
+                other.hasResistance(it) -> {
+                    res.add(it)
+                    dmg = (dmg * 0.5).toInt()
+                }
+                else -> {}
+            }
+        }
+        //other.takeDmg(dmg)
+        describeCombat(CombatResults(this, other, hit, hitBy, dmg, wk, res))
     }
 
     fun process(entity: Entity, cmd: String, target: Any? = null) {

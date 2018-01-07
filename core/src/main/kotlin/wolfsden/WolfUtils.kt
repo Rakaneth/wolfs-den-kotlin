@@ -28,3 +28,16 @@ fun log(time: Int, tag: String, msg: String) {
 fun String.toICString(): IColoredString<Color> {
     return GDXMarkup.instance.colorString(this)
 }
+
+fun List<String>.joinWithAnd(): String {
+    var accum = ""
+    when (this.size) {
+        1 -> accum = "${this[0]}"
+        2 -> accum = "${this[0]} and ${this[1]}"
+        else ->
+            for (idx in this.indices) {
+                accum += if (idx in 0..this.size-2) "${this[idx]}, "  else "and ${this[idx]}"
+            }
+    }
+    return accum
+}

@@ -2,6 +2,7 @@ import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.XmlReader
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.fail
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import squidpony.squidgrid.mapping.DungeonGenerator
 import squidpony.squidgrid.mapping.DungeonUtility
@@ -28,6 +29,7 @@ class EntityTestSource {
     }
 
     @Test
+    @Disabled
     fun equipFunctions() {
         e1.armor = EquipStats(e1.eID, Slot.ARMOR, 1, 2, 3, 4, 5)
         e1.mh = EquipStats(e1.eID, Slot.MH, 2, 0, 2, 0, 5)

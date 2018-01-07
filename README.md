@@ -21,7 +21,7 @@ village of Jommund.
 - [x] Data file handling
 - [ ] Multiple levels
 - [ ] Saving and loading
-- [ ] Simple combat mechanics
+- [x] Simple combat mechanics
 - [ ] Character abilities
 - [ ] Expand character options
 - [ ] Playable alpha

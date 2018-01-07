@@ -3,6 +3,7 @@ package wolfsden.system
 import squidpony.squidmath.Dice
 import squidpony.squidmath.StatefulRNG
 import wolfsden.between
+import kotlin.math.abs
 
 object WolfRNG {
     var wolfRNG = StatefulRNG(0xDEADBEEF)
@@ -21,13 +22,13 @@ object WolfRNG {
         }
     }
 
-    fun roll(step: Int, diff: Int? = null): Int {
+    fun roll(step: Int, diff: Int? = null): Pair<Int, Int> {
         val rl = dice.roll(diceString(step))
         val raw = rl - (diff ?: 0)
         if (diff == null) {
-            return rl
+            return rl to rl
         } else {
-            return if (raw >= 0) raw / 5 + 1 else 0
+            return if (raw >= 0) raw / 5 + 1 to (raw) else 0 to abs(raw)
         }
     }
 
@@ -37,7 +38,7 @@ object WolfRNG {
     }
 
     fun extendedRollTest(step: Int, diff: Int) {
-        val pct = Array(1000, { roll(step, diff) }).count { it > 0 }
+        val pct = Array(1000, { roll(step, diff) }).count { it.first > 0 }
         println("Result of 1000 step $step (${diceString(step)}) rolls against diff $diff: ${pct / 10}%")
     }
 }

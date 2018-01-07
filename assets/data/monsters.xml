@@ -58,9 +58,7 @@
 		<worthXP>500</worthXP>
 		<vision>6</vision>
 		<ai>hunt</ai>
-		<weak>
-			<weakness>holy</weakness>
-		</weak>
+		<weak>holy</weak>
 		<rarity>15</rarity>
 		<tags>undead,door,leader</tags>
 	</EntityType>
@@ -85,9 +83,7 @@
 		<worthXP>800</worthXP>
 		<vision>6</vision>
 		<ai>hunt</ai>
-		<weak>
-			<weakness>holy</weakness>
-		</weak>
+		<weak>holy</weak>
 		<tags>undead,leader</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">
@@ -100,9 +96,7 @@
 		<worthXP>5000</worthXP>
 		<vision>8</vision>
 		<ai>hunt</ai>
-		<weak>
-			<weakness>holy</weakness>
-		</weak>
+		<weak>holy</weak>
 		<tags>undead,door,leader</tags>
 	</EntityType>
 	<EntityType meta:RefKey="creature">

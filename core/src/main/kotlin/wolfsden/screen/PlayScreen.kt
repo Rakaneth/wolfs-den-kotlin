@@ -295,8 +295,8 @@ object PlayScreen : WolfScreen("main") {
     override fun enter() {
         MapBuilder.build("mine")
         with(CreatureBuilder) {
-            build("fighter", true, null, "mine", "Palmyra")
-            build("wolf")
+            build("cleric", true, null, "mine", "Barnabas")
+            build("banshee")
         }
         ItemBuilder.seedItems("mine")
         Scheduler.resume()

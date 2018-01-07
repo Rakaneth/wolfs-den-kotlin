@@ -79,6 +79,13 @@ class Entity(
         get() = markupEQ("Offhand", oh)
     val dualWield
         get() = mh != null && (oh != null && !oh!!.getEntity.hasTag("shield"))
+    val atkTags: Set<String>
+        get(): Set<String>{
+            return (mh?.getEntity?.tags ?: emptyList<String>()) union
+                    (oh?.getEntity?.tags ?: emptyList()) union
+                    (trinket?.getEntity?.tags ?: emptyList())
+        }
+
 
 
     fun addID(name: String, desc: String) {
@@ -250,7 +257,7 @@ class Entity(
     }
 
     fun hasTag(tag: String) = tags.contains(tag)
-    fun hasWeakness(weakness: String) = weakness.contains(weakness)
+    fun hasWeakness(weak: String) = weakness.contains(weak)
     fun hasResistance(resist: String) = resistance.contains(resist)
 
     override fun toString(): String = "${id?.name}-${eID.substringBefore("-")}"
