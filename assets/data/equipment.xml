@@ -34,7 +34,7 @@
 	<EntityType meta:RefKey="equipment">
 		<id>mace</id>
 		<identity name="Mace" desc="An intimidating iron mace." />
-		<draw glyph="0189" color="Silver" />
+		<draw glyph="|" color="Silver" />
 		<eqData slot="mh" atk="0" dfp="0" dmg="3" sav="0" dly="6" />
 		<rarity>15</rarity>
 		<tags>melee,bash</tags>
@@ -42,7 +42,7 @@
 	<EntityType meta:RefKey="equipment">
 		<id>greatAxe</id>
 		<identity name="Greataxe" desc="A heavy bearded axe." />
-		<draw glyph="00de" color="White" />
+		<draw glyph="/" color="White" />
 		<eqData slot="2h" atk="1" dfp="0" dmg="4" sav="0" dly="7" />
 		<rarity>10</rarity>
 		<tags>melee,slash</tags>

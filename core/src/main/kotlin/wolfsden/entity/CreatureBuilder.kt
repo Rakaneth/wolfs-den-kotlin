@@ -81,6 +81,11 @@ object CreatureBuilder {
                 foetus.putOn(item)
             }
         }
+        info.nz("inventory") {
+            foetus.addInventory(info["inventory"].toInt())
+        }
+
+        foetus.addEffect()
 
         GameStore.addEntity(foetus)
         if (foetus.hasTag("leader")) Faction.addFaction(foetus.eID)

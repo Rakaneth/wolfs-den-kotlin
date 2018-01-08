@@ -287,7 +287,7 @@ object PlayScreen : WolfScreen("main") {
     }
 
     fun addMessage(msg: String) {
-        msgPanel.appendWrappingMessage(msg.toICString())
+        msgPanel.appendWrappingMessage("-$msg".toICString())
     }
 
     override fun render() {

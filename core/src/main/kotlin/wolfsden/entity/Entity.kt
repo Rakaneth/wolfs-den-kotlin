@@ -6,8 +6,10 @@ import squidpony.panel.IColoredString
 import squidpony.squidgrid.FOV
 import squidpony.squidmath.Coord
 import wolfsden.CommonColors
+import wolfsden.log
 import wolfsden.map.WolfMap
 import wolfsden.nz
+import wolfsden.system.Scheduler.clock
 import wolfsden.system.getMap
 import wolfsden.toICString
 import java.io.Serializable
@@ -31,20 +33,26 @@ class Entity(
         var vision: Vision? = null,
         var ai: AI? = null,
         var isPlayer: Boolean = false,
-        var blocking: Boolean = true
+        var blocking: Boolean = true,
+        var effectStack: EffectStack? = null,
+        private var capacity: Int = 0
 ) : Serializable {
     val atk: Int
-        get() = stats?.skl.nz() + armor?.atk.nz() + mh?.atk.nz() + oh?.atk.nz() + trinket?.atk.nz() - if (dualWield) 2 else 0
+        get() = stats?.skl.nz() + armor?.atk.nz() + mh?.atk.nz() + oh?.atk.nz() + trinket?.atk.nz() +
+                effectStack?.atk.nz() - if (dualWield) 2 else 0
     val dfp: Int
-        get() = stats?.spd.nz() + armor?.dfp.nz() + mh?.dfp.nz() + oh?.dfp.nz() + trinket?.dfp.nz()
+        get() = stats?.spd.nz() + armor?.dfp.nz() + mh?.dfp.nz() + oh?.dfp.nz() + trinket?.dfp.nz() +
+                effectStack?.dfp.nz()
     val dmg: Int
-        get() = stats?.str.nz() + armor?.dmg.nz() + mh?.dmg.nz() + oh?.dmg.nz() + trinket?.dmg.nz()
+        get() = stats?.str.nz() + armor?.dmg.nz() + mh?.dmg.nz() + oh?.dmg.nz() + trinket?.dmg.nz() +
+                effectStack?.dmg.nz()
     val sav: Int
-        get() = stats?.stam.nz() + armor?.sav.nz() + mh?.sav.nz() + oh?.sav.nz() + trinket?.sav.nz()
+        get() = stats?.stam.nz() + armor?.sav.nz() + mh?.sav.nz() + oh?.sav.nz() + trinket?.sav.nz() +
+                effectStack?.sav.nz()
     val atkDly: Int
-        get() = maxOf(5 + maxOf(mh?.dly.nz(), oh?.dly.nz()) - stats?.skl.nz(), 1)
+        get() = maxOf(5 + maxOf(mh?.dly.nz(), oh?.dly.nz()) - stats?.skl.nz() + effectStack?.atkDly.nz(), 1)
     val movDly: Int
-        get() = maxOf(10 + armor?.dly.nz() - stats?.spd.nz(), 1)
+        get() = maxOf(10 + armor?.dly.nz() - stats?.spd.nz() + effectStack?.movDly.nz(), 1)
     val markupString: String?
         get() = if (draw == null || id == null) null else "[${draw?.color}]${id?.name}[]"
     val maxVit: Int
@@ -65,7 +73,7 @@ class Entity(
     private val resistance: MutableList<String> = mutableListOf()
     val inventory: MutableList<Entity> = mutableListOf()
     val bagsFull
-        get() = inventory.size >= 10
+        get() = inventory.size >= capacity
 
     private fun markupEQ(label: String, eq: EquipStats?): IColoredString<Color> {
         return "[${CommonColors.INFO}]%8s[]: ${eq?.name ?: "Nothing"}".format(label).toICString()
@@ -142,6 +150,14 @@ class Entity(
         rest = RestoreItem(eID, pctAmt, flatAmt)
     }
 
+    fun addEffect() {
+        effectStack = EffectStack(eID)
+    }
+
+    fun addInventory(cap: Int) {
+        capacity = cap
+    }
+
     fun updateTag(tagList: String, tag: String, adding: Boolean = true) {
         val toAdd = when (tagList) {
             "weakness" -> weakness
@@ -206,12 +222,15 @@ class Entity(
         }
     }
 
-    fun equip(item: Entity, slot: Slot) {
+    private fun equip(item: Entity, slot: Slot) {
         when (slot) {
             Slot.MH -> mh = item.eq
             Slot.OH -> oh = item.eq
             Slot.ARMOR -> armor = item.eq
             Slot.TRINKET -> trinket = item.eq
+            else -> {
+                log(clock, "Equip", "Equip failure")
+            }
         }
         item.pos = null
     }
@@ -276,6 +295,10 @@ class Entity(
         pos?.y = conn.to.y
         //TODO: minions change level
         resetFOV()
+    }
+
+    fun applyEffect(eff: Effect) {
+
     }
 
     override fun toString(): String = "${id?.name}-${eID.substringBefore("-")}"

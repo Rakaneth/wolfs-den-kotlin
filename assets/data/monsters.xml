@@ -27,7 +27,7 @@
 	<EntityType meta:RefKey="creature">
 		<id>dire</id>
 		<identity name="Great Wolf" desc="A massive monster of a wolf." />
-		<draw glyph="W" color="Dark Silver" />
+		<draw glyph="W" color="Silver Grey" />
 		<vitals>true</vitals>
 		<stats str="6" stam="5" spd="4" skl="4" />
 		<equip mh="wolfFangs" oh="wolfClaws" armor="wolfFur" />
@@ -51,7 +51,7 @@
 	<EntityType meta:RefKey="creature">
 		<id>revenant</id>
 		<identity name="Fallen Warrior" desc="A fallen warrior, animated by foul magic." />
-		<draw glyph="Z" color="Dark Silver" />
+		<draw glyph="Z" color="Silver Grey" />
 		<vitals>true</vitals>
 		<stats str="4" stam="4" spd="4" skl="4" />
 		<equip mh="ironSword" oh="woodShield" armor="chainMail" />
@@ -113,6 +113,7 @@
 		<gainsXP>true</gainsXP>
 		<vision>6</vision>
 		<ai>hunt</ai>
+		<inventory>10</inventory>
 		<rarity>5</rarity>
 		<tags>hero,door,leader</tags>
 	</EntityType>
@@ -127,6 +128,7 @@
 		<gainsXP>true</gainsXP>
 		<vision>6</vision>
 		<ai>hunt</ai>
+		<inventory>10</inventory>
 		<rarity>5</rarity>
 		<tags>hero,door,leader</tags>
 	</EntityType>
@@ -141,6 +143,7 @@
 		<gainsXP>true</gainsXP>
 		<vision>6</vision>
 		<ai>hunt</ai>
+		<inventory>10</inventory>
 		<rarity>5</rarity>
 		<tags>hero,door,leader</tags>
 	</EntityType>

@@ -143,3 +143,17 @@ class AI(
 
     fun getTarget(): Entity? = GameStore.entityList[target]
 }
+
+class EffectStack(
+        override val entity: String
+) : Component(entity) {
+    private val effects: MutableList<Effect> = mutableListOf()
+    val atk = effects.sumBy { it.atk }
+    val dfp = effects.sumBy { it.dfp }
+    val dmg = effects.sumBy { it.dmg }
+    val sav = effects.sumBy { it.sav }
+    val curProt = effects.sumBy { it.curProt }
+    val atkDly = effects.sumBy { it.atkDly }
+    val movDly = effects.sumBy { it.movDly }
+    val loseTurn = effects.any { it.loseTurn }
+}

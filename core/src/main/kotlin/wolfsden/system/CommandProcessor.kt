@@ -55,7 +55,7 @@ object CommandProcessor {
                 ""
             }
             val dm = if (hit && dmg > 0) ", dealing [$vit]$dmg damage[]" else ""
-            val finalString = attacker.markupString + " " + verb + " " + defender.markupString + wk + res + dm + "!"
+            val finalString = "${attacker.markupString} $verb ${defender.markupString}$wk$res$dm!"
             PlayScreen.addMessage(finalString)
         }
     }
