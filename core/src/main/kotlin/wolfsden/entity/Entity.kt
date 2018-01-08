@@ -298,21 +298,21 @@ class Entity(
     }
 
     fun hasEffect(effName: String): Boolean {
-        return if (effectStack == null) false else effectStack!!.effects.any { it.name == effName}
+        return if (effectStack == null) false else effectStack!!.effects.any { it.name == effName }
     }
 
-    fun hasEffect(eff: Effect) : Boolean {
+    fun hasEffect(eff: Effect): Boolean {
         return hasEffect(eff.name)
     }
 
     fun getEffect(effName: String): Effect {
-        return effectStack!!.effects.first { it.name == effName}
+        return effectStack!!.effects.first { it.name == effName }
     }
 
     fun applyEffect(eff: Effect) {
         if (hasEffect(eff)) {
             getEffect(eff.name).onMerge(eff)
-        } else  {
+        } else {
             eff.onApply()
             effectStack!!.effects.add(eff)
         }

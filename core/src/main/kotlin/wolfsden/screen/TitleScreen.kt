@@ -23,8 +23,8 @@ object TitleScreen : WolfScreen("title") {
                     val sFile = fileList[selected].name
                     GameStore.loadGame(sFile)
                     WolfScreen.setScreen(PlayScreen)
-                    }
                 }
+            }
             ')' -> if (fileList.isNotEmpty()) GameStore.deleteGame(fileList[0].name)
             '!' -> if (fileList.size >= 2) GameStore.deleteGame(fileList[1].name)
             '@' -> if (fileList.size >= 3) GameStore.deleteGame(fileList[2].name)
@@ -43,7 +43,7 @@ object TitleScreen : WolfScreen("title") {
             } else {
                 arrayOf()
             }
-         }
+        }
 
     init {
         display.setBounds(0f, 0f, fullPixelW, fullPixelH)
@@ -62,8 +62,8 @@ object TitleScreen : WolfScreen("title") {
         if (fileList.isNotEmpty()) {
             display.put(54, 22, "Continue a quest:")
             display.put(54, 23, "([Shift + number] to delete")
-            for ((idx, file) in fileList.withIndex()){
-                display.put(54, idx+24, "$idx: ${file.nameWithoutExtension}")
+            for ((idx, file) in fileList.withIndex()) {
+                display.put(54, idx + 24, "$idx: ${file.nameWithoutExtension}")
             }
         }
     }

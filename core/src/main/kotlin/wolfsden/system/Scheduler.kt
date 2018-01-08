@@ -2,8 +2,6 @@ package wolfsden.system
 
 import wolfsden.entity.Effect
 import wolfsden.system.GameStore.curEntities
-import java.io.Serializable
-import kotlin.math.abs
 
 object Scheduler {
     private var paused = false

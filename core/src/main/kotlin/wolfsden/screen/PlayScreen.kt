@@ -10,7 +10,6 @@ import squidpony.squidgrid.gui.gdx.SquidInput
 import squidpony.squidmath.Coord
 import wolfsden.CommonColors
 import wolfsden.entity.HasteEffect
-import wolfsden.entity.ItemBuilder
 import wolfsden.entity.RegenEffect
 import wolfsden.entity.StunEffect
 import wolfsden.system.CommandProcessor
@@ -261,7 +260,8 @@ object PlayScreen : WolfScreen("main") {
             when (idx) {
                 in (1 until 8) -> ttPanel.put(1, idx, it.toString().toICString())
                 8 -> ttPanel.put(1, 8, "...")
-                else -> {}
+                else -> {
+                }
             }
             idx++
         }
