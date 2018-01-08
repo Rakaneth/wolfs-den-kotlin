@@ -8,6 +8,7 @@ import wolfsden.map.MapBuilder
 import wolfsden.map.WolfMap
 import wolfsden.screen.PlayScreen
 import wolfsden.system.GameStore.player
+import wolfsden.system.Scheduler.clock
 import java.io.*
 
 fun Entity.playerVisible(): Boolean = player.visible(this)
@@ -76,10 +77,11 @@ object GameStore {
             if (!dir.exists() || !dir.isDirectory) {
                 File(savePath).mkdir()
             }
-            ObjectOutputStream(FileOutputStream("$savePath/$fileName")).use { it ->
+            ObjectOutputStream(FileOutputStream("$savePath/$fileName")).use {
                 it.writeObject(entityList)
                 it.writeObject(mapList)
                 it.writeObject(WolfRNG.wolfRNG)
+                it.writeInt(clock)
             }
             println("Game saved")
         } catch (e: IOException) {
@@ -87,14 +89,16 @@ object GameStore {
         }
     }
 
+
     @Suppress("UNCHECKED_CAST")
     fun loadGame(fileName: String) {
         val filePath = "${System.getProperty("user.home")}/WolfsDenKotlin/$fileName"
         try {
-            ObjectInputStream(FileInputStream(filePath)).use { it ->
+            ObjectInputStream(FileInputStream(filePath)).use {
                 val entityBlob = it.readObject()
                 val mapBlob = it.readObject()
                 val rngBlob = it.readObject()
+                val schedClock = it.readInt()
 
                 when (entityBlob) {
                     is MutableMap<*, *> ->
@@ -111,6 +115,8 @@ object GameStore {
                     is StatefulRNG -> WolfRNG.wolfRNG = rngBlob
                     else -> throw IOException("Error loading RNG")
                 }
+
+                Scheduler.clock = schedClock
             }
             println("$fileName loaded")
         } catch (e: IOException) {
@@ -128,5 +134,15 @@ object GameStore {
         ItemBuilder.seedItems("mine")
         Scheduler.resume()
         PlayScreen.addMessage("Welcome to [Green][/]Wolf's Den II![]")
+    }
+
+    fun deleteGame(fileName: String?) {
+        val filePath = "${System.getProperty("user.home")}/WolfsDenKotlin/$fileName"
+        try {
+            File(filePath).delete()
+            println("$fileName removed")
+        } catch (e: IOException) {
+            println("Error deleting $fileName: ${e.stackTrace}")
+        }
     }
 }

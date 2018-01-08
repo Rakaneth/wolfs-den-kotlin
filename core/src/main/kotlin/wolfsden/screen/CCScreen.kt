@@ -35,7 +35,7 @@ object CCScreen : WolfScreen("character creation") {
         }
     }
     override val stage = ccLayout.build()
-    override val input = SquidInput { key, alt, ctrl, shift ->
+    override val input = SquidInput { key, _, _, _ ->
         when (key) {
             in ('1'..'3') -> selected = key.toString().toInt()
             SquidInput.ENTER -> {

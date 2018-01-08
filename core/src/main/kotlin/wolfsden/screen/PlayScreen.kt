@@ -1,5 +1,6 @@
 package wolfsden.screen
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.viewport.StretchViewport
@@ -157,6 +158,10 @@ object PlayScreen : WolfScreen("main") {
             'h' -> {
                 player.applyEffect(HasteEffect(player.eID, 75))
                 GameStore.update(false, true)
+            }
+            'Q' -> {
+                GameStore.saveGame()
+                Gdx.app.exit()
             }
         }
     })
