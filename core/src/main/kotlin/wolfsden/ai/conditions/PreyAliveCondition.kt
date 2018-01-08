@@ -16,7 +16,7 @@ class PreyAliveCondition : LeafTask<Entity>() {
         var target = subject.ai!!.getTarget()
         return when {
             target == null -> {
-                log(clock, "AI", "$subject's target is null, mot alive")
+                log(clock, "AI", "$subject's target is null, not alive")
                 Status.FAILED
             }
             target.vit!!.alive -> {
@@ -25,6 +25,7 @@ class PreyAliveCondition : LeafTask<Entity>() {
             }
             else -> {
                 log(clock, "AI", "$subject's target $target is dead")
+                subject.ai!!.target = null
                 Status.FAILED
             }
         }

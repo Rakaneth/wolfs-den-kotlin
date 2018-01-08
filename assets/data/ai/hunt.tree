@@ -9,23 +9,20 @@ import preyAdjacent?: "wolfsden.ai.conditions.PreyAdjacentCondition"
 import attackPrey: "wolfsden.ai.tasks.AttackPreyTask"
 import preyAlive?: "wolfsden.ai.conditions.PreyAliveCondition"
 import preySameLevel?: "wolfsden.ai.conditions.PreySameLevelCondition"
+import doNothing: "wolfsden.ai.tasks.WaitTask"
 
-#Check for prey existence
-subtree name: "preyExists?"
-	sequence
-		preySameLevel?
-		preyAlive?
-
-#Hunting a target
-subtree name: "huntPrey"
-	selector
-		(preyAdjacent?) attackPrey
-		moveTowardsPrey
-
-
-#tree definition
 root
-	dynamicGuardSelector
-		($preyExists?) $huntPrey
-		(detectPrey?) getTarget
-		() randomWalk
+	selector
+		sequence
+			preyAlive?
+			preySameLevel?
+			selector
+				(preyAdjacent?) attackPrey
+				moveTowardsPrey
+		sequence
+			detectPrey?
+			getTarget
+		randomSelector
+			randomWalk
+			doNothing
+

@@ -276,6 +276,27 @@ class Entity(
         }
     }
 
+    fun takeDmg(amt: Int) {
+        if (vit == null) {
+            return
+        } else {
+            val blockers = arrayOf(armor, oh)
+            val shielders = arrayOf(trinket, mh)
+            var dmgToTake = amt
+            arrayOf(shielders, blockers).forEach {
+                it.filterNotNull().forEach {
+                    val dmgReduce = it.curProt
+                    if (dmgToTake > 0) it.curProt = maxOf(it.curProt - dmgToTake, 0)
+                    dmgToTake -= dmgReduce
+                }
+            }
+            if (dmgToTake > 0) {
+                vit!!.curVit -= dmgToTake
+                if (vit!!.curVit < 0) vit!!.alive = false
+            }
+        }
+    }
+
     fun hasTag(tag: String) = tags.contains(tag)
     fun hasWeakness(weak: String) = weakness.contains(weak)
     fun hasResistance(resist: String) = resistance.contains(resist)

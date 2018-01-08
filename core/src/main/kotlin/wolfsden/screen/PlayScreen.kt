@@ -140,14 +140,19 @@ object PlayScreen : WolfScreen("main") {
             SquidInput.DOWN_LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.DOWN_LEFT)
             SquidInput.LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.LEFT)
             SquidInput.UP_LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.UP_LEFT)
+            SquidInput.CENTER_ARROW -> CommandProcessor.process(player, "wait")
             'G' -> CommandProcessor.process(player, "pickup")
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
                 val numSlot = key.toString().toInt()
                 if (player.inventory.size >= (numSlot + 1)) CommandProcessor.process(player, "use", player.inventory[numSlot])
                 else addMessage("No item to use/equip in that slot.")
             }
-            't' -> {
+            's' -> {
                 player.applyEffect(StunEffect(player.eID, 25))
+                GameStore.update(false, true)
+            }
+            't' -> {
+                player.takeDmg(3)
                 GameStore.update(false, true)
             }
             'r' -> {

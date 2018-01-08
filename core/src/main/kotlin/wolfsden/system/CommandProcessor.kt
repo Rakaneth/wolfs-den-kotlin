@@ -152,7 +152,7 @@ object CommandProcessor {
                 }
             }
         }
-        //other.takeDmg(dmg)
+        other.takeDmg(dmg)
         describeCombat(CombatResults(this, other, hit, hitBy, dmg, wk, res))
     }
 
@@ -208,6 +208,9 @@ object CommandProcessor {
                 val tgt = target as WolfMap.Connection
                 entity.changeLevel(tgt)
                 result = entity.movDly
+            }
+            "wait" -> {
+                result = 10
             }
             else -> {
             } //TODO: other cmds
