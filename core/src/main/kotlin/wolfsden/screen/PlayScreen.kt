@@ -8,7 +8,10 @@ import squidpony.squidgrid.gui.gdx.SColor
 import squidpony.squidgrid.gui.gdx.SquidInput
 import squidpony.squidmath.Coord
 import wolfsden.CommonColors
+import wolfsden.entity.HasteEffect
 import wolfsden.entity.ItemBuilder
+import wolfsden.entity.RegenEffect
+import wolfsden.entity.StunEffect
 import wolfsden.system.CommandProcessor
 import wolfsden.system.GameStore
 import wolfsden.system.GameStore.curMap
@@ -144,9 +147,16 @@ object PlayScreen : WolfScreen("main") {
                 else addMessage("No item to use/equip in that slot.")
             }
             't' -> {
-                val dgr = ItemBuilder.build("dagger", curMap.id)
-                player.putOn(dgr)
-                GameStore.update()
+                player.applyEffect(StunEffect(player.eID, 25))
+                GameStore.update(false, true)
+            }
+            'r' -> {
+                player.applyEffect(RegenEffect(player.eID, 50, 0.1))
+                GameStore.update(false, true)
+            }
+            'h' -> {
+                player.applyEffect(HasteEffect(player.eID, 75))
+                GameStore.update(false, true)
             }
         }
     })
@@ -241,6 +251,15 @@ object PlayScreen : WolfScreen("main") {
     private fun drawTT() {
         ttPanel.erase()
         ttPanel.putBorders(FW, "Info")
+        var idx = 1
+        player.effectStack!!.effects.forEach {
+            when (idx) {
+                in (1 until 8) -> ttPanel.put(1, idx, it.toString().toICString())
+                8 -> ttPanel.put(1, 8, "...")
+                else -> {}
+            }
+            idx++
+        }
     }
 
     private fun drawSkl() {

@@ -147,13 +147,21 @@ class AI(
 class EffectStack(
         override val entity: String
 ) : Component(entity) {
-    private val effects: MutableList<Effect> = mutableListOf()
-    val atk = effects.sumBy { it.atk }
-    val dfp = effects.sumBy { it.dfp }
-    val dmg = effects.sumBy { it.dmg }
-    val sav = effects.sumBy { it.sav }
-    val curProt = effects.sumBy { it.curProt }
-    val atkDly = effects.sumBy { it.atkDly }
-    val movDly = effects.sumBy { it.movDly }
-    val loseTurn = effects.any { it.loseTurn }
+    val effects: MutableList<Effect> = mutableListOf()
+    val atk
+        get() = effects.sumBy { it.atk }
+    val dfp
+        get() = effects.sumBy { it.dfp }
+    val dmg
+        get() = effects.sumBy { it.dmg }
+    val sav
+        get() = effects.sumBy { it.sav }
+    val curProt
+        get() = effects.sumBy { it.curProt }
+    val atkDly
+        get() = effects.sumBy { it.atkDly }
+    val movDly
+        get() = effects.sumBy { it.movDly }
+    val loseTurn
+        get() = effects.any { it.loseTurn }
 }
