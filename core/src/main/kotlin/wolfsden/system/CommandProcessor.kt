@@ -26,7 +26,6 @@ object CommandProcessor {
     private fun describeCombat(result: CombatResults) {
         with(result) {
             val warning = CommonColors.WARNING
-            val info = CommonColors.INFO
             val vit = CommonColors.VIT
             val verb: String = if (hit) {
                 val pctDmg = maxOf(dmg * 100 / defender.maxVit, 0)
@@ -38,7 +37,7 @@ object CommandProcessor {
                     else -> "[$vit]wrecks[]"
                 }
             } else {
-                when (result.hitBy) {
+                when (hitBy) {
                     in (1 until defender.stats!!.spd) -> "[$warning]barely misses[]"
                     in (defender.stats!!.spd until defender.dfp) -> "[$warning]clashes with[]"
                     else -> "[$warning]misses[]"
@@ -131,11 +130,9 @@ object CommandProcessor {
 
     private fun Entity.autoAttack(other: Entity) {
         //TODO: remove temp implementation
-        val hitPair = WolfRNG.roll(this.atk, other.dfp)
-        val hit = hitPair.first > 0
-        val hitBy = hitPair.second
-        val dmgPair = if (hit) WolfRNG.roll((hitPair.first - 1) * 2 + this.dmg) else 0 to 0
-        var dmg = dmgPair.first
+        val (sux, hitBy) = WolfRNG.roll(this.atk, other.dfp)
+        val hit = sux > 0
+        var (dmg, _) = if (hit) WolfRNG.roll((sux - 1) * 2 + this.dmg) else 0 to 0
         val wk: MutableList<String> = mutableListOf()
         val res: MutableList<String> = mutableListOf()
         this.atkTags.forEach {

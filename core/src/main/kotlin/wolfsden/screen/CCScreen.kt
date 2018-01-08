@@ -44,7 +44,8 @@ object CCScreen : WolfScreen("character creation") {
                         2 to ("rogue" to "Poe"),
                         3 to ("cleric" to "Barnabas")
                 )
-                GameStore.newGame(selections[selected]!!.first, selections[selected]!!.second)
+                val (charClass, charName) = selections[selected]!!
+                GameStore.newGame(charClass, charName)
                 WolfScreen.setScreen(PlayScreen)
             }
             else -> {
