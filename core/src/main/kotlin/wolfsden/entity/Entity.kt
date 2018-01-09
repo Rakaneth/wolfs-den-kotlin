@@ -95,6 +95,12 @@ class Entity(
                     (oh?.getEntity?.tags ?: emptyList()) union
                     (trinket?.getEntity?.tags ?: emptyList())
         }
+    private val defTags: Set<String>
+        get(): Set<String> {
+            return (armor?.getEntity?.resistance ?: emptyList<String>()) union
+                    (trinket?.getEntity?.resistance ?: emptyList()) union
+                    (oh?.getEntity?.resistance ?: emptyList())
+        }
 
 
     fun addID(name: String, desc: String) {
@@ -299,7 +305,7 @@ class Entity(
 
     fun hasTag(tag: String) = tags.contains(tag)
     fun hasWeakness(weak: String) = weakness.contains(weak)
-    fun hasResistance(resist: String) = resistance.contains(resist)
+    fun hasResistance(resist: String) = resistance.contains(resist) || defTags.contains(resist)
 
     fun updateFOV() {
         FOV.reuseFOV(getMap()!!.resistances, vision!!.visible, pos!!.x, pos!!.y, vision!!.vision)

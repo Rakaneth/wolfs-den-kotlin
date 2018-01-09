@@ -50,6 +50,11 @@ object ItemBuilder {
             }
             val prot: Int = if (eq.hasAttribute("prot")) eq["prot"].toInt() else 0
             mold.addEQ(slot, eq["atk"].toInt(), eq["dfp"].toInt(), eq["dmg"].toInt(), eq["sav"].toInt(), eq["dly"].toInt(), prot)
+            eq.nz("resistances") {
+                eq["resistances"].split(",").forEach {
+                    mold.updateTag("resistance", it)
+                }
+            }
         }
         info.nz("recoverData") {
             val rc = info.getChildByName("recoverData")
@@ -68,6 +73,7 @@ object ItemBuilder {
                 mold.updateTag("tags", tag)
             }
         }
+
         mold.updateTag("tags", info["meta:RefKey"])
 
         mold.blocking = false

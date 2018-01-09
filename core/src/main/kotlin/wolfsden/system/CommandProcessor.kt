@@ -27,6 +27,7 @@ object CommandProcessor {
         with(result) {
             val warning = CommonColors.WARNING
             val vit = CommonColors.VIT
+            val info = CommonColors.INFO
             val verb: String = if (hit) {
                 val pctDmg = maxOf(dmg * 100 / defender.maxVit, 0)
                 when (pctDmg) {
@@ -44,12 +45,12 @@ object CommandProcessor {
                 }
             }
             val wk = if (weakness.isNotEmpty()) {
-                ", exposing ${defender.markupString}'s ${weakness.joinWithAnd()} weakness"
+                ", exposing ${defender.markupString}'s [$info]${weakness.joinWithAnd()}[] weakness"
             } else {
                 ""
             }
             val res = if (resistance.isNotEmpty()) {
-                ", meeting ${defender.markupString}'s ${resistance.joinWithAnd()} resistance"
+                ", meeting ${defender.markupString}'s [$info]${resistance.joinWithAnd()}[] resistance"
             } else {
                 ""
             }
