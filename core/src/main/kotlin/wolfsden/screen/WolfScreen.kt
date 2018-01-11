@@ -28,7 +28,7 @@ abstract class WolfScreen(val name: String) {
     }
 
     abstract val stage: Stage
-    abstract val input: SquidInput
+    abstract var input: SquidInput
     abstract val vport: StretchViewport
 
     abstract fun render()
@@ -42,7 +42,7 @@ abstract class WolfScreen(val name: String) {
 
     protected fun markup(text: String, color: String): IColoredString<out Color> = "[$color]$text[]".toICString()
 
-    protected fun setInput() {
+    protected fun activateInput() {
         Gdx.input.inputProcessor = InputMultiplexer(stage, input)
     }
 }

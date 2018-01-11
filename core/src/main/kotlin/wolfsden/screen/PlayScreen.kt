@@ -1,6 +1,7 @@
 package wolfsden.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.ai.fsm.StackStateMachine
 import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.viewport.StretchViewport
@@ -36,6 +37,8 @@ object PlayScreen : WolfScreen("main") {
     private const val eqH = 6
 
     override val vport = StretchViewport(fullPixelW, fullPixelH)
+
+    var curState = StackStateMachine<PlayScreen, MenuState>(this, MenuState.PLAY)
 
     private val playLayout = layout(vport) {
         layers {
@@ -123,52 +126,14 @@ object PlayScreen : WolfScreen("main") {
     private val ttPanel = playLayout.toSquidPanel("tt")
     private val sklPanel = playLayout.toSquidPanel("skills")
     private val invPanel = playLayout.toSquidPanel("inventory")
-    private val eqPanel = playLayout.toSquidPanel("equip")
+    val eqPanel = playLayout.toSquidPanel("equip")
+    var itemMenu: WolfMenu? = null
     private const val FW = SColor.FLOAT_WHITE
     private val player
         get() = GameStore.player
 
     override val stage = playLayout.build()
-    override val input = SquidInput({ key, alt, ctrl, shift ->
-        val player = GameStore.player
-        when (key) {
-            SquidInput.UP_ARROW -> CommandProcessor.process(player, "move", Direction.UP)
-            SquidInput.UP_RIGHT_ARROW -> CommandProcessor.process(player, "move", Direction.UP_RIGHT)
-            SquidInput.RIGHT_ARROW -> CommandProcessor.process(player, "move", Direction.RIGHT)
-            SquidInput.DOWN_RIGHT_ARROW -> CommandProcessor.process(player, "move", Direction.DOWN_RIGHT)
-            SquidInput.DOWN_ARROW -> CommandProcessor.process(player, "move", Direction.DOWN)
-            SquidInput.DOWN_LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.DOWN_LEFT)
-            SquidInput.LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.LEFT)
-            SquidInput.UP_LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.UP_LEFT)
-            SquidInput.CENTER_ARROW -> CommandProcessor.process(player, "wait")
-            'G' -> CommandProcessor.process(player, "pickup")
-            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
-                val numSlot = key.toString().toInt()
-                if (player.inventory.size >= (numSlot + 1)) CommandProcessor.process(player, "use", player.inventory[numSlot])
-                else addMessage("No item to use/equip in that slot.")
-            }
-            's' -> {
-                player.applyEffect(StunEffect(player.eID, 25))
-                GameStore.update(false, true)
-            }
-            't' -> {
-                player.takeDmg(3)
-                GameStore.update(false, true)
-            }
-            'r' -> {
-                player.applyEffect(RegenEffect(player.eID, 50, 0.1))
-                GameStore.update(false, true)
-            }
-            'h' -> {
-                player.applyEffect(HasteEffect(player.eID, 75))
-                GameStore.update(false, true)
-            }
-            'Q' -> {
-                GameStore.saveGame()
-                Gdx.app.exit()
-            }
-        }
-    })
+    lateinit override var input: SquidInput
     private val cam: Coord
         get() {
             val m = GameStore.curMap
@@ -180,7 +145,7 @@ object PlayScreen : WolfScreen("main") {
         }
 
     init {
-        setInput()
+        activateInput()
     }
 
     private fun drawDungeon() {

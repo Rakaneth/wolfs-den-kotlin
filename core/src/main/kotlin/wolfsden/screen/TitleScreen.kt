@@ -13,7 +13,7 @@ import java.io.File
 object TitleScreen : WolfScreen("title") {
     override val vport = StretchViewport(fullPixelW, fullPixelH)
     override val stage = Stage(vport, batch)
-    override val input = SquidInput({ key, _, _, _ ->
+    override var input = SquidInput({ key, _, _, _ ->
         when (key) {
             'n', 'N' -> WolfScreen.setScreen(CCScreen)
             SquidInput.ESCAPE -> Gdx.app.exit()
@@ -48,7 +48,7 @@ object TitleScreen : WolfScreen("title") {
     init {
         display.setBounds(0f, 0f, fullPixelW, fullPixelH)
         stage.addActor(display)
-        setInput()
+        activateInput()
     }
 
     private fun drawBase() {
