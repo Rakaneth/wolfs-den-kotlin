@@ -1,0 +1,13 @@
+[joe]
+text = Hello, my name is [Light Blue]Joe.[] Will you help me?
+option = Yes : helpjoe
+option = No : continue
+
+[helpjoe]
+text=Thank you for helping me! Here is your reward! (reward to come)
+Will you help Tom?
+option=Yes:helptom
+option=No:continue
+
+[helptom]
+text=Thank you for helping Tom!
