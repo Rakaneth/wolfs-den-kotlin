@@ -1,21 +1,16 @@
 package wolfsden.screen
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine
-import com.badlogic.gdx.ai.fsm.StackStateMachine
 import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.viewport.StretchViewport
-import squidpony.squidgrid.Direction
 import squidpony.squidgrid.gui.gdx.SColor
 import squidpony.squidgrid.gui.gdx.SquidInput
 import squidpony.squidmath.Coord
 import wolfsden.CommonColors
 import wolfsden.entity.Entity
-import wolfsden.entity.HasteEffect
-import wolfsden.entity.RegenEffect
-import wolfsden.entity.StunEffect
-import wolfsden.system.CommandProcessor
+import wolfsden.screen.ui.MenuState
+import wolfsden.screen.ui.WolfMenu
 import wolfsden.system.GameStore
 import wolfsden.system.GameStore.curMap
 import wolfsden.system.Scheduler

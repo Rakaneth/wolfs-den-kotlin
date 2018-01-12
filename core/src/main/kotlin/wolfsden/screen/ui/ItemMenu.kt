@@ -1,7 +1,9 @@
-package wolfsden.screen
+package wolfsden.screen.ui
 
 import squidpony.squidgrid.gui.gdx.TextCellFactory
 import wolfsden.entity.Entity
+import wolfsden.screen.PlayScreen
+import wolfsden.screen.WolfScreen
 import wolfsden.system.CommandProcessor
 import wolfsden.system.GameStore
 
