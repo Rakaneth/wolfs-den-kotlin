@@ -10,18 +10,47 @@ import wolfsden.map.WolfMap
 import wolfsden.screen.PlayScreen
 import wolfsden.system.Location.thingsAt
 
+fun Entity.attack(other: Entity, atkStat: Int = this.atk, defStat: Int = other.dfp): CombatResults {
+    val (sux, hitBy) = WolfRNG.roll(atkStat, defStat)
+    val hit = sux > 0
+    var (dmg, _) = if (hit) WolfRNG.roll((sux - 1) * 2 + this.dmg) else 0 to 0
+    val wk: MutableList<String> = mutableListOf()
+    val res: MutableList<String> = mutableListOf()
+    this.atkTags.forEach {
+        when {
+            other.hasWeakness(it) -> {
+                wk.add(it)
+                dmg = (dmg * 1.5).toInt()
+            }
+            other.hasResistance(it) -> {
+                res.add(it)
+                dmg = (dmg * 0.75).toInt()
+            }
+            else -> {
+            }
+        }
+    }
+    return CombatResults(this, other, hit, hitBy, dmg, wk, res)
+}
+
+data class CombatResults(
+        val attacker: Entity,
+        val defender: Entity,
+        val hit: Boolean = false,
+        val hitBy: Int = 0,
+        val dmg: Int = 0,
+        val weakness: List<String> = listOf(),
+        val resistance: List<String> = listOf()
+)
+
 object CommandProcessor {
     enum class CollideResults { ENEMY, ALLY, DOOR, NONE }
 
-    data class CombatResults(
-            val attacker: Entity,
-            val defender: Entity,
-            val hit: Boolean = false,
-            val hitBy: Int = 0,
-            val dmg: Int = 0,
-            val weakness: List<String> = listOf(),
-            val resistance: List<String> = listOf()
-    )
+    private fun autoAttack(atkr: Entity, defr: Entity) {
+        val results = atkr.attack(defr)
+        if (results.hit) defr.takeDmg(results.dmg)
+        describeCombat(results)
+    }
 
     private fun describeCombat(result: CombatResults) {
         with(result) {
@@ -129,88 +158,64 @@ object CommandProcessor {
         other.pos!!.y = temp.y
     }
 
-    private fun Entity.autoAttack(other: Entity) {
-        //TODO: remove temp implementation
-        val (sux, hitBy) = WolfRNG.roll(this.atk, other.dfp)
-        val hit = sux > 0
-        var (dmg, _) = if (hit) WolfRNG.roll((sux - 1) * 2 + this.dmg) else 0 to 0
-        val wk: MutableList<String> = mutableListOf()
-        val res: MutableList<String> = mutableListOf()
-        this.atkTags.forEach {
-            when {
-                other.hasWeakness(it) -> {
-                    wk.add(it)
-                    dmg = (dmg * 1.5).toInt()
-                }
-                other.hasResistance(it) -> {
-                    res.add(it)
-                    dmg = (dmg * 0.5).toInt()
-                }
-                else -> {
-                }
-            }
-        }
-        other.takeDmg(dmg)
-        describeCombat(CombatResults(this, other, hit, hitBy, dmg, wk, res))
-    }
-
     fun process(entity: Entity, cmd: String, target: Any? = null) {
-        var result = 0
-        when (cmd) {
+        val result =  when (cmd) {
             "move" -> {
                 val (moveResult, tgt) = entity.tryMoveBy(target as Direction)
                 when (moveResult) {
                     CollideResults.ALLY -> {
                         entity.swap(tgt as Entity)
-                        result = entity.movDly
+                        entity.movDly
                     }
                     CollideResults.ENEMY -> {
-                        entity.autoAttack(tgt as Entity)
-                        result = entity.atkDly
+                        autoAttack(entity, tgt as Entity)
+                        entity.atkDly
                     }
                     CollideResults.DOOR -> {
                         entity.getMap()!!.openDoor(tgt as Coord)
-                        result = entity.movDly
+                        entity.movDly
                     }
                     else -> {
-                        result = entity.movDly
+                        entity.movDly
                     }
                 }
             }
             "pickup" -> {
                 entity.pickUp()
-                result = 10
+                10
             }
             "use" -> {
                 val tgt = target as Entity
                 when {
                     tgt.heal != null || tgt.repair != null || tgt.rest != null -> {
                         entity.tryUse(tgt)
-                        result = 10
+                        10
                     }
                     tgt.eq != null -> {
                         entity.tryEQ(tgt)
-                        result = 10
+                        10
                     }
                     else -> {
                         log(Scheduler.clock, "CommandProcessor", "${entity.eID} attempts to use unusable item ${tgt.eID}")
+                        10
                     }
                 }
             }
             "attack" -> {
                 val tgt = target as Entity
-                entity.autoAttack(tgt)
-                result = entity.atkDly
+                autoAttack(entity, tgt)
+                entity.atkDly
             }
             "stairs" -> {
                 val tgt = target as WolfMap.Connection
                 entity.changeLevel(tgt)
-                result = entity.movDly
+                entity.movDly
             }
             "wait" -> {
-                result = 10
+                10
             }
             else -> {
+                0
             } //TODO: other cmds
         }
 
