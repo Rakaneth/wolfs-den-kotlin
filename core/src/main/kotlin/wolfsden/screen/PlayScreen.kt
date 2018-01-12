@@ -1,6 +1,7 @@
 package wolfsden.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.ai.fsm.DefaultStateMachine
 import com.badlogic.gdx.ai.fsm.StackStateMachine
 import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.math.MathUtils
@@ -10,6 +11,7 @@ import squidpony.squidgrid.gui.gdx.SColor
 import squidpony.squidgrid.gui.gdx.SquidInput
 import squidpony.squidmath.Coord
 import wolfsden.CommonColors
+import wolfsden.entity.Entity
 import wolfsden.entity.HasteEffect
 import wolfsden.entity.RegenEffect
 import wolfsden.entity.StunEffect
@@ -37,8 +39,6 @@ object PlayScreen : WolfScreen("main") {
     private const val eqH = 6
 
     override val vport = StretchViewport(fullPixelW, fullPixelH)
-
-    var curState = StackStateMachine<PlayScreen, MenuState>(this, MenuState.PLAY)
 
     private val playLayout = layout(vport) {
         layers {
@@ -119,7 +119,7 @@ object PlayScreen : WolfScreen("main") {
             }
         }
     }
-
+    override var input: SquidInput = SquidInput()
     private val mapLayers = playLayout.toSparseLayers("map")
     private val statPanel = playLayout.toSquidPanel("stats")
     private val msgPanel = playLayout.toMessageBox("messages")
@@ -127,13 +127,17 @@ object PlayScreen : WolfScreen("main") {
     private val sklPanel = playLayout.toSquidPanel("skills")
     private val invPanel = playLayout.toSquidPanel("inventory")
     val eqPanel = playLayout.toSquidPanel("equip")
+    var curState = DefaultStateMachine<PlayScreen, MenuState>(this, MenuState.NULL)
+    init {
+        curState.changeState(MenuState.PLAY)
+    }
     var itemMenu: WolfMenu? = null
     private const val FW = SColor.FLOAT_WHITE
     private val player
         get() = GameStore.player
 
     override val stage = playLayout.build()
-    lateinit override var input: SquidInput
+
     private val cam: Coord
         get() {
             val m = GameStore.curMap
@@ -299,4 +303,6 @@ object PlayScreen : WolfScreen("main") {
         stage.act()
         stage.draw()
     }
+
+    var itemSelected: Entity? = null
 }

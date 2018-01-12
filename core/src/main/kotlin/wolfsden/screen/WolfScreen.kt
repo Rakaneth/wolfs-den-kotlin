@@ -42,7 +42,7 @@ abstract class WolfScreen(val name: String) {
 
     protected fun markup(text: String, color: String): IColoredString<out Color> = "[$color]$text[]".toICString()
 
-    protected fun activateInput() {
+    fun activateInput() {
         Gdx.input.inputProcessor = InputMultiplexer(stage, input)
     }
 }

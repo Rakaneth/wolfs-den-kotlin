@@ -10,14 +10,19 @@ abstract class WolfMenu (
         private val caption: String? = null,
         var menuItems: List<String> = listOf(),
         private val tcf: TextCellFactory = DefaultResources.getSlabFamily()
-) : SquidPanel((menuItems.maxBy { it.length})!!.length + 2, menuItems.size + 2, tcf) {
+) : SquidPanel(10, 10, tcf) {
+
+    init {
+        tcf.width(WolfScreen.cellWidth)
+                .height(WolfScreen.cellHeight)
+                .tweakWidth((1.1f * WolfScreen.cellWidth))
+                .tweakHeight((1.5f * WolfScreen.cellHeight))
+                .initBySize()
+    }
 
     protected fun setGridPos(x: Int, y: Int) {
         setPosition(WolfScreen.cellWidth * x, WolfScreen.cellHeight * y)
     }
-
-    val baseX = (WolfScreen.fullGridW - (menuItems.maxBy { it.length})!!.length + 2) / 2
-    val baseY = (WolfScreen.fullGridH - menuItems.size + 2) / 2
 
     var selected = 0
 

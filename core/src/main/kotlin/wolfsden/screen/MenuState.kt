@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ai.fsm.State
 import com.badlogic.gdx.ai.msg.Telegram
 import squidpony.squidgrid.Direction
+import squidpony.squidgrid.gui.gdx.DefaultResources
 import squidpony.squidgrid.gui.gdx.SquidInput
 import wolfsden.entity.HasteEffect
 import wolfsden.entity.RegenEffect
@@ -12,6 +13,13 @@ import wolfsden.system.CommandProcessor
 import wolfsden.system.GameStore
 
 enum class MenuState(val theMenu: WolfMenu?) : State<PlayScreen> {
+    NULL(null) {
+        override fun enter(entity: PlayScreen?) {}
+        override fun update(entity: PlayScreen?) {}
+        override fun exit(entity: PlayScreen?) {}
+
+    },
+
     PLAY(null) {
         override fun enter(entity: PlayScreen?) {
             entity!!.input = SquidInput({ key, alt, ctrl, shift ->
@@ -30,8 +38,7 @@ enum class MenuState(val theMenu: WolfMenu?) : State<PlayScreen> {
                     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
                         val numSlot = key.toString().toInt()
                         if (player.inventory.size >= (numSlot + 1)) {
-                            val theItem = player.inventory[numSlot]
-                            PlayScreen.itemMenu = ItemMenu(theItem, PlayScreen.eqPanel.textCellFactory.copy())
+                            PlayScreen.itemSelected = player.inventory[numSlot]
                             entity.curState.changeState(MenuState.ITEM_MENU)
 
                         } else PlayScreen.addMessage("No item to use/equip in that slot.")
@@ -57,8 +64,8 @@ enum class MenuState(val theMenu: WolfMenu?) : State<PlayScreen> {
                         Gdx.app.exit()
                     }
                 }
-
             })
+            entity.activateInput()
         }
 
         override fun update(entity: PlayScreen?) {
@@ -68,16 +75,21 @@ enum class MenuState(val theMenu: WolfMenu?) : State<PlayScreen> {
         }
     },
 
-    ITEM_MENU(PlayScreen.itemMenu!!) {
+    ITEM_MENU(ItemMenu(DefaultResources.getSlabFamily())) {
         override fun enter(entity: PlayScreen?) {
+            val menu = theMenu!! as ItemMenu
             entity!!.stage.addActor(theMenu)
+            menu.setItem(entity.itemSelected!!)
             entity.input = SquidInput({ key, _, _, _ ->
                 when (key) {
                     SquidInput.UP_ARROW -> theMenu!!.nextItem()
                     SquidInput.DOWN_ARROW -> theMenu!!.prevItem()
+                    SquidInput.ENTER -> theMenu!!.handleSelected()
+                    SquidInput.ESCAPE -> PlayScreen.curState.changeState(PLAY)
                     else -> {}
                 }
             })
+            entity!!.activateInput()
         }
 
         override fun update(entity: PlayScreen?) {
