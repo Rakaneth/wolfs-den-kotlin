@@ -97,9 +97,8 @@ class Entity(
         }
     private val defTags: Set<String>
         get(): Set<String> {
-            return (armor?.getEntity?.resistance ?: emptyList<String>()) union
-                    (trinket?.getEntity?.resistance ?: emptyList()) union
-                    (oh?.getEntity?.resistance ?: emptyList())
+            return (armor?.getEntity?.tags ?: emptyList<String>()) union
+                    (oh?.getEntity?.tags ?: emptyList())
         }
 
 
