@@ -50,7 +50,7 @@ object DialogTreeManager {
                     val (id) = match.destructured
                     register(id, dTree)
                 }
-                it.split(":")[0] == "option"
+               // it.split(":")[0] == "option"
             }
         }
     }

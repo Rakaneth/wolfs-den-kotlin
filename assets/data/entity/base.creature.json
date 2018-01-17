@@ -1,0 +1,289 @@
+[
+	{
+		"id": "wolf",
+		"name": "Wolf",
+		"desc": "A large, shaggy wolf.",
+		"str": 2,
+		"stam": 2,
+		"spd": 1,
+		"skl": 1,
+		"glyph": "W",
+		"color": "CW Light Brown",
+		"mh": "wolfFangs",
+		"oh": "wolfClaws",
+		"armor": "wolfFur",
+		"trinket": "none",
+		"vision": 10,
+		"xp": 100,
+		"ai": "hunt",
+		"weakness": [],
+		"resistance": [],
+		"tags": [
+			"wolf"
+		]
+	},
+	{
+		"id": "alpha",
+		"name": "Alpha",
+		"desc": "A large wolf, ususally seen at the head of a pack.",
+		"str": 4,
+		"stam": 3,
+		"spd": 2,
+		"skl": 2,
+		"glyph": "W",
+		"color": "Burnt Umber",
+		"mh": "wolfFangs",
+		"oh": "wolfClaws",
+		"armor": "wolfFur",
+		"trinket": "none",
+		"vision": 10,
+		"xp": 300,
+		"ai": "hunt",
+		"weakness": [],
+		"resistance": [],
+		"tags": [
+			"wolf",
+			"leader"
+		]
+	},
+	{
+		"id": "dire",
+		"name": "Great Wolf",
+		"desc": "A massive monster of a wolf.",
+		"str": 6,
+		"stam": 5,
+		"spd": 4,
+		"skl": 4,
+		"glyph": "W",
+		"color": "Silver Grey",
+		"mh": "wolfFangs",
+		"oh": "wolfClaws",
+		"armor": "wolfFur",
+		"trinket": "none",
+		"vision": 12,
+		"xp": 500,
+		"ai": "hunt",
+		"weakness": [],
+		"resistance": [],
+		"tags": [
+			"wolf",
+			"leader"
+		]
+	},
+	{
+		"id": "direAlpha",
+		"name": "Great Wolf Alpha",
+		"desc": "The mightiest among wolves, these lupine titans lead packs of great wolves.",
+		"rarity": 5,
+		"str": 9,
+		"stam": 8,
+		"spd": 7,
+		"skl": 7,
+		"glyph": "W",
+		"color": "Purple",
+		"mh": "wolfClaws",
+		"oh": "wolfClaws",
+		"armor": "wolfFur",
+		"trinket": "none",
+		"vision": 15,
+		"xp": 1000,
+		"ai": "hunt",
+		"weakness": [],
+		"resistance": [],
+		"tags": [
+			"wolf",
+			"leader"
+		]
+	},
+	{
+		"id": "revenant",
+		"name": "Fallen Warrior",
+		"desc": "A fallen warrior animated by foul magic.",
+		"str": 5,
+		"stam": 7,
+		"spd": 1,
+		"skl": 5,
+		"glyph": "U",
+		"color": "Silver Grey",
+		"mh": "ironSword",
+		"oh": "woodShield",
+		"armor": "chainMail",
+		"trinket": "none",
+		"vision": 6,
+		"ai": "hunt",
+		"weakness": [
+			"holy"
+		],
+		"resistance": [
+			"natural"
+		],
+		"tags": [
+			"undead",
+			"door",
+			"solo"
+		]
+	},
+	{
+		"id": "wolfLord",
+		"name": "Wolf Lord",
+		"desc": "A savage man with wolflike features, covered in furs",
+		"str": 7,
+		"stam": 7,
+		"spd": 7,
+		"skl": 7,
+		"glyph": "@",
+		"color": "CW Light Brown",
+		"mh": "wolfClaws",
+		"oh": "wolfClaws",
+		"armor": "wolfFur",
+		"trinket": "wolfCharm",
+		"vision": 10,
+		"xp": 1000,
+		"ai": "hunt",
+		"weakness": [],
+		"resistance": [],
+		"tags": [
+			"wolf",
+			"door",
+			"leader"
+		]
+	},
+	{
+		"id": "banshee",
+		"name": "Banshee",
+		"desc": "A wailing spirit, eerie and translucent.",
+		"rarity": 10,
+		"str": 3,
+		"stam": 2,
+		"spd": 8,
+		"skl": 9,
+		"glyph": "U",
+		"color": "White",
+		"mh": "none",
+		"oh": "none",
+		"armor": "none",
+		"trinket": "none",
+		"vision": 6,
+		"ai": "hunt",
+		"weakness": [
+			"holy"
+		],
+		"resistance": [
+			"natural"
+		],
+		"tags": [
+			"undead",
+			"solo"
+		]
+	},
+	{
+		"id": "margrave",
+		"name": "Margrave of Bones",
+		"desc": "A frightening creature, thin as a rail, radiating menace.",
+		"str": 7,
+		"stam": 7,
+		"spd": 7,
+		"skl": 7,
+		"glyph": "U",
+		"color": "Purple",
+		"mh": "fellHammer",
+		"oh": "none",
+		"armor": "shadowRobe",
+		"trinket": "none",
+		"vision": 8,
+		"xp": 5000,
+		"ai": "hunt",
+		"weakness": [
+			"holy"
+		],
+		"resistance": [
+			"natural"
+		],
+		"tags": [
+			"undead",
+			"door",
+			"leader"
+		]
+	},
+	{
+		"id": "fighter",
+		"name": "Warrior",
+		"desc": "A burly, seasoned warrior.",
+		"rarity": 10,
+		"str": 2,
+		"stam": 2,
+		"spd": 1,
+		"skl": 1,
+		"glyph": "@",
+		"color": "White",
+		"mh": "greatAxe",
+		"oh": "none",
+		"armor": "chainMail",
+		"trinket": "none",
+		"vision": 6,
+		"gainsXP": true,
+		"ai": "hunt",
+		"weakness": [],
+		"resistance": [],
+		"tags": [
+			"hero",
+			"door",
+			"leader"
+		],
+		"xp": 300
+	},
+	{
+		"id": "rogue",
+		"name": "Rogue",
+		"desc": "A lithe, deft scoundrel.",
+		"rarity": 10,
+		"str": 1,
+		"stam": 1,
+		"spd": 2,
+		"skl": 2,
+		"glyph": "@",
+		"color": "Yellow",
+		"mh": "dagger",
+		"oh": "dagger",
+		"armor": "leather",
+		"trinket": "none",
+		"vision": 6,
+		"ai": "hunt",
+		"weakness": [],
+		"resistance": [],
+		"tags": [
+			"hero",
+			"door",
+			"leader"
+		],
+		"gainsXP": true,
+		"xp": 300
+	},
+	{
+		"id": "cleric",
+		"name": "Oathbound",
+		"desc": "An Oathbound, devoted to the Raven.",
+		"rarity": 10,
+		"str": 1,
+		"stam": 2,
+		"spd": 1,
+		"skl": 1,
+		"glyph": "@",
+		"color": "Crimson",
+		"mh": "mace",
+		"oh": "woodShield",
+		"armor": "chainMail",
+		"trinket": "ravenSymbol",
+		"vision": 6,
+		"ai": "hunt",
+		"weakness": [],
+		"resistance": [],
+		"tags": [
+			"hero",
+			"door",
+			"leader"
+		],
+		"gainsXP": true,
+		"xp": 300
+	}
+]
