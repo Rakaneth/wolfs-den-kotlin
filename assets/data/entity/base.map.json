@@ -1,0 +1,97 @@
+[
+	{
+		"id": "mine",
+		"name": "Mine - Upper Level",
+		"light": true,
+		"width": 50,
+		"height": 50,
+		"boxCarvers": 1,
+		"roomCarvers": 2,
+		"doors": 5,
+		"doubleDoors": true,
+		"connections": [
+			{
+				"mapID": "mine2",
+				"direction": "down",
+				"twoWay": true
+			}
+		]
+	},
+	{
+		"id": "mine2",
+		"name": "Mine - Lower Level",
+		"light": true,
+		"width": 50,
+		"height": 50,
+		"boxCarvers": 1,
+		"caveCarvers": 1,
+		"water": 5,
+		"doors": 3,
+		"connections": [
+			{
+				"mapID": "cave",
+				"direction": "down",
+				"twoWay": true
+			}
+		]
+	},
+	{
+		"id": "cave",
+		"name": "Cave - Upper Cave",
+		"width": 100,
+		"height": 100,
+		"caveCarvers": 3,
+		"connections": [
+			{
+				"mapID": "cave2",
+				"direction": "down",
+				"twoWay": true
+			}
+		],
+		"water": 10
+	},
+	{
+		"id": "cave2",
+		"name": "Cave - Depths",
+		"width": 100,
+		"height": 100,
+		"caveCarvers": 4,
+		"water": 15,
+		"connections": [
+			{
+				"mapID": "cave3",
+				"direction": "down",
+				"twoWay": true
+			}
+		]
+	},
+	{
+		"id": "cave3",
+		"name": "Cave - Deep Caves",
+		"width": 150,
+		"height": 150,
+		"caveCarvers": 5,
+		"water": 15,
+		"connections": [
+			{
+				"mapID": "lair",
+				"direction": "down",
+				"twoWay": true
+			}
+		]
+	},
+	{
+		"id": "lair",
+		"name": "Crypt",
+		"light": true,
+		"width": 200,
+		"height": 200,
+		"boxCarvers": 1,
+		"roomCarvers": 2,
+		"caveCarvers": 5,
+		"water": 20,
+		"doors": 10,
+		"doubleDoors": true,
+		"connections": []
+	}
+]
