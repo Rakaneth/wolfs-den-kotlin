@@ -1,17 +1,15 @@
 package wolfsden.map
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.utils.XmlReader
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import squidpony.squidgrid.mapping.MixedGenerator
 import squidpony.squidgrid.mapping.SectionDungeonGenerator
 import wolfsden.log
-import wolfsden.nz
 import wolfsden.system.GameStore
 import wolfsden.system.WolfRNG
 
-data class MapBase (
+data class MapBase(
         val id: String,
         val name: String = "No name",
         val light: Boolean = true,
@@ -26,21 +24,19 @@ data class MapBase (
         val connections: List<ConnectionBase> = listOf()
 )
 
-data class ConnectionBase (
+data class ConnectionBase(
         val mapID: String,
         val direction: String = "down",
         val twoWay: Boolean = false
 )
 
 object MapBuilder {
-    //private const val mapFile = "data/maps.xml"
     private const val mapFile = "data/entity/base.map.json"
-    //private val reader = XmlReader()
     private val mapBP: List<MapBase> = jacksonObjectMapper().readValue(Gdx.files.internal(mapFile).reader())
 
     fun build(mapID: String): WolfMap {
-        require(mapBP.any { it.id == mapID}, {"$mapID is not a valid map ID"})
-        val info = mapBP.first { it.id == mapID}
+        require(mapBP.any { it.id == mapID }, { "$mapID is not a valid map ID" })
+        val info = mapBP.first { it.id == mapID }
 
         val smg = MixedGenerator(info.width, info.height, WolfRNG.wolfRNG)
         val deco = SectionDungeonGenerator(info.width, info.height, WolfRNG.wolfRNG)

@@ -159,7 +159,7 @@ object CommandProcessor {
     }
 
     fun process(entity: Entity, cmd: String, target: Any? = null) {
-        val result =  when (cmd) {
+        val result = when (cmd) {
             "move" -> {
                 val (moveResult, tgt) = entity.tryMoveBy(target as Direction)
                 when (moveResult) {

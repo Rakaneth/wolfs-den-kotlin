@@ -1,14 +1,11 @@
 package wolfsden.entity
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.utils.XmlReader
-import com.badlogic.gdx.utils.compression.lzma.Base
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import squidpony.squidmath.Coord
 import squidpony.squidmath.ProbabilityTable
 import wolfsden.log
-import wolfsden.nz
 import wolfsden.system.GameStore
 import wolfsden.system.WolfRNG
 import java.util.*
@@ -18,7 +15,7 @@ private interface BaseMarker {
     val rarity: Int
 }
 
-data class EquipBase (
+data class EquipBase(
         override val id: String,
         val name: String = "No name",
         val desc: String = "No description",
@@ -35,7 +32,7 @@ data class EquipBase (
         val tags: List<String> = listOf()
 ) : BaseMarker
 
-data class ItemBase (
+data class ItemBase(
         override val id: String,
         val name: String = "No name",
         val desc: String = "No description",
@@ -48,16 +45,14 @@ data class ItemBase (
 ) : BaseMarker
 
 object ItemBuilder {
-    //private const val itemFile = "data/equipment.xml"
     private const val eqFile = "data/entity/base.equipment.json"
     private const val itemFile = "data/entity/base.item.json"
-    //private val itemBP = XmlReader().parse(Gdx.files.internal(itemFile))
     private val eqBP: List<EquipBase> = jacksonObjectMapper().readValue(Gdx.files.internal(eqFile).reader())
     private val itemBP: List<ItemBase> = jacksonObjectMapper().readValue(Gdx.files.internal(itemFile).reader())
 
 
     fun buildEquip(buildID: String, mapID: String, start: Coord? = null): Entity {
-        require(eqBP.any { it.id == buildID} , { "$buildID is not a valid equipment ID"})
+        require(eqBP.any { it.id == buildID }, { "$buildID is not a valid equipment ID" })
         val info = eqBP.first { it.id == buildID }
         val mold = Entity(UUID.randomUUID().toString())
 
@@ -97,7 +92,7 @@ object ItemBuilder {
     }
 
     fun buildItem(buildID: String, mapID: String, start: Coord? = null): Entity {
-        require(itemBP.any { it.id == buildID}, { "$buildID is not a valid item ID" })
+        require(itemBP.any { it.id == buildID }, { "$buildID is not a valid item ID" })
         val info = itemBP.first { it.id == buildID }
         val mold = Entity(UUID.randomUUID().toString())
 
@@ -130,14 +125,14 @@ object ItemBuilder {
     fun seedItems(mapID: String, vararg tags: String) {
         val numItems = WolfRNG.wolfRNG.nextInt(25)
         val table: ProbabilityTable<BaseMarker> = ProbabilityTable(WolfRNG.wolfRNG)
-        val itemCands: Set<BaseMarker> = itemBP.filter{ it.rarity > 0}.toSet()
-        val eqCands: Set<BaseMarker> = eqBP.filter { it.rarity > 0} .toSet()
+        val itemCands: Set<BaseMarker> = itemBP.filter { it.rarity > 0 }.toSet()
+        val eqCands: Set<BaseMarker> = eqBP.filter { it.rarity > 0 }.toSet()
 
 
         val coll: Set<BaseMarker> = if (tags.isEmpty()) {
             eqCands union itemCands
         } else {
-            eqCands.filter { (it as EquipBase).tags.any { tags.contains(it)} } union itemCands
+            eqCands.filter { (it as EquipBase).tags.any { tags.contains(it) } } union itemCands
         }
         for (chosen in coll) {
             table.add(chosen, chosen.rarity)

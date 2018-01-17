@@ -43,7 +43,7 @@ class Dialog(val caption: String = "", tcf: TextCellFactory = DefaultResources.g
     override var selected = 0
 
     private fun setDimensions() {
-        require( vertSize < WolfScreen.fullGridH, { "Dialog is too large" })
+        require(vertSize < WolfScreen.fullGridH, { "Dialog is too large" })
         setGridWidth(gw)
         setGridHeight(vertSize)
         setPosition(WolfScreen.cellWidth * ((WolfScreen.fullGridW - gw) / 2), WolfScreen.cellHeight * vertSize)
@@ -64,7 +64,7 @@ class Dialog(val caption: String = "", tcf: TextCellFactory = DefaultResources.g
             put(it, offset, "-")
         }
         menuItems.forEachIndexed { idx, s ->
-            put(1, idx+offset+1, "$idx) $s", if(idx == selected) SColor.LIGHT_BLUE else SColor.WHITE)
+            put(1, idx + offset + 1, "$idx) $s", if (idx == selected) SColor.LIGHT_BLUE else SColor.WHITE)
         }
         super.draw(batch, parentAlpha)
     }

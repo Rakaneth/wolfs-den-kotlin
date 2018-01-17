@@ -6,7 +6,6 @@ import com.badlogic.gdx.ai.msg.Telegram
 import squidpony.squidgrid.Direction
 import squidpony.squidgrid.gui.gdx.DefaultResources
 import squidpony.squidgrid.gui.gdx.SquidInput
-import squidpony.squidgrid.gui.gdx.SquidPanel
 import wolfsden.entity.HasteEffect
 import wolfsden.entity.RegenEffect
 import wolfsden.entity.StunEffect
@@ -86,7 +85,8 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                     SquidInput.DOWN_ARROW -> theMenu.prevItem()
                     SquidInput.ENTER -> theMenu.handleSelected()
                     SquidInput.ESCAPE -> PlayScreen.curState.changeState(PLAY)
-                    else -> {}
+                    else -> {
+                    }
                 }
             })
             entity!!.activateInput()

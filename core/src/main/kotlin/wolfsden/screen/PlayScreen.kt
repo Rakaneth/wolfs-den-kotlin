@@ -123,9 +123,11 @@ object PlayScreen : WolfScreen("main") {
     private val invPanel = playLayout.toSquidPanel("inventory")
     val eqPanel = playLayout.toSquidPanel("equip")
     var curState = DefaultStateMachine<PlayScreen, MenuState>(this, MenuState.NULL)
+
     init {
         curState.changeState(MenuState.PLAY)
     }
+
     var itemMenu: WolfMenu? = null
     private const val FW = SColor.FLOAT_WHITE
     private val player

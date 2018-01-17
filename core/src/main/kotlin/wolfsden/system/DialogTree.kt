@@ -1,7 +1,6 @@
 package wolfsden.system
 
 import com.badlogic.gdx.Gdx
-import java.awt.Dialog
 
 open class DialogTree {
     open var caption = ""
@@ -26,7 +25,8 @@ object DialogTreeManager {
         when {
             result == "continue" -> curTree = DialogTree()
             registeredTrees.containsKey(result) -> curTree = registeredTrees[result]!!
-            else -> {}
+            else -> {
+            }
         }
     }
 
@@ -45,17 +45,15 @@ object DialogTreeManager {
             val dTree = DialogTree()
             val match = regNamePattern.matchEntire(it)
 
-            when  {
+            when {
                 match != null -> {
                     val (id) = match.destructured
                     register(id, dTree)
                 }
-               // it.split(":")[0] == "option"
+            // it.split(":")[0] == "option"
             }
         }
     }
-
-
 
 
 }

@@ -1,19 +1,16 @@
 package wolfsden.entity
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.utils.Json
-import com.badlogic.gdx.utils.XmlReader
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import squidpony.ArrayTools
 import squidpony.squidgrid.FOV
 import squidpony.squidmath.Coord
-import wolfsden.nz
 import wolfsden.system.Faction
 import wolfsden.system.GameStore
 import java.util.*
 
-data class CreatureBase (
+data class CreatureBase(
         val id: String,
         val name: String = "No name",
         val desc: String = "No description",
@@ -39,11 +36,8 @@ data class CreatureBase (
 )
 
 object CreatureBuilder {
-    //private val reader = XmlReader()
-    //private const val creatureFile = "data/monsters.xml"
-    private const val creatureFile =  "data/entity/base.creature.json"
-    //private val creatureBP: XmlReader.Element = reader.parse(Gdx.files.internal(creatureFile))
-    lateinit var creatureBP: List<CreatureBase>
+    private const val creatureFile = "data/entity/base.creature.json"
+    var creatureBP: List<CreatureBase>
 
     init {
         val mapper = jacksonObjectMapper()
@@ -53,7 +47,7 @@ object CreatureBuilder {
 
 
     fun build(buildID: String, isPlayer: Boolean = false, start: Coord? = null, mapID: String? = null, name: String? = null): Entity? {
-        val info = creatureBP.first { it.id == buildID}
+        val info = creatureBP.first { it.id == buildID }
         val eID = if (isPlayer) "player" else UUID.randomUUID().toString()
         val foetus = Entity(eID)
         val toName = name ?: info.name
@@ -94,7 +88,7 @@ object CreatureBuilder {
 
         foetus.addAI(foetus.movDly, info.ai)
 
-        listOf(info.mh, info.oh, info.armor, info.trinket).filter{ it != "none" }.forEach {
+        listOf(info.mh, info.oh, info.armor, info.trinket).filter { it != "none" }.forEach {
             val item = ItemBuilder.buildEquip(it, toMap)
             foetus.putOn(item)
         }

@@ -7,7 +7,7 @@ import wolfsden.screen.WolfScreen
 import wolfsden.system.CommandProcessor
 import wolfsden.system.GameStore
 
-class ItemMenu (tcf: TextCellFactory) : WolfMenu(tcf = tcf) {
+class ItemMenu(tcf: TextCellFactory) : WolfMenu(tcf = tcf) {
 
     lateinit private var theItem: Entity
 
@@ -18,7 +18,7 @@ class ItemMenu (tcf: TextCellFactory) : WolfMenu(tcf = tcf) {
         } else {
             listOf("Equip", "Describe")
         }
-        val maxLength = (menuItems.maxBy { it.length})!!.length + 2
+        val maxLength = (menuItems.maxBy { it.length })!!.length + 2
         val maxHeight = menuItems.size + 2
         val baseX = (WolfScreen.fullGridW - maxLength) / 2
         val baseY = (WolfScreen.fullGridH - maxHeight) / 2

@@ -7,7 +7,7 @@ import squidpony.squidgrid.gui.gdx.SquidPanel
 import squidpony.squidgrid.gui.gdx.TextCellFactory
 import wolfsden.screen.WolfScreen
 
-abstract class WolfMenu (
+abstract class WolfMenu(
         private val caption: String? = null,
         override var menuItems: List<String> = listOf(),
         private val tcf: TextCellFactory = DefaultResources.getSlabFamily()
@@ -30,11 +30,11 @@ abstract class WolfMenu (
     override abstract fun handleSelected()
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
-        require (menuItems.isNotEmpty(), { "menuItems must contain at least one item"})
+        require(menuItems.isNotEmpty(), { "menuItems must contain at least one item" })
         toFront()
         if (caption == null) putBorders() else putBorders(SColor.FLOAT_WHITE, caption)
         menuItems.forEachIndexed { index, s ->
-            put(1, 1+index, s, if (selected == index) SColor.LIGHT_BLUE else SColor.WHITE)
+            put(1, 1 + index, s, if (selected == index) SColor.LIGHT_BLUE else SColor.WHITE)
         }
         super.draw(batch, parentAlpha)
     }
