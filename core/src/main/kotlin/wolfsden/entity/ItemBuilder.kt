@@ -2,6 +2,9 @@ package wolfsden.entity
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.XmlReader
+import com.badlogic.gdx.utils.compression.lzma.Base
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import squidpony.squidmath.Coord
 import squidpony.squidmath.ProbabilityTable
 import wolfsden.log
@@ -10,71 +13,114 @@ import wolfsden.system.GameStore
 import wolfsden.system.WolfRNG
 import java.util.*
 
-object ItemBuilder {
-    private const val itemFile = "data/equipment.xml"
-    private val itemBP = XmlReader().parse(Gdx.files.internal(itemFile))
+private interface BaseMarker {
+    val id: String
+    val rarity: Int
+}
 
-    fun build(buildID: String, mapID: String, start: Coord? = null): Entity {
-        val info = itemBP.getChildrenByName("EntityType").first { it["id"] == buildID }
+data class EquipBase (
+        override val id: String,
+        val name: String = "No name",
+        val desc: String = "No description",
+        val glyph: String = "@",
+        val color: String = "White",
+        override val rarity: Int = 0,
+        val slot: String = "mh",
+        val atk: Int = 0,
+        val dmg: Int = 0,
+        val dly: Int = 0,
+        val sav: Int = 0,
+        val dfp: Int = 0,
+        val prot: Int = 0,
+        val tags: List<String> = listOf()
+) : BaseMarker
+
+data class ItemBase (
+        override val id: String,
+        val name: String = "No name",
+        val desc: String = "No description",
+        val glyph: String = "@",
+        val color: String = "White",
+        override val rarity: Int = 0,
+        val itemType: String = "healing",
+        val pctAmt: Float = 0f,
+        val flatAmt: Int = 0
+) : BaseMarker
+
+object ItemBuilder {
+    //private const val itemFile = "data/equipment.xml"
+    private const val eqFile = "data/entity/base.equipment.json"
+    private const val itemFile = "data/entity/base.item.json"
+    //private val itemBP = XmlReader().parse(Gdx.files.internal(itemFile))
+    private val eqBP: List<EquipBase> = jacksonObjectMapper().readValue(Gdx.files.internal(eqFile).reader())
+    private val itemBP: List<ItemBase> = jacksonObjectMapper().readValue(Gdx.files.internal(itemFile).reader())
+
+
+    fun buildEquip(buildID: String, mapID: String, start: Coord? = null): Entity {
+        require(eqBP.any { it.id == buildID} , { "$buildID is not a valid equipment ID"})
+        val info = eqBP.first { it.id == buildID }
         val mold = Entity(UUID.randomUUID().toString())
 
-        val id = info.getChildByName("identity")
-        val draw = info.getChildByName("draw")
-        val pos = info.getChildByName("pos")
-        val toGlyph = if (draw["glyph"].length == 1) {
-            draw["glyph"].toCharArray().first()
+        val toGlyph = if (info.glyph.length == 1) {
+            info.glyph.first()
         } else {
-            draw["glyph"].toInt(16).toChar()
+            info.glyph.toInt(16).toChar()
         }
 
-        val toStart = if (pos == null) {
-            start ?: GameStore.getMapByID(mapID).randomFloor()
-        } else {
-            start ?: Coord.get(pos["x"].toInt(), pos["y"].toInt())
-        }
+        val toStart = start ?: GameStore.getMapByID(mapID).randomFloor()
 
-        mold.addID(id["name"]!!, id["desc"])
-        mold.addDraw(toGlyph, draw["color"], 1)
+        mold.addID(info.name, info.desc)
+        mold.addDraw(toGlyph, info.color, 1)
         mold.addPos(toStart, mapID)
         log(0, "ItemBuilder", "Item $buildID created at ${mold.pos!!.coord} on floor $mapID")
 
-        info.nz("eqData") {
-            val eq = info.getChildByName("eqData")
-            val slot = when (eq!!["slot"]) {
-                "2h" -> Slot.TWOH
-                "ambi" -> Slot.AMBI
-                "mh" -> Slot.MH
-                "oh" -> Slot.OH
-                "armor" -> Slot.ARMOR
-                else -> Slot.TRINKET
-            }
-            val prot: Int = if (eq.hasAttribute("prot")) eq["prot"].toInt() else 0
-            mold.addEQ(slot, eq["atk"].toInt(), eq["dfp"].toInt(), eq["dmg"].toInt(), eq["sav"].toInt(), eq["dly"].toInt(), prot)
-            eq.nz("resistances") {
-                eq["resistances"].split(",").forEach {
-                    mold.updateTag("resistance", it)
-                }
-            }
-        }
-        info.nz("recoverData") {
-            val rc = info.getChildByName("recoverData")
-            val type = rc["itemType"]
-            val flatAmt = if (rc.hasAttribute("flatAmt")) rc["flatAmt"].toInt() else 0
-            val pctAmt = if (rc.hasAttribute("pctAmt")) rc.getAttribute("pctAmt").toFloat() else 0f
-            when (type) {
-                "healing" -> mold.addHeal(flatAmt, pctAmt)
-                "repair" -> mold.addRepair(flatAmt, pctAmt)
-                else -> mold.addRestore(flatAmt, pctAmt)
-            }
+        val slot = when (info.slot) {
+            "2H" -> Slot.TWOH
+            "ambi" -> Slot.AMBI
+            "mh" -> Slot.MH
+            "oh" -> Slot.OH
+            "armor" -> Slot.ARMOR
+            else -> Slot.TRINKET
         }
 
-        info.nz("tags") {
-            for (tag in info["tags"].split(",")) {
-                mold.updateTag("tags", tag)
-            }
+        mold.addEQ(slot, info.atk, info.dfp, info.dmg, info.sav, info.dly, info.prot)
+
+        info.tags.forEach {
+            mold.updateTag("tags", it)
         }
 
-        mold.updateTag("tags", info["meta:RefKey"])
+        mold.updateTag("tags", "equipment")
+
+        mold.blocking = false
+        GameStore.addEntity(mold)
+        return mold
+    }
+
+    fun buildItem(buildID: String, mapID: String, start: Coord? = null): Entity {
+        require(itemBP.any { it.id == buildID}, { "$buildID is not a valid item ID" })
+        val info = itemBP.first { it.id == buildID }
+        val mold = Entity(UUID.randomUUID().toString())
+
+        val toGlyph = if (info.glyph.length == 1) {
+            info.glyph.first()
+        } else {
+            info.glyph.toInt(16).toChar()
+        }
+
+        val toStart = start ?: GameStore.getMapByID(mapID).randomFloor()
+
+        mold.addID(info.name, info.desc)
+        mold.addDraw(toGlyph, info.color, 1)
+        mold.addPos(toStart, mapID)
+        log(0, "ItemBuilder", "Item $buildID created at ${mold.pos!!.coord} on floor $mapID")
+
+        when (info.itemType) {
+            "healing" -> mold.addHeal(info.flatAmt, info.pctAmt)
+            "repair" -> mold.addRestore(info.flatAmt, info.pctAmt)
+            else -> mold.addRepair(info.flatAmt, info.pctAmt)
+        }
+
+        mold.updateTag("tags", "item")
 
         mold.blocking = false
         GameStore.addEntity(mold)
@@ -83,20 +129,27 @@ object ItemBuilder {
 
     fun seedItems(mapID: String, vararg tags: String) {
         val numItems = WolfRNG.wolfRNG.nextInt(25)
-        val table: ProbabilityTable<String> = ProbabilityTable(WolfRNG.wolfRNG)
-        val coll = if (tags.isEmpty()) {
-            itemBP.getChildrenByName("EntityType").filter { it.hasChild("rarity") }
+        val table: ProbabilityTable<BaseMarker> = ProbabilityTable(WolfRNG.wolfRNG)
+        val itemCands: Set<BaseMarker> = itemBP.filter{ it.rarity > 0}.toSet()
+        val eqCands: Set<BaseMarker> = eqBP.filter { it.rarity > 0} .toSet()
+
+
+        val coll: Set<BaseMarker> = if (tags.isEmpty()) {
+            eqCands union itemCands
         } else {
-            itemBP.getChildrenByName("EntityType").filter {
-                it.hasChild("rarity") && it["tags"].split(",").any { tags.contains(it) }
-            }
+            eqCands.filter { (it as EquipBase).tags.any { tags.contains(it)} } union itemCands
         }
         for (chosen in coll) {
-            table.add(chosen["id"], chosen["rarity"].toInt())
+            table.add(chosen, chosen.rarity)
         }
 
         for (i in 0.until(numItems)) {
-            build(table.random(), mapID)
+            val randItem = table.random()
+            when (randItem) {
+                is EquipBase -> buildEquip(randItem.id, mapID)
+                is ItemBase -> buildItem(randItem.id, mapID)
+                else -> log(0, "ItemBuilder", "Attempt to seed invalid item ${randItem.id}")
+            }
         }
     }
 }

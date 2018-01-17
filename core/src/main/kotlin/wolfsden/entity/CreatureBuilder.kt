@@ -95,7 +95,7 @@ object CreatureBuilder {
         foetus.addAI(foetus.movDly, info.ai)
 
         listOf(info.mh, info.oh, info.armor, info.trinket).filter{ it != "none" }.forEach {
-            val item = ItemBuilder.build(it, toMap)
+            val item = ItemBuilder.buildEquip(it, toMap)
             foetus.putOn(item)
         }
 

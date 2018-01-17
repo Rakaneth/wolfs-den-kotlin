@@ -80,7 +80,7 @@ class Entity(
     }
 
     val armorMarkup
-        get() = markupEQ("Mainhand", armor)
+        get() = markupEQ("Armor", armor)
     val trinketMarkup
         get() = markupEQ("Trinket", trinket)
     val mhMarkup
