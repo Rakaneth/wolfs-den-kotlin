@@ -1,0 +1,21 @@
+{
+	"joe": {
+		"caption": "Joe the Farmer",
+		"text": "[*]Hey! You there![] Don't ignore me!",
+		"options": [
+			{
+				"text": "(Humor Joe and make small talk.)",
+				"result": "humorjoe"
+			},
+			{
+				"text": "(Walk away and leave Joe alone.)",
+				"result": "done"
+			}
+		]
+	},
+	"humorjoe": {
+		"caption": "Joe the Farmer",
+		"text": "You're a nice fella! Thanks for the talk!",
+		"options": []
+	}
+}

@@ -2,15 +2,16 @@ package wolfsden.screen.ui
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
+import squidpony.ArrayTools
 import squidpony.panel.IColoredString
 import squidpony.squidgrid.gui.gdx.DefaultResources
 import squidpony.squidgrid.gui.gdx.SColor
 import squidpony.squidgrid.gui.gdx.SquidPanel
 import squidpony.squidgrid.gui.gdx.TextCellFactory
 import wolfsden.screen.WolfScreen
-import wolfsden.system.DialogTreeManager
+import wolfsden.system.DialogManager
 
-class Dialog(val caption: String = "", tcf: TextCellFactory = DefaultResources.getSlabFamily())
+class Dialog(var caption: String = "", tcf: TextCellFactory = DefaultResources.getSlabFamily())
     : SquidPanel(10, 10, tcf), WolfSelector {
     companion object {
         const val gw = (WolfScreen.fullGridW * 0.75).toInt()
@@ -46,11 +47,12 @@ class Dialog(val caption: String = "", tcf: TextCellFactory = DefaultResources.g
         require(vertSize < WolfScreen.fullGridH, { "Dialog is too large" })
         setGridWidth(gw)
         setGridHeight(vertSize)
+        contents = ArrayTools.fill('\u0000', gw, vertSize)
         setPosition(WolfScreen.cellWidth * ((WolfScreen.fullGridW - gw) / 2), WolfScreen.cellHeight * vertSize)
     }
 
     override fun handleSelected() {
-        DialogTreeManager.select(menuItems[selected])
+        DialogManager.select(menuItems[selected])
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {

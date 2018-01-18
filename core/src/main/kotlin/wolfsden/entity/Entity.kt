@@ -206,16 +206,20 @@ class Entity(
         val toProcess: EquipStats?
         when (slot) {
             Slot.MH -> {
-                toProcess = mh; mh = null
+                toProcess = mh
+                mh = null
             }
             Slot.OH -> {
-                toProcess = oh; oh = null
+                toProcess = oh
+                oh = null
             }
             Slot.ARMOR -> {
-                toProcess = armor; armor = null
+                toProcess = armor
+                armor = null
             }
             else -> {
-                toProcess = trinket; trinket = null
+                toProcess = trinket
+                trinket = null
             }
         }
         if (toProcess != null) {
@@ -234,7 +238,7 @@ class Entity(
             Slot.ARMOR -> armor = item.eq
             Slot.TRINKET -> trinket = item.eq
             else -> {
-                log(clock, "Equip", "Equip failure")
+                log(clock, "Equip", "$item equip failure")
             }
         }
         item.pos = null

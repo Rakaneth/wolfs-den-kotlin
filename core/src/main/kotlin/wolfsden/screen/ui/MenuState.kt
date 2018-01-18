@@ -11,7 +11,9 @@ import wolfsden.entity.RegenEffect
 import wolfsden.entity.StunEffect
 import wolfsden.screen.PlayScreen
 import wolfsden.system.CommandProcessor
+import wolfsden.system.DialogManager
 import wolfsden.system.GameStore
+import wolfsden.toICString
 
 enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
     NULL(null) {
@@ -59,6 +61,10 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                         player.applyEffect(HasteEffect(player.eID, 75))
                         GameStore.update(false, true)
                     }
+                    'd' -> {
+                        DialogManager.startDialog("joe")
+                        GameStore.update(false, true)
+                    }
                     'Q' -> {
                         GameStore.saveGame()
                         Gdx.app.exit()
@@ -98,6 +104,38 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
         override fun exit(entity: PlayScreen?) {
             theMenu!!.asActor().remove()
         }
+    },
+
+    DIALOG(Dialog()) {
+        override fun update(entity: PlayScreen?) {
+            val curDialog = DialogManager.curDialog!!
+            with (theMenu as Dialog) {
+                theMenu.caption = curDialog.caption
+                theMenu.dialog = curDialog.text.toICString()
+                theMenu.menuItems = curDialog.options.map { it.text}
+            }
+        }
+
+        override fun enter(entity: PlayScreen?) {
+            update(entity)
+            PlayScreen.stage.addActor(theMenu!!.asActor())
+            entity!!.input = SquidInput({ key, _, _, _ ->
+                when (key) {
+                    SquidInput.UP_ARROW -> theMenu.nextItem()
+                    SquidInput.DOWN_ARROW -> theMenu.prevItem()
+                    SquidInput.ENTER -> theMenu.handleSelected()
+                    SquidInput.ESCAPE -> PlayScreen.curState.changeState(PLAY)
+                    else -> {
+                    }
+                }
+            })
+            entity.activateInput()
+        }
+
+        override fun exit(entity: PlayScreen?) {
+            theMenu!!.asActor().remove()
+        }
+
     };
 
     override fun onMessage(entity: PlayScreen?, telegram: Telegram?) = false
