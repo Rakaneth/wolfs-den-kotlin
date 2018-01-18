@@ -32,12 +32,12 @@ object DialogManager {
     }
 
     fun select(option: String) {
-        require(dialogs.containsKey(option) || option == "done", {"$option is not a valid dialog"})
         if (option == "done") {
             curDialog = null
             PlayScreen.curState.changeState(MenuState.PLAY)
         } else {
-            curDialog = dialogs[option]
+            val result = curDialog?.options?.firstOrNull { it.text == option}?.result ?: option
+            curDialog = dialogs[result]
             PlayScreen.curState.update()
         }
     }
@@ -45,6 +45,7 @@ object DialogManager {
     fun startDialog(dialog: String) {
         select(dialog)
         PlayScreen.curState.changeState(MenuState.DIALOG)
+        GameStore.update(false, true)
     }
 
 }

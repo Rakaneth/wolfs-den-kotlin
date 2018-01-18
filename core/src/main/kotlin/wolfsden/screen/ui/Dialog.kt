@@ -47,8 +47,10 @@ class Dialog(var caption: String = "", tcf: TextCellFactory = DefaultResources.g
         require(vertSize < WolfScreen.fullGridH, { "Dialog is too large" })
         setGridWidth(gw)
         setGridHeight(vertSize)
-        contents = ArrayTools.fill('\u0000', gw, vertSize)
-        setPosition(WolfScreen.cellWidth * ((WolfScreen.fullGridW - gw) / 2), WolfScreen.cellHeight * vertSize)
+        contents = ArrayTools.fill(' ', gw, vertSize)
+        colors = ArrayTools.fill(SColor.FLOAT_BLACK, gw, vertSize)
+        setPosition(WolfScreen.cellWidth * ((WolfScreen.fullGridW - gw) / 2),
+                WolfScreen.cellHeight * (WolfScreen.fullGridH - vertSize) / 2)
     }
 
     override fun handleSelected() {
@@ -56,17 +58,18 @@ class Dialog(var caption: String = "", tcf: TextCellFactory = DefaultResources.g
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
+        toFront()
         putBorders(SColor.FLOAT_WHITE, caption)
         var offset = 0
         toWrap.forEachIndexed { idx, line ->
             put(1, idx + 1, line)
             offset = idx + 1
         }
-        (1 until gridWidth).forEach {
+        (1 until gridWidth-1).forEach {
             put(it, offset, "-")
         }
         menuItems.forEachIndexed { idx, s ->
-            put(1, idx + offset + 1, "$idx) $s", if (idx == selected) SColor.LIGHT_BLUE else SColor.WHITE)
+            put(1, idx + offset + 1, s, if (idx == selected) SColor.LIGHT_BLUE else SColor.WHITE)
         }
         super.draw(batch, parentAlpha)
     }

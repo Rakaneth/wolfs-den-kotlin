@@ -1,7 +1,7 @@
 {
 	"joe": {
 		"caption": "Joe the Farmer",
-		"text": "[*]Hey! You there![] Don't ignore me!",
+		"text": "[Light Blue][*]Hey! You there![] Don't ignore me!",
 		"options": [
 			{
 				"text": "(Humor Joe and make small talk.)",
