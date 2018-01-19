@@ -3,6 +3,7 @@ package wolfsden.map
 import squidpony.ArrayTools
 import squidpony.squidgrid.FOV
 import squidpony.squidgrid.gui.gdx.MapUtility
+import squidpony.squidgrid.gui.gdx.SColor
 import squidpony.squidgrid.mapping.DungeonUtility
 import squidpony.squidmath.Coord
 import squidpony.squidmath.CoordPacker
@@ -59,7 +60,10 @@ class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, v
         connections[from] = Connection(toCoord, mapID)
     }
 
-    fun connection(from: Coord): Connection? = connections[from]
+    fun connection(from: Coord): Connection {
+        require(connections.containsKey(from))
+        return connections[from]!!
+    }
 
     fun randomFloor(): Coord = utility.randomFloor(baseMap)
 
@@ -85,12 +89,14 @@ class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, v
         changeMap(c, '\\', Chars.OPEN)
     }
 
-    fun downStair(c: Coord) {
+    fun downStair(c: Coord, special: Boolean = false) {
         changeMap(c, '>', Chars.DOWN)
+        if (special) fgFloats[c.x][c.y] = (SColor.RED.toFloatBits())
     }
 
-    fun upStair(c: Coord) {
+    fun upStair(c: Coord, special: Boolean = false) {
         changeMap(c, '<', Chars.UP)
+        if (special) fgFloats[c.x][c.y] = (SColor.RED.toFloatBits())
     }
 
     data class Connection(val to: Coord, val mapID: String) : Serializable

@@ -129,8 +129,6 @@ object GameStore {
         MapBuilder.buildAll()
         with(CreatureBuilder) {
             build(playerClass, true, null, "mine", playerName)
-            build("banshee")
-            build("revenant")
         }
         ItemBuilder.seedItems("mine")
         Scheduler.resume()

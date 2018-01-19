@@ -44,25 +44,14 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
 
                         } else PlayScreen.addMessage("No item to use/equip in that slot.")
                     }
-                    's' -> {
-                        player.applyEffect(StunEffect(player.eID, 25))
-                        GameStore.update(false, true)
-                    }
-                    't' -> {
-                        player.takeDmg(3)
-                        GameStore.update(false, true)
-                    }
-                    'r' -> {
-                        player.applyEffect(RegenEffect(player.eID, 50, 0.1))
-                        GameStore.update(false, true)
-                    }
-                    'h' -> {
-                        player.applyEffect(HasteEffect(player.eID, 75))
-                        GameStore.update(false, true)
-                    }
-                    'd' -> {
-                        DialogManager.startDialog("joe")
-                        GameStore.update(false, true)
+                    '>', '<' -> {
+                        val pc = player.pos!!.coord
+                        val curMap = GameStore.curMap
+                        if (curMap.connections.containsKey(pc)) {
+                            CommandProcessor.process(player, "stairs", curMap.connection(pc))
+                        } else {
+                            PlayScreen.addMessage("No stairs here.")
+                        }
                     }
                     'Q' -> {
                         GameStore.saveGame()

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import squidpony.squidgrid.mapping.MixedGenerator
 import squidpony.squidgrid.mapping.SectionDungeonGenerator
+import squidpony.squidgrid.mapping.SerpentMapGenerator
 import wolfsden.log
 import wolfsden.system.GameStore
 import wolfsden.system.WolfRNG
@@ -12,7 +13,7 @@ import wolfsden.system.WolfRNG
 data class MapBase(
         val id: String,
         val name: String = "No name",
-        val light: Boolean = true,
+        val light: Boolean = false,
         val width: Int = 20,
         val height: Int = 20,
         val boxCarvers: Int = 0,
@@ -38,7 +39,7 @@ object MapBuilder {
         require(mapBP.any { it.id == mapID }, { "$mapID is not a valid map ID" })
         val info = mapBP.first { it.id == mapID }
 
-        val smg = MixedGenerator(info.width, info.height, WolfRNG.wolfRNG)
+        val smg = SerpentMapGenerator(info.width, info.height, WolfRNG.wolfRNG)
         val deco = SectionDungeonGenerator(info.width, info.height, WolfRNG.wolfRNG)
 
         smg.putBoxRoomCarvers(info.boxCarvers)
@@ -71,12 +72,12 @@ object MapBuilder {
                 val twoWay = it.twoWay
                 when (it.direction) {
                     "up" -> {
-                        curMap.upStair(fromC)
+                        curMap.upStair(fromC, !twoWay)
                         if (twoWay) toMap.downStair(toC)
                     }
                     "down" -> {
-                        curMap.downStair(fromC)
-                        if (twoWay) toMap.upStair(fromC)
+                        curMap.downStair(fromC, !twoWay)
+                        if (twoWay) toMap.upStair(toC)
                     }
                     else -> {
                     } //TODO: outstair

@@ -14,6 +14,10 @@
 				"mapID": "mine2",
 				"direction": "down",
 				"twoWay": true
+			},
+			{
+				"mapID": "lair",
+				"direction": "down"
 			}
 		]
 	},
@@ -86,9 +90,7 @@
 		"light": true,
 		"width": 200,
 		"height": 200,
-		"boxCarvers": 1,
 		"roomCarvers": 2,
-		"caveCarvers": 5,
 		"water": 20,
 		"doors": 10,
 		"doubleDoors": true,

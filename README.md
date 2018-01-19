@@ -22,7 +22,7 @@ years ago.
 - [x] Screen interface
 - [x] Data file handling
 - [x] Basic character generation
-- [ ] Multiple levels - in testing
+- [x] Multiple levels
 - [x] Saving and loading
 - [x] Simple combat mechanics
 - [ ] Character abilities
