@@ -9,20 +9,14 @@ import squidpony.squidgrid.gui.gdx.SColor
 import squidpony.squidgrid.gui.gdx.SquidPanel
 import squidpony.squidgrid.gui.gdx.TextCellFactory
 import wolfsden.screen.WolfScreen
+import wolfsden.setUp
 import wolfsden.system.DialogManager
 
-class Dialog(var caption: String = "", tcf: TextCellFactory = DefaultResources.getSlabFamily())
+class Dialog(var caption: String = "", tcf: TextCellFactory = DefaultResources.getSlabFamily()
+        .setUp(tw = 1.2f, th = 1.5f))
     : SquidPanel(10, 10, tcf), WolfSelector {
     companion object {
         const val gw = (WolfScreen.fullGridW * 0.60).toInt()
-    }
-
-    init {
-        tcf.width(WolfScreen.cellWidth)
-                .height(WolfScreen.cellHeight)
-                .tweakWidth(1.1f * WolfScreen.cellWidth)
-                .tweakHeight(1.5f * WolfScreen.cellHeight)
-                .initBySize()
     }
 
     override var menuItems: List<String> = listOf()
@@ -60,14 +54,15 @@ class Dialog(var caption: String = "", tcf: TextCellFactory = DefaultResources.g
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         toFront()
+        erase()
         putBorders(SColor.FLOAT_WHITE, caption)
         var offset = 0
         toWrap.forEachIndexed { idx, line ->
             put(1, idx + 1, line)
             offset = idx + 2
         }
-        (1 until gridWidth-1).forEach {
-            put(it, offset, "-")
+        (1 until gridWidth - 1).forEach {
+            put(it, offset, "─")
         }
         menuItems.forEachIndexed { idx, s ->
             put(1, idx + offset + 1, s, if (idx == selected) SColor.LIGHT_BLUE else SColor.WHITE)

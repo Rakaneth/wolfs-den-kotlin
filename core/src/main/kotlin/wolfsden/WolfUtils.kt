@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.utils.XmlReader
 import squidpony.panel.IColoredString
 import squidpony.squidgrid.gui.gdx.GDXMarkup
+import squidpony.squidgrid.gui.gdx.TextCellFactory
+import wolfsden.screen.WolfScreen
 
 
 fun <T : Comparable<T>> T.between(low: T, high: T): Boolean {
@@ -40,4 +42,13 @@ fun List<String>.joinWithAnd(): String {
             }
     }
     return accum
+}
+
+fun TextCellFactory.setUp(width: Float = WolfScreen.cellWidth, height: Float = WolfScreen.cellHeight,
+                          tw: Float = 1f, th: Float = 1f): TextCellFactory {
+    return this.width(width)
+            .height(height)
+            .tweakWidth(tw * width)
+            .tweakHeight(th * height)
+            .initBySize()
 }

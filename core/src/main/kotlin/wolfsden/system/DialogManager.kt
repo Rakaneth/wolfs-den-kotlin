@@ -6,12 +6,12 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import wolfsden.screen.PlayScreen
 import wolfsden.screen.ui.MenuState
 
-data class DialogOption (
+data class DialogOption(
         val text: String = "",
         val result: String = ""
 )
 
-data class WolfDialog (
+data class WolfDialog(
         val caption: String = "",
         val text: String = "",
         var options: List<DialogOption> = listOf()

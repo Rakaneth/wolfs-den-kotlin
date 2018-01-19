@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ai.fsm.State
 import com.badlogic.gdx.ai.msg.Telegram
 import squidpony.squidgrid.Direction
-import squidpony.squidgrid.gui.gdx.DefaultResources
 import squidpony.squidgrid.gui.gdx.SquidInput
 import wolfsden.entity.HasteEffect
 import wolfsden.entity.RegenEffect
@@ -81,7 +80,7 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
         }
     },
 
-    ITEM_MENU(ItemMenu(DefaultResources.getSlabFamily())) {
+    ITEM_MENU(ItemMenu()) {
         override fun enter(entity: PlayScreen?) {
             PlayScreen.stage.addActor(theMenu!!.asActor())
             (theMenu as ItemMenu).setItem(PlayScreen.itemSelected!!)
@@ -109,10 +108,10 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
     DIALOG(Dialog()) {
         override fun update(entity: PlayScreen?) {
             val curDialog = DialogManager.curDialog!!
-            with (theMenu as Dialog) {
+            with(theMenu as Dialog) {
                 theMenu.caption = curDialog.caption
                 theMenu.dialog = curDialog.text.toICString()
-                theMenu.menuItems = curDialog.options.map { it.text}
+                theMenu.menuItems = curDialog.options.map { it.text }
             }
         }
 

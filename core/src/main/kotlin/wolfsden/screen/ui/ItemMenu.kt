@@ -1,13 +1,17 @@
 package wolfsden.screen.ui
 
+import squidpony.squidgrid.gui.gdx.DefaultResources
 import squidpony.squidgrid.gui.gdx.TextCellFactory
 import wolfsden.entity.Entity
 import wolfsden.screen.PlayScreen
 import wolfsden.screen.WolfScreen
+import wolfsden.setUp
 import wolfsden.system.CommandProcessor
 import wolfsden.system.GameStore
 
-class ItemMenu(tcf: TextCellFactory) : WolfMenu(tcf = tcf) {
+class ItemMenu(tcf: TextCellFactory = DefaultResources.getSlabFamily()
+        .setUp(tw = 1.2f, th = 1.5f))
+    : WolfMenu(tcf) {
 
     lateinit private var theItem: Entity
 
