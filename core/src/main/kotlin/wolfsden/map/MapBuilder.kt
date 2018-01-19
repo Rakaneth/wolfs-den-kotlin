@@ -3,7 +3,6 @@ package wolfsden.map
 import com.badlogic.gdx.Gdx
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import squidpony.squidgrid.mapping.MixedGenerator
 import squidpony.squidgrid.mapping.SectionDungeonGenerator
 import squidpony.squidgrid.mapping.SerpentMapGenerator
 import wolfsden.log

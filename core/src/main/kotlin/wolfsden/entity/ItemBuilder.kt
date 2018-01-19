@@ -3,6 +3,7 @@ package wolfsden.entity
 import com.badlogic.gdx.Gdx
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import squidpony.squidgrid.mapping.RoomFinder
 import squidpony.squidmath.Coord
 import squidpony.squidmath.ProbabilityTable
 import wolfsden.log
@@ -95,6 +96,8 @@ object ItemBuilder {
         require(itemBP.any { it.id == buildID }, { "$buildID is not a valid item ID" })
         val info = itemBP.first { it.id == buildID }
         val mold = Entity(UUID.randomUUID().toString())
+        val sMap = GameStore.getMapByID(mapID)
+        val finder = RoomFinder(sMap.baseMap)
 
         val toGlyph = if (info.glyph.length == 1) {
             info.glyph.first()
@@ -102,7 +105,7 @@ object ItemBuilder {
             info.glyph.toInt(16).toChar()
         }
 
-        val toStart = start ?: GameStore.getMapByID(mapID).randomFloor()
+        val toStart = start ?: finder.allRooms.singleRandom(WolfRNG.wolfRNG)
 
         mold.addID(info.name, info.desc)
         mold.addDraw(toGlyph, info.color, 1)
@@ -122,12 +125,11 @@ object ItemBuilder {
         return mold
     }
 
-    fun seedItems(mapID: String, vararg tags: String) {
-        val numItems = WolfRNG.wolfRNG.nextInt(25)
+    fun seedItems(mapID: String, maxItems: Int = 10, vararg tags: String) {
+        val numItems = WolfRNG.wolfRNG.nextInt(maxItems)
         val table: ProbabilityTable<BaseMarker> = ProbabilityTable(WolfRNG.wolfRNG)
         val itemCands: Set<BaseMarker> = itemBP.filter { it.rarity > 0 }.toSet()
         val eqCands: Set<BaseMarker> = eqBP.filter { it.rarity > 0 }.toSet()
-
 
         val coll: Set<BaseMarker> = if (tags.isEmpty()) {
             eqCands union itemCands

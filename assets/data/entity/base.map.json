@@ -7,7 +7,7 @@
 		"height": 50,
 		"boxCarvers": 1,
 		"roomCarvers": 2,
-		"doors": 5,
+		"doors": 55,
 		"doubleDoors": true,
 		"connections": [
 			{
@@ -92,7 +92,7 @@
 		"height": 200,
 		"roomCarvers": 2,
 		"water": 20,
-		"doors": 10,
+		"doors": 85,
 		"doubleDoors": true,
 		"connections": []
 	}

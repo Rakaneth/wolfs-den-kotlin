@@ -19,7 +19,7 @@ class Dialog(var caption: String = "", tcf: TextCellFactory = DefaultResources.g
     : SquidPanel(10, 10, tcf), WolfSelector {
 
     val gw
-        get() = menuItems.map { it.length}.max().nz() + 2
+        get() = menuItems.map { it.length }.max().nz() + 2
 
     override var menuItems: List<String> = listOf()
         set(value) {
@@ -41,7 +41,7 @@ class Dialog(var caption: String = "", tcf: TextCellFactory = DefaultResources.g
 
     private fun setDimensions() {
         require(vertSize < PlayScreen.mapH - 2, { "Dialog is too tall" })
-        require(gw < PlayScreen.mapW - 2, {"Dialog is too long"})
+        require(gw < PlayScreen.mapW - 2, { "Dialog is too long" })
         setGridWidth(gw)
         setGridHeight(vertSize)
         contents = ArrayTools.fill(' ', gw, vertSize)

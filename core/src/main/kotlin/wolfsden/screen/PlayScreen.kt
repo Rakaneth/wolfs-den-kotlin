@@ -128,6 +128,7 @@ object PlayScreen : WolfScreen("main") {
     val menuStage = Stage(menuVPort, batch)
 
     override val stage = playLayout.build()
+
     init {
         curState.changeState(MenuState.PLAY)
     }

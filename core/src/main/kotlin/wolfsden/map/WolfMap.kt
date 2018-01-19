@@ -24,6 +24,7 @@ class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, v
                     '>' -> Chars.DOWN
                     '<' -> Chars.UP
                     '+' -> Chars.CLOSED
+                    '/' -> Chars.CLOSED
                     '\\' -> Chars.OPEN
                     ':' -> Chars.BRIDGE
                     else -> Chars.FLOOR
@@ -46,7 +47,7 @@ class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, v
     val height
         get() = baseMap[0].size
 
-    fun isDoor(c: Coord): Boolean = arrayOf('+', '\\').contains(baseMap[c.x][c.y])
+    fun isDoor(c: Coord): Boolean = arrayOf('+', '\\', '/').contains(baseMap[c.x][c.y])
 
     fun oob(c: Coord): Boolean = !c.x.between(0, width - 1) || !c.y.between(0, height - 1)
 

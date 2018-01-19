@@ -5,9 +5,6 @@ import com.badlogic.gdx.ai.fsm.State
 import com.badlogic.gdx.ai.msg.Telegram
 import squidpony.squidgrid.Direction
 import squidpony.squidgrid.gui.gdx.SquidInput
-import wolfsden.entity.HasteEffect
-import wolfsden.entity.RegenEffect
-import wolfsden.entity.StunEffect
 import wolfsden.screen.PlayScreen
 import wolfsden.system.CommandProcessor
 import wolfsden.system.DialogManager
@@ -52,6 +49,9 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                         } else {
                             PlayScreen.addMessage("No stairs here.")
                         }
+                    }
+                    'd' -> {
+                        DialogManager.startDialog("joe")
                     }
                     'Q' -> {
                         GameStore.saveGame()
