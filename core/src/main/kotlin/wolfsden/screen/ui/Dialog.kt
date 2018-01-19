@@ -14,7 +14,7 @@ import wolfsden.system.DialogManager
 class Dialog(var caption: String = "", tcf: TextCellFactory = DefaultResources.getSlabFamily())
     : SquidPanel(10, 10, tcf), WolfSelector {
     companion object {
-        const val gw = (WolfScreen.fullGridW * 0.75).toInt()
+        const val gw = (WolfScreen.fullGridW * 0.60).toInt()
     }
 
     init {
@@ -54,7 +54,8 @@ class Dialog(var caption: String = "", tcf: TextCellFactory = DefaultResources.g
     }
 
     override fun handleSelected() {
-        DialogManager.select(menuItems[selected])
+        val sl = menuItems[selected]
+        DialogManager.select(DialogManager.curDialog!!.options.first { it.text == sl }.result)
     }
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
@@ -63,7 +64,7 @@ class Dialog(var caption: String = "", tcf: TextCellFactory = DefaultResources.g
         var offset = 0
         toWrap.forEachIndexed { idx, line ->
             put(1, idx + 1, line)
-            offset = idx + 1
+            offset = idx + 2
         }
         (1 until gridWidth-1).forEach {
             put(it, offset, "-")

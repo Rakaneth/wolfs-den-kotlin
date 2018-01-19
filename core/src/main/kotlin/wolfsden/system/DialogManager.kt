@@ -36,8 +36,7 @@ object DialogManager {
             curDialog = null
             PlayScreen.curState.changeState(MenuState.PLAY)
         } else {
-            val result = curDialog?.options?.firstOrNull { it.text == option}?.result ?: option
-            curDialog = dialogs[result]
+            curDialog = dialogs[option]
             PlayScreen.curState.update()
         }
     }

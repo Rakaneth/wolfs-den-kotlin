@@ -1,5 +1,6 @@
 package wolfsden.system
 
+import com.badlogic.gdx.Game
 import squidpony.squidai.DijkstraMap
 import wolfsden.entity.Entity
 import wolfsden.system.GameStore.allEntities
@@ -24,7 +25,10 @@ object Faction : EntityListener {
         dMaps.remove(leader)
     }
 
-    fun getDMap(leader: String): DijkstraMap = dMaps[leader]!!
+    fun getDMap(leader: String): DijkstraMap  {
+        require(dMaps.containsKey(leader), {"${GameStore.getByID(leader)} has no faction to lead"})
+        return dMaps[leader]!!
+    }
 
     init {
         GameStore.addListener(this)
