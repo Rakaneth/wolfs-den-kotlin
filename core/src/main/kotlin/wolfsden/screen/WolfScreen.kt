@@ -1,7 +1,9 @@
 package wolfsden.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputMultiplexer
+import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -18,8 +20,8 @@ abstract class WolfScreen(val name: String) {
         const val fullGridH = 40
         const val fullPixelW = fullGridW * cellWidth
         const val fullPixelH = fullGridH * cellHeight
-        val batch = SpriteBatch()
         var curScreen: WolfScreen? = null
+        val batch = SpriteBatch()
         fun setScreen(screen: WolfScreen) {
             curScreen?.exit()
             curScreen = screen
@@ -42,7 +44,7 @@ abstract class WolfScreen(val name: String) {
 
     protected fun markup(text: String, color: String): IColoredString<out Color> = "[$color]$text[]".toICString()
 
-    fun activateInput() {
+    fun activateInput(stage: Stage, input: InputProcessor) {
         Gdx.input.inputProcessor = InputMultiplexer(stage, input)
     }
 }

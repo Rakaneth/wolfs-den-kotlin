@@ -80,7 +80,7 @@ object CCScreen : WolfScreen("character creation") {
     )
 
     init {
-        activateInput()
+        activateInput(stage, input)
     }
 
     private fun drawChoices() {

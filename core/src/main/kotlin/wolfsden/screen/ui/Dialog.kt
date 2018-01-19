@@ -8,6 +8,8 @@ import squidpony.squidgrid.gui.gdx.DefaultResources
 import squidpony.squidgrid.gui.gdx.SColor
 import squidpony.squidgrid.gui.gdx.SquidPanel
 import squidpony.squidgrid.gui.gdx.TextCellFactory
+import wolfsden.nz
+import wolfsden.screen.PlayScreen
 import wolfsden.screen.WolfScreen
 import wolfsden.setUp
 import wolfsden.system.DialogManager
@@ -15,9 +17,9 @@ import wolfsden.system.DialogManager
 class Dialog(var caption: String = "", tcf: TextCellFactory = DefaultResources.getSlabFamily()
         .setUp(tw = 1.2f, th = 1.5f))
     : SquidPanel(10, 10, tcf), WolfSelector {
-    companion object {
-        const val gw = (WolfScreen.fullGridW * 0.60).toInt()
-    }
+
+    val gw
+        get() = menuItems.map { it.length}.max().nz() + 2
 
     override var menuItems: List<String> = listOf()
         set(value) {
@@ -33,18 +35,20 @@ class Dialog(var caption: String = "", tcf: TextCellFactory = DefaultResources.g
         get() = dialog.wrap(gw - 2)
 
     private val vertSize
-        get() = toWrap.size + menuItems.size + 4
+        get() = toWrap.size + menuItems.size + 3
 
     override var selected = 0
 
     private fun setDimensions() {
-        require(vertSize < WolfScreen.fullGridH, { "Dialog is too large" })
+        require(vertSize < PlayScreen.mapH - 2, { "Dialog is too tall" })
+        require(gw < PlayScreen.mapW - 2, {"Dialog is too long"})
         setGridWidth(gw)
         setGridHeight(vertSize)
         contents = ArrayTools.fill(' ', gw, vertSize)
         colors = ArrayTools.fill(SColor.FLOAT_BLACK, gw, vertSize)
-        setPosition(WolfScreen.cellWidth * ((WolfScreen.fullGridW - gw) / 2),
-                WolfScreen.cellHeight * (WolfScreen.fullGridH - vertSize) / 2)
+        val left = WolfScreen.cellWidth * maxOf((PlayScreen.mapW - gw) / 2, 0)
+        val pTop = WolfScreen.cellHeight * maxOf((PlayScreen.mapH - vertSize) / 2, PlayScreen.msgH)
+        setPosition(left, pTop)
     }
 
     override fun handleSelected() {
@@ -54,7 +58,6 @@ class Dialog(var caption: String = "", tcf: TextCellFactory = DefaultResources.g
 
     override fun draw(batch: Batch?, parentAlpha: Float) {
         toFront()
-        erase()
         putBorders(SColor.FLOAT_WHITE, caption)
         var offset = 0
         toWrap.forEachIndexed { idx, line ->

@@ -118,6 +118,7 @@ object GameStore {
 
                 Scheduler.clock = schedClock
             }
+            DialogManager.curDialog = null
             println("$fileName loaded")
         } catch (e: IOException) {
             println("Error loading $fileName: ${e.stackTrace}")
@@ -134,6 +135,7 @@ object GameStore {
         ItemBuilder.seedItems("mine")
         Scheduler.resume()
         PlayScreen.addMessage("Welcome to [Green][/]Wolf's Den II![]")
+        DialogManager.curDialog = null
     }
 
     fun deleteGame(fileName: String?) {

@@ -48,7 +48,7 @@ object TitleScreen : WolfScreen("title") {
     init {
         display.setBounds(0f, 0f, fullPixelW, fullPixelH)
         stage.addActor(display)
-        activateInput()
+        activateInput(stage, input)
     }
 
     private fun drawBase() {

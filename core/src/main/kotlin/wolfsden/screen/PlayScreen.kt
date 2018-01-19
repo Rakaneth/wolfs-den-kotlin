@@ -3,6 +3,7 @@ package wolfsden.screen
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine
 import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import squidpony.squidgrid.gui.gdx.SColor
 import squidpony.squidgrid.gui.gdx.SquidInput
@@ -18,12 +19,12 @@ import wolfsden.system.playerVisible
 import wolfsden.toICString
 
 object PlayScreen : WolfScreen("main") {
-    private const val mapW = 80
-    private const val mapH = 30
+    const val mapW = 80
+    const val mapH = 30
     private const val statW = 40
     private const val statH = 10
     private const val msgW = 40
-    private const val msgH = 10
+    const val msgH = 10
     private const val ttW = 40
     private const val ttH = 10
     private const val sklW = 40
@@ -123,7 +124,10 @@ object PlayScreen : WolfScreen("main") {
     private val invPanel = playLayout.toSquidPanel("inventory")
     val eqPanel = playLayout.toSquidPanel("equip")
     var curState = DefaultStateMachine<PlayScreen, MenuState>(this, MenuState.NULL)
+    val menuVPort = StretchViewport(fullPixelW, fullPixelH)
+    val menuStage = Stage(menuVPort, batch)
 
+    override val stage = playLayout.build()
     init {
         curState.changeState(MenuState.PLAY)
     }
@@ -133,7 +137,6 @@ object PlayScreen : WolfScreen("main") {
     private val player
         get() = GameStore.player
 
-    override val stage = playLayout.build()
 
     private val cam: Coord
         get() {
@@ -144,10 +147,6 @@ object PlayScreen : WolfScreen("main") {
             val camY = calc(c.y, m.height, mapH)
             return Coord.get(camX, camY)
         }
-
-    init {
-        activateInput()
-    }
 
     private fun drawDungeon() {
         mapLayers.clear()
@@ -297,8 +296,13 @@ object PlayScreen : WolfScreen("main") {
         }
         Scheduler.tick()
         if (input.hasNext()) input.next()
+
         stage.act()
         stage.draw()
+
+        menuStage.act()
+        menuStage.viewport.apply(false)
+        menuStage.draw()
     }
 
     var itemSelected: Entity? = null

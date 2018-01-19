@@ -1,7 +1,7 @@
 {
 	"joe": {
 		"caption": "Joe the Farmer",
-		"text": "[Light Blue][*]Hey! You there![] Don't ignore me!",
+		"text": "[Light Blue][*]Hey! You there![] Don't ignore me! (This line is to make the string long enough to [Green][*]overflow.[] Hopefully, this is enough rambling to get it to do that.",
 		"options": [
 			{
 				"text": "(Humor Joe and make small talk.)",
@@ -9,6 +9,34 @@
 			},
 			{
 				"text": "(Walk away and leave Joe alone.)",
+				"result": "done"
+			},
+			{
+				"text": "(This is just here for padding.)",
+				"result": "done"
+			},
+			{
+				"text": "(This is also here for padding.)",
+				"result": "done"
+			},
+			{
+				"text": "(No, really, I just want this box to be extra large.)",
+				"result": "done"
+			},
+			{
+				"text": "(Seriously, make this thing fill the screen.)",
+				"result": "done"
+			},
+			{
+				"text": "(Will t overflow in one direction or the other?)",
+				"result": "done"
+			},
+			{
+				"text": "(More! MORE)",
+				"result": "done"
+			},
+			{
+				"text": "(This text is long enough to hopefully force the left clamp at zero.)",
 				"result": "done"
 			}
 		]

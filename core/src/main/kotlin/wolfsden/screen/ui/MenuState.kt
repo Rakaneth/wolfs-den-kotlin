@@ -23,7 +23,7 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
 
     PLAY(null) {
         override fun enter(entity: PlayScreen?) {
-            PlayScreen.input = SquidInput({ key, alt, ctrl, shift ->
+            entity!!.input = SquidInput({ key, alt, ctrl, shift ->
                 val player = GameStore.player
                 when (key) {
                     SquidInput.UP_ARROW -> CommandProcessor.process(player, "move", Direction.UP)
@@ -70,7 +70,7 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                     }
                 }
             })
-            entity!!.activateInput()
+            entity.activateInput(entity.stage, entity.input)
         }
 
         override fun update(entity: PlayScreen?) {
@@ -82,19 +82,19 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
 
     ITEM_MENU(ItemMenu()) {
         override fun enter(entity: PlayScreen?) {
-            PlayScreen.stage.addActor(theMenu!!.asActor())
+            PlayScreen.menuStage.addActor(theMenu!!.asActor())
             (theMenu as ItemMenu).setItem(PlayScreen.itemSelected!!)
             PlayScreen.input = SquidInput({ key, _, _, _ ->
                 when (key) {
-                    SquidInput.UP_ARROW -> theMenu.nextItem()
-                    SquidInput.DOWN_ARROW -> theMenu.prevItem()
+                    SquidInput.UP_ARROW -> theMenu.prevItem()
+                    SquidInput.DOWN_ARROW -> theMenu.nextItem()
                     SquidInput.ENTER -> theMenu.handleSelected()
                     SquidInput.ESCAPE -> PlayScreen.curState.changeState(PLAY)
                     else -> {
                     }
                 }
             })
-            entity!!.activateInput()
+            entity!!.activateInput(PlayScreen.menuStage, PlayScreen.input)
         }
 
         override fun update(entity: PlayScreen?) {
@@ -117,18 +117,18 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
 
         override fun enter(entity: PlayScreen?) {
             update(entity)
-            PlayScreen.stage.addActor(theMenu!!.asActor())
+            PlayScreen.menuStage.addActor(theMenu!!.asActor())
             entity!!.input = SquidInput({ key, _, _, _ ->
                 when (key) {
-                    SquidInput.UP_ARROW -> theMenu.nextItem()
-                    SquidInput.DOWN_ARROW -> theMenu.prevItem()
+                    SquidInput.UP_ARROW -> theMenu.prevItem()
+                    SquidInput.DOWN_ARROW -> theMenu.nextItem()
                     SquidInput.ENTER -> theMenu.handleSelected()
                     SquidInput.ESCAPE -> PlayScreen.curState.changeState(PLAY)
                     else -> {
                     }
                 }
             })
-            entity.activateInput()
+            entity.activateInput(PlayScreen.menuStage, PlayScreen.input)
         }
 
         override fun exit(entity: PlayScreen?) {
