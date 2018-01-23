@@ -74,7 +74,7 @@
 		"id": "direAlpha",
 		"name": "Great Wolf Alpha",
 		"desc": "The mightiest among wolves, these lupine titans lead packs of great wolves.",
-		"rarity": 5,
+		"rarity": 1,
 		"str": 9,
 		"stam": 8,
 		"spd": 7,

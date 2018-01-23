@@ -97,10 +97,13 @@ class Entity(
         }
     private val defTags: Set<String>
         get(): Set<String> {
-            return (armor?.getEntity?.tags ?: emptyList<String>()) union
-                    (oh?.getEntity?.tags ?: emptyList())
+            return ((armor?.getEntity?.tags ?: emptyList<String>()) union
+                    if (oh?.getEntity?.hasTag("shield") == true) {
+                        oh?.getEntity?.tags ?: emptyList()
+                    } else {
+                        emptyList()
+                    }).filter { !arrayOf("melee", "equipment").contains(it)}.toSet()
         }
-
 
     fun addID(name: String, desc: String) {
         id = Identity(eID, name, desc)

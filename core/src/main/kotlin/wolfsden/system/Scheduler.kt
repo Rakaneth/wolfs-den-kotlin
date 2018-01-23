@@ -2,6 +2,8 @@ package wolfsden.system
 
 import wolfsden.entity.Effect
 import wolfsden.entity.Entity
+import wolfsden.screen.PlayScreen
+import wolfsden.screen.WolfScreen
 import wolfsden.system.GameStore.curEntities
 
 object Scheduler : EntityListener {
@@ -48,6 +50,14 @@ object Scheduler : EntityListener {
                 }
                 effsToRemove.forEach {
                     creature.removeEffect(it)
+                }
+                if (!creature.vit!!.alive) {
+                    if (creature.isPlayer) {
+                        //WolfScreen.setScreen(GameOverScreen)
+                    } else {
+                        PlayScreen.addMessage("${creature.markupString} has been [Crimson]slain![]")
+                        GameStore.removeEntity(creature)
+                    }
                 }
             }
             //TODO: every tick actions

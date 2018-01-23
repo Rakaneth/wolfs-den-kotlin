@@ -46,9 +46,9 @@ object GameStore {
         listeners.remove(listener)
     }
 
-    fun update(map: Boolean = true, hud: Boolean = true) {
-        if (map) mapDirty = true
-        if (hud) hudDirty = true
+    fun update(mp: Boolean = true, hud: Boolean = true) {
+        mapDirty = mp
+        hudDirty = hud
     }
 
     fun addEntity(entity: Entity) {
@@ -129,8 +129,13 @@ object GameStore {
         MapBuilder.buildAll()
         with(CreatureBuilder) {
             build(playerClass, true, null, "mine", playerName)
+            build("revenant")
         }
-        ItemBuilder.seedItems("mine")
+        with(ItemBuilder) {
+            mapList.values.forEach {
+                seedItems(it.id)
+            }
+        }
         Scheduler.resume()
         PlayScreen.addMessage("Welcome to [Green][/]Wolf's Den II![]")
         DialogManager.curDialog = null
