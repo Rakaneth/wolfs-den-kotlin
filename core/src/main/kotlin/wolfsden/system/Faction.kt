@@ -2,10 +2,9 @@ package wolfsden.system
 
 import squidpony.squidai.DijkstraMap
 import wolfsden.entity.Entity
-import wolfsden.system.GameStore.allEntities
 import wolfsden.system.GameStore.curEntities
 
-fun Entity.isAlly(other: Entity): Boolean = other.eID == this.ai?.leader
+fun Entity.isAlly(other: Entity): Boolean = other.eID == this.ai?.leader || other.ai?.leader == this.ai?.leader
 fun Entity.isEnemy(other: Entity): Boolean = !this.isAlly(other) && other.hasTag("creature")
 fun Entity.allies() = curEntities.filter { this.isAlly(it) && it != this }
 fun Entity.visibleAllies() = this.allies().filter { this.visible(it) && it.vit!!.alive }
@@ -35,6 +34,13 @@ object Faction : EntityListener {
     }
 
     override fun onRemove(entity: Entity) {
-        if (entity.isLeader()) removeFaction(entity.eID)
+        if (entity.isLeader()) {
+            removeFaction(entity.eID)
+            entity.allies().forEach {
+                it.ai!!.leader = it.eID
+                addFaction(it.eID)
+                //TODO: make lackeys afraid of alpha's killer?
+            }
+        }
     }
 }

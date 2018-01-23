@@ -8,6 +8,7 @@ import squidpony.squidgrid.FOV
 import squidpony.squidmath.Coord
 import wolfsden.system.Faction
 import wolfsden.system.GameStore
+import wolfsden.system.WolfRNG
 import java.util.*
 
 data class CreatureBase(
@@ -101,5 +102,17 @@ object CreatureBuilder {
         if (foetus.hasTag("leader") || foetus.hasTag("solo")) Faction.addFaction(foetus.eID)
         return foetus
     }
+
+    fun buildPack(lackeyID: String, leaderID: String, numLackeys: Int, mapID: String = GameStore.curMap.id, leaderStart: Coord? = null) {
+        val leader = build(leaderID, mapID = mapID, start = leaderStart)!!
+        for (i in 0 until numLackeys) {
+            val startC = GameStore.getMapByID(mapID).randomFloorWithin(leader.pos!!.coord, 2.0)
+            val lackey = build(lackeyID, mapID = mapID, start = startC)!!
+            lackey.ai!!.leader = leader!!.eID
+        }
+    }
+
+    fun buildWolfPack(mapID: String = GameStore.curMap.id) { buildPack("wolf", "alpha", WolfRNG.wolfRNG.between(2, 5), mapID)}
+    fun buildGreaterPack(mapID: String = GameStore.curMap.id) { buildPack("dire", "direAlpha", WolfRNG.wolfRNG.between(2, 5), mapID)}
 }
 

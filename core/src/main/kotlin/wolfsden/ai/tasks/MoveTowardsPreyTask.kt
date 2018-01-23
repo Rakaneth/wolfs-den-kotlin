@@ -7,6 +7,7 @@ import wolfsden.log
 import wolfsden.system.CommandProcessor.process
 import wolfsden.system.Faction
 import wolfsden.system.Scheduler.clock
+import wolfsden.system.isLeader
 import wolfsden.system.visibleAllies
 
 class MoveTowardsPreyTask : LeafTask<Entity>() {
@@ -15,7 +16,12 @@ class MoveTowardsPreyTask : LeafTask<Entity>() {
     }
 
     override fun execute(): Status {
-        val dMap = Faction.getDMap(`object`.eID)
+        val dMap = if (`object`.isLeader()){
+            Faction.getDMap(`object`.eID)
+        } else {
+            Faction.getDMap(`object`.ai!!.leader)
+        }
+
         val nextStep = dMap.findPath(1, null, `object`.visibleAllies().map { it.pos!!.coord }, `object`.pos!!.coord, `object`.ai!!.getTarget()!!.pos!!.coord)
         return if (nextStep.isEmpty()) {
             log(clock, "AI", "$`object` cannot find path to prey")
