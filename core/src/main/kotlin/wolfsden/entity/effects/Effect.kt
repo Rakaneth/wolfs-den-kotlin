@@ -1,4 +1,4 @@
-package wolfsden.entity
+package wolfsden.entity.effects
 
 import wolfsden.log
 import wolfsden.system.GameStore
@@ -17,7 +17,11 @@ open class Effect(
         val sav: Int = 0,
         val curProt: Int = 0,
         val atkDly: Int = 0,
-        val movDly: Int = 0
+        val movDly: Int = 0,
+        val permanent: Boolean = false,
+        val weakness: List<String> = listOf(),
+        val resistance: List<String> = listOf(),
+        val tags: List<String> = listOf()
 ) : Serializable {
     val entity
         get() = GameStore.getByID(eID)!!
@@ -36,34 +40,14 @@ open class Effect(
         log(clock, "Effect", "$name effect expired")
     }
 
-    open fun tick() {}
+    open fun tick() {
+        if (!permanent) duration--
+    }
 
     override fun toString(): String {
-        return "[${if (buff) "Green" else "Crimson"}]$name ($duration)"
+        return "[${if (buff) "Green" else "Crimson"}]$name${if (permanent) "" else " ($duration)"}"
     }
 }
 
-class StunEffect(
-        override val eID: String,
-        override var duration: Int
-) : Effect("Stunned", eID, duration = duration, loseTurn = true)
 
-class RegenEffect(
-        override val eID: String,
-        override var duration: Int,
-        val effPowa: Double = 0.0
-) : Effect("Regen", eID, duration = duration, buff = true) {
-    var accVit = 0.0
-    override fun tick() {
-        accVit += effPowa
-        if (accVit > 1.0) {
-            accVit -= 1.0
-            entity.heal(1)
-        }
-    }
-}
 
-class HasteEffect(
-        override val eID: String,
-        override var duration: Int
-) : Effect("Haste", eID, duration = duration, atkDly = -5, movDly = -5, buff = true)

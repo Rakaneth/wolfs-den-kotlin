@@ -5,6 +5,8 @@ import com.badlogic.gdx.ai.fsm.State
 import com.badlogic.gdx.ai.msg.Telegram
 import squidpony.squidgrid.Direction
 import squidpony.squidgrid.gui.gdx.SquidInput
+import wolfsden.entity.effects.BulwarkStance
+import wolfsden.entity.effects.TitanStance
 import wolfsden.screen.PlayScreen
 import wolfsden.system.CommandProcessor
 import wolfsden.system.DialogManager
@@ -52,6 +54,14 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                     }
                     'd' -> {
                         DialogManager.startDialog("joe")
+                    }
+                    't' -> {
+                        player.toggleEffect(TitanStance(player.eID))
+                        GameStore.update(false, true)
+                    }
+                    'b' -> {
+                        player.toggleEffect(BulwarkStance(player.eID))
+                        GameStore.update(false, true)
                     }
                     'Q' -> {
                         GameStore.saveGame()

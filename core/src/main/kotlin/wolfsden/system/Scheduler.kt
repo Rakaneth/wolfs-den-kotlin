@@ -1,9 +1,8 @@
 package wolfsden.system
 
-import wolfsden.entity.Effect
+import wolfsden.entity.effects.Effect
 import wolfsden.entity.Entity
 import wolfsden.screen.PlayScreen
-import wolfsden.screen.WolfScreen
 import wolfsden.system.GameStore.curEntities
 
 object Scheduler : EntityListener {
@@ -44,8 +43,7 @@ object Scheduler : EntityListener {
                 with(creature.effectStack!!) {
                     effects.forEach {
                         it.tick()
-                        it.duration--
-                        if (it.duration <= 0) effsToRemove.add(it)
+                        if (it.duration <= 0 && !it.permanent) effsToRemove.add(it)
                     }
                 }
                 effsToRemove.forEach {

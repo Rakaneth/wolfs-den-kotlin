@@ -3,6 +3,7 @@ package wolfsden.entity
 import com.badlogic.gdx.ai.btree.BehaviorTree
 import com.badlogic.gdx.ai.btree.utils.BehaviorTreeLibraryManager
 import squidpony.squidmath.Coord
+import wolfsden.entity.effects.Effect
 import wolfsden.system.GameStore
 import java.io.Serializable
 
@@ -164,4 +165,10 @@ class EffectStack(
         get() = effects.sumBy { it.movDly }
     val loseTurn
         get() = effects.any { it.loseTurn }
+    val weakness
+        get() = effects.fold(mutableListOf<String>(), { acc, effect -> acc.addAll(effect.weakness); acc }).toSet()
+    val resistance
+        get() = effects.fold(mutableListOf<String>(), { acc, effect -> acc.addAll(effect.resistance); acc }).toSet()
+    val tags
+        get() = effects.fold(mutableListOf<String>(), { acc, effect -> acc.addAll(effect.tags); acc }).toSet()
 }

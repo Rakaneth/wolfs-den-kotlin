@@ -6,6 +6,8 @@ import squidpony.panel.IColoredString
 import squidpony.squidgrid.FOV
 import squidpony.squidmath.Coord
 import wolfsden.CommonColors
+import wolfsden.entity.effects.Effect
+import wolfsden.entity.effects.Stance
 import wolfsden.log
 import wolfsden.map.WolfMap
 import wolfsden.nz
@@ -309,9 +311,10 @@ class Entity(
         }
     }
 
-    fun hasTag(tag: String) = tags.contains(tag)
-    fun hasWeakness(weak: String) = weakness.contains(weak)
-    fun hasResistance(resist: String) = resistance.contains(resist) || defTags.contains(resist)
+    fun hasTag(tag: String) = tags.contains(tag) || atkTags.contains(tag) || (effectStack?.tags?.contains(tag) ?: false)
+    fun hasWeakness(weak: String) = weakness.contains(weak) || (effectStack?.weakness?.contains(weak) ?: false)
+    fun hasResistance(resist: String) = resistance.contains(resist) || defTags.contains(resist) ||
+            (effectStack?.resistance?.contains(resist) ?: false)
 
     fun updateFOV() {
         FOV.reuseFOV(getMap()!!.resistances, vision!!.visible, pos!!.x, pos!!.y, vision!!.vision)
@@ -346,8 +349,11 @@ class Entity(
         if (hasEffect(eff)) {
             getEffect(eff.name).onMerge(eff)
         } else {
+            if (eff is Stance)
+                effectStack!!.effects.filter { it is Stance}.forEach { removeEffect(it)}
             eff.onApply()
             effectStack!!.effects.add(eff)
+
         }
     }
 
@@ -356,6 +362,18 @@ class Entity(
         effectStack?.effects?.remove(eff)
     }
 
-    override fun toString(): String = "${id?.name}-${eID.substringBefore("-")}"
+    fun removeEffect(effName: String) {
+        val eff = effectStack!!.effects.first { it.name == effName}
+        removeEffect(eff)
+    }
 
+    fun toggleEffect(eff: Effect) {
+        if (hasEffect(eff.name)) {
+            removeEffect(eff.name)
+        } else {
+            applyEffect(eff)
+        }
+    }
+
+    override fun toString(): String = "${id?.name}-${eID.substringBefore("-")}"
 }
