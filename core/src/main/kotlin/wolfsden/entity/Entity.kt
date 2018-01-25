@@ -76,6 +76,8 @@ class Entity(
     val inventory: MutableList<Entity> = mutableListOf()
     val bagsFull
         get() = inventory.size >= capacity
+    val isCreature
+        get() = hasTag("creature") && blocking
 
     private fun markupEQ(label: String, eq: EquipStats?): IColoredString<Color> {
         return "[${CommonColors.INFO}]%8s[]: ${eq?.name ?: "Nothing"}".format(label).toICString()
