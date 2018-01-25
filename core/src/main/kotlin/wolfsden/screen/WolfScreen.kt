@@ -13,7 +13,7 @@ import wolfsden.toICString
 
 abstract class WolfScreen(val name: String) {
     companion object Params {
-        const val cellWidth = 16f
+        const val cellWidth = 15f
         const val cellHeight = 20f
         const val fullGridW = 120
         const val fullGridH = 40

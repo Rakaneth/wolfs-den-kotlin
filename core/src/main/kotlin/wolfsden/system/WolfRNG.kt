@@ -39,6 +39,6 @@ object WolfRNG {
 
     fun extendedRollTest(step: Int, diff: Int) {
         val pct = Array(1000, { roll(step, diff) }).count { it.first > 0 }
-        println("Result of 1000 step $step (${diceString(step)}) rolls against diff $diff: ${pct / 10}%")
+        println("Result of 1000 step $step (${diceString(step)}) rolls against diff $diff: ${pct * 0.1}%")
     }
 }

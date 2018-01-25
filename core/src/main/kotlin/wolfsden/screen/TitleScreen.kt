@@ -32,7 +32,7 @@ object TitleScreen : WolfScreen("title") {
             }
         }
     })
-    private val slab = DefaultResources.getStretchableSlabFont().width(cellWidth).height(cellHeight).initBySize()
+    private val slab = DefaultResources.getSlabFamily().width(cellWidth).height(cellHeight).tweakHeight(cellHeight * 1.25f).initBySize()
     private val display = SquidPanel(120, 40, slab)
     private val fileList: Array<File>
         get() {

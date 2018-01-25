@@ -18,7 +18,7 @@ public class DesktopLauncher {
     private static LwjglApplicationConfiguration getDefaultConfiguration() {
         LwjglApplicationConfiguration configuration = new LwjglApplicationConfiguration();
         configuration.title = "wolfs-den-kotlin";
-        configuration.width = 120 * 16;
+        configuration.width = 120 * 15;
         configuration.height = 40 * 20;
         for (int size : new int[] { 128, 64, 32, 16 }) {
             configuration.addIcon("libgdx" + size + ".png", FileType.Internal);

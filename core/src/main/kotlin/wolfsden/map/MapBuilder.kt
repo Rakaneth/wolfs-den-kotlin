@@ -38,7 +38,7 @@ object MapBuilder {
         require(mapBP.any { it.id == mapID }, { "$mapID is not a valid map ID" })
         val info = mapBP.first { it.id == mapID }
 
-        val smg = SerpentMapGenerator(info.width, info.height, WolfRNG.wolfRNG)
+        val smg = SerpentMapGenerator(info.width, info.height, WolfRNG.wolfRNG, 0.2)
         val deco = SectionDungeonGenerator(info.width, info.height, WolfRNG.wolfRNG)
 
         smg.putBoxRoomCarvers(info.boxCarvers)

@@ -106,7 +106,7 @@ object CreatureBuilder {
     fun buildPack(lackeyID: String, leaderID: String, numLackeys: Int, mapID: String = GameStore.curMap.id, leaderStart: Coord? = null) {
         val leader = build(leaderID, mapID = mapID, start = leaderStart)!!
         for (i in 0 until numLackeys) {
-            val startC = GameStore.getMapByID(mapID).randomFloorWithin(leader.pos!!.coord, 2.0)
+            val startC = GameStore.getMapByID(mapID).randomFloorWithin(leader.pos!!.coord, 2)
             val lackey = build(lackeyID, mapID = mapID, start = startC)!!
             lackey.ai!!.leader = leader!!.eID
         }
