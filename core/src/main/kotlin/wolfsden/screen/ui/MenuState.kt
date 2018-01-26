@@ -67,6 +67,10 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                         GameStore.saveGame()
                         Gdx.app.exit()
                     }
+                    'T' -> {
+                        entity.curState.changeState(TARGET)
+                        GameStore.update()
+                    }
                 }
             })
             entity.activateInput(entity.stage, entity.input)
@@ -132,6 +136,37 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
 
         override fun exit(entity: PlayScreen?) {
             theMenu!!.asActor().remove()
+        }
+
+    },
+
+    TARGET(null) {
+        override fun update(entity: PlayScreen?) {}
+
+        override fun enter(entity: PlayScreen?) {
+            entity!!.cursor = GameStore.player.pos!!.coord
+            entity.input = SquidInput({key, _, _, _ ->
+                val direction = when (key) {
+                    SquidInput.UP_ARROW -> Direction.UP
+                    SquidInput.UP_RIGHT_ARROW -> Direction.UP_RIGHT
+                    SquidInput.RIGHT_ARROW -> Direction.RIGHT
+                    SquidInput.DOWN_RIGHT_ARROW -> Direction.DOWN_RIGHT
+                    SquidInput.DOWN_ARROW -> Direction.DOWN
+                    SquidInput.DOWN_LEFT_ARROW -> Direction.DOWN_LEFT
+                    SquidInput.LEFT_ARROW -> Direction.LEFT
+                    SquidInput.UP_LEFT_ARROW -> Direction.UP_LEFT
+                    else -> Direction.NONE
+                }
+                entity.moveCursor(direction)
+                when (key) {
+                    SquidInput.ENTER, SquidInput.ESCAPE -> { entity.curState.changeState(PLAY)}
+                }
+            })
+            entity.activateInput(entity.menuStage, entity.input)
+        }
+
+        override fun exit(entity: PlayScreen?) {
+            entity?.cursor = null
         }
 
     };

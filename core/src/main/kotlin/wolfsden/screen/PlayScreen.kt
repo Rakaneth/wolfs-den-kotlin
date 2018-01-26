@@ -5,11 +5,14 @@ import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.StretchViewport
+import squidpony.squidgrid.Direction
 import squidpony.squidgrid.gui.gdx.SColor
 import squidpony.squidgrid.gui.gdx.SquidInput
 import squidpony.squidmath.Coord
 import wolfsden.CommonColors
+import wolfsden.between
 import wolfsden.entity.Entity
+import wolfsden.getColor
 import wolfsden.screen.ui.MenuState
 import wolfsden.screen.ui.WolfMenu
 import wolfsden.system.GameStore
@@ -149,6 +152,8 @@ object PlayScreen : WolfScreen("main") {
             return Coord.get(camX, camY)
         }
 
+    var cursor: Coord? = null
+
     private fun drawDungeon() {
         mapLayers.clear()
         val m = GameStore.curMap
@@ -285,10 +290,27 @@ object PlayScreen : WolfScreen("main") {
         msgPanel.appendWrappingMessage("-$msg".toICString())
     }
 
+    private fun inView(c: Coord): Boolean {
+        val onMap = !curMap.oob(c)
+        val onScreen = (c.x - cam.x).between(0, mapW - 1) && (c.y - cam.y).between(0, mapH - 1)
+        return onMap && onScreen
+    }
+
+    fun moveCursor(direction: Direction) {
+        val newC = cursor?.translate(direction) ?: return
+        if (inView(newC)) cursor = newC
+        GameStore.update()
+    }
+
+    private fun drawCursor() {
+        mapLayers.put(cursor!!.x - cam.x, cursor!!.y - cam.y, 'X', CommonColors.WARNING.getColor())
+    }
+
     override fun render() {
         if (GameStore.mapDirty) {
             drawDungeon()
             drawEntities()
+            if (cursor != null) drawCursor()
             GameStore.mapDirty = false
         }
         if (GameStore.hudDirty) {

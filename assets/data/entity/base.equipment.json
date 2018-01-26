@@ -43,7 +43,7 @@
 		"slot": "mh",
 		"atk": 2,
 		"dmg": 1,
-		"dly": 5,
+		"dly": 4,
 		"tags": [
 			"melee",
 			"slash",
@@ -76,7 +76,6 @@
 		"color": "Silver",
 		"rarity": 15,
 		"slot": "mh",
-		"atk": 1,
 		"dmg": 3,
 		"dly": 6,
 		"tags": [

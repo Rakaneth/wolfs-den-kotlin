@@ -134,12 +134,10 @@ class AI(
     }
 
     fun getBTree(): BehaviorTree<Entity> {
-        return if (btree == null) {
+        if (btree == null)
             updateBTree()
-            btree!!
-        } else {
-            btree!!
-        }
+
+        return btree!!
     }
 
     fun getTarget(): Entity? = GameStore.entityList[target]

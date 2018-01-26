@@ -1,5 +1,9 @@
 package wolfsden
 
+import com.badlogic.gdx.graphics.Colors
+
+fun String.getColor() = Colors.get(this)
+
 object Chars {
     const val WALL = '\u2588'
     const val FLOOR = '\u00A0'
