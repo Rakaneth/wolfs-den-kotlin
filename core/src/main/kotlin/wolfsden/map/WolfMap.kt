@@ -1,12 +1,11 @@
 package wolfsden.map
 
 import squidpony.ArrayTools
-import squidpony.squidgrid.FOV
 import squidpony.squidgrid.gui.gdx.MapUtility
 import squidpony.squidgrid.gui.gdx.SColor
 import squidpony.squidgrid.mapping.DungeonUtility
 import squidpony.squidmath.Coord
-import squidpony.squidmath.CoordPacker
+import squidpony.squidmath.GreasedRegion
 import wolfsden.Chars
 import wolfsden.between
 import wolfsden.system.Location
@@ -15,7 +14,9 @@ import java.io.Serializable
 
 class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, var light: Boolean = true) : Serializable {
     var displayMap: Array<CharArray> = ArrayTools.fill('#', baseMap.size, baseMap[0].size)
-
+    var resistances = DungeonUtility.generateResistances(baseMap)
+    var floors : GreasedRegion = GreasedRegion(resistances, 0.8)
+    var tempRegion : GreasedRegion = floors.copy()
     init {
         for ((x, row) in baseMap.withIndex()) {
             for ((y, c) in row.withIndex()) {
@@ -33,12 +34,8 @@ class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, v
         }
     }
 
-    @Transient
-    var utility = DungeonUtility(WolfRNG.wolfRNG)
-
     var bgFloats = MapUtility.generateDefaultBGColorsFloat(baseMap)
     var fgFloats = MapUtility.generateDefaultColorsFloat(baseMap)
-    var resistances = DungeonUtility.generateResistances(baseMap)
     val connections: MutableMap<Coord, Connection> = mutableMapOf()
 
     val width
@@ -66,20 +63,24 @@ class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, v
         return connections[from]!!
     }
 
-    fun randomFloor(): Coord = utility.randomFloor(baseMap)
+    fun randomFloor(): Coord = floors.singleRandom(WolfRNG.wolfRNG)
 
-    fun randomFloorWithin(c: Coord, radius: Double = 1.0): Coord {
-        val tempVisible = ArrayTools.fill(0.0, baseMap.size, baseMap[0].size)
-        FOV.reuseFOV(resistances, tempVisible, c.x, c.y, radius)
-        return CoordPacker.singleRandom(CoordPacker.pack(tempVisible), WolfRNG.wolfRNG)
+    fun randomFloorWithin(c: Coord, radius: Int = 1): Coord {
+        return tempRegion.empty().insert(c).flood(floors, radius).singleRandom(WolfRNG.wolfRNG)
+//        val tempVisible = ArrayTools.fill(0.0, baseMap.size, baseMap[0].size)
+//        FOV.reuseFOV(resistances, tempVisible, c.x, c.y, radius)
+//        return CoordPacker.singleRandom(CoordPacker.pack(tempVisible), WolfRNG.wolfRNG)
     }
 
     fun changeMap(c: Coord, baseChar: Char, displayChar: Char) {
         baseMap[c.x][c.y] = baseChar
         displayMap[c.x][c.y] = displayChar
+        resistances = DungeonUtility.generateResistances(baseMap)
+        floors.refill(resistances, 0.8)
+        tempRegion.remake(floors)
+
         fgFloats = MapUtility.generateDefaultColorsFloat(baseMap)
         bgFloats = MapUtility.generateDefaultBGColorsFloat(baseMap)
-        resistances = DungeonUtility.generateResistances(baseMap)
     }
 
     fun closeDoor(c: Coord) {

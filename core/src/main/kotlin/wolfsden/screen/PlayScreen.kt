@@ -55,8 +55,8 @@ object PlayScreen : WolfScreen("main") {
             x = statW
             y = 0
             tcf {
-                tweakWidth = 1.2f
-                tweakHeight = 1.5f
+                tweakWidth = 1.1f
+                tweakHeight = 1.25f
             }
         }
         panel {
@@ -66,8 +66,8 @@ object PlayScreen : WolfScreen("main") {
             x = 0
             y = 0
             tcf {
-                tweakWidth = 1.2f
-                tweakHeight = 1.5f
+                tweakWidth = 1.1f
+                tweakHeight = 1.25f
             }
         }
         panel {
@@ -77,8 +77,8 @@ object PlayScreen : WolfScreen("main") {
             x = statW + msgW
             y = 0
             tcf {
-                tweakWidth = 1.2f
-                tweakHeight = 1.5f
+                tweakWidth = 1.1f
+                tweakHeight = 1.25f
             }
         }
         panel {
@@ -88,8 +88,8 @@ object PlayScreen : WolfScreen("main") {
             x = mapW
             y = ttH
             tcf {
-                tweakWidth = 1.2f
-                tweakHeight = 1.5f
+                tweakWidth = 1.1f
+                tweakHeight = 1.25f
             }
         }
         panel {
@@ -99,8 +99,8 @@ object PlayScreen : WolfScreen("main") {
             x = mapW
             y = ttH + sklH
             tcf {
-                tweakWidth = 1.2f
-                tweakHeight = 1.5f
+                tweakWidth = 1.1f
+                tweakHeight = 1.25f
             }
         }
         panel {
@@ -110,8 +110,8 @@ object PlayScreen : WolfScreen("main") {
             x = mapW
             y = ttH + sklH + invH
             tcf {
-                tweakWidth = 1.2f
-                tweakHeight = 1.5f
+                tweakWidth = 1.1f
+                tweakHeight = 1.25f
             }
         }
     }

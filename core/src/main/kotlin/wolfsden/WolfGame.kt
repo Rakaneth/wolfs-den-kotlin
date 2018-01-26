@@ -19,4 +19,9 @@ class WolfGame : ApplicationAdapter() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         WolfScreen.curScreen?.render()
     }
+
+    override fun resize(width: Int, height: Int) {
+        WolfScreen.curScreen?.vport?.update(width, height, false);
+
+    }
 }

@@ -101,5 +101,7 @@ class TCFBuild {
     var tweakHeight = 1f
     var base: TextCellFactory = DefaultResources.getSlabFamily()
 
-    fun build(): TextCellFactory = base.width(WolfScreen.cellWidth).height(WolfScreen.cellHeight).tweakWidth(tweakWidth * WolfScreen.cellWidth).tweakHeight(tweakHeight * WolfScreen.cellHeight).initBySize()
+    fun build(): TextCellFactory = base.width(WolfScreen.cellWidth).height(WolfScreen.cellHeight)
+            .tweakWidth(tweakWidth * WolfScreen.cellWidth).tweakHeight(tweakHeight * WolfScreen.cellHeight)
+            .initBySize()
 }

@@ -1,3 +1,4 @@
+
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.XmlReader
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -5,7 +6,6 @@ import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import squidpony.squidgrid.mapping.DungeonGenerator
-import squidpony.squidgrid.mapping.DungeonUtility
 import wolfsden.entity.Entity
 import wolfsden.entity.EquipStats
 import wolfsden.entity.Slot
@@ -66,7 +66,6 @@ class EntityTestSource {
             }
             when (newMap) {
                 is WolfMap -> {
-                    newMap.utility = DungeonUtility(WolfRNG.wolfRNG)
                     println(newMap.randomFloor())
                     assertEquals(newMap.id, m1.id)
                 }
