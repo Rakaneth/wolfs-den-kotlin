@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.StretchViewport
+import squidpony.squidai.AreaUtils
 import squidpony.squidgrid.Direction
 import squidpony.squidgrid.gui.gdx.SColor
 import squidpony.squidgrid.gui.gdx.SquidInput
@@ -12,6 +13,7 @@ import squidpony.squidmath.Coord
 import wolfsden.CommonColors
 import wolfsden.between
 import wolfsden.entity.Entity
+import wolfsden.entity.skills.WolfSkill
 import wolfsden.getColor
 import wolfsden.screen.ui.MenuState
 import wolfsden.screen.ui.WolfMenu
@@ -125,18 +127,18 @@ object PlayScreen : WolfScreen("main") {
     private val ttPanel = playLayout.toSquidPanel("tt")
     private val sklPanel = playLayout.toSquidPanel("skills")
     private val invPanel = playLayout.toSquidPanel("inventory")
-    val eqPanel = playLayout.toSquidPanel("equip")
+    private val eqPanel = playLayout.toSquidPanel("equip")
     var curState = DefaultStateMachine<PlayScreen, MenuState>(this, MenuState.NULL)
     val menuVPort = StretchViewport(fullPixelW, fullPixelH)
     val menuStage = Stage(menuVPort, batch)
 
     override val stage = playLayout.build()
+    var skillInUse: WolfSkill? = null
 
     init {
         curState.changeState(MenuState.PLAY)
     }
 
-    var itemMenu: WolfMenu? = null
     private const val FW = SColor.FLOAT_WHITE
     private val player
         get() = GameStore.player
@@ -146,7 +148,7 @@ object PlayScreen : WolfScreen("main") {
         get() {
             val m = GameStore.curMap
             val c = GameStore.player.pos!!.coord
-            val calc: (Int, Int, Int) -> Int = { p, m, s -> MathUtils.clamp(p - s / 2, 0, maxOf(m - s, 0)) }
+            val calc: (Int, Int, Int) -> Int = { p, md, s -> MathUtils.clamp(p - s / 2, 0, maxOf(md - s, 0)) }
             val camX = calc(c.x, m.width, mapW)
             val camY = calc(c.y, m.height, mapH)
             return Coord.get(camX, camY)
@@ -303,7 +305,13 @@ object PlayScreen : WolfScreen("main") {
     }
 
     private fun drawCursor() {
-        mapLayers.put(cursor!!.x - cam.x, cursor!!.y - cam.y, 'X', CommonColors.WARNING.getColor())
+        skillInUse?.aoe?.shift(cursor)
+        val color = if (AreaUtils.verifyReach(skillInUse!!.aoe!!.reach, player.pos!!.coord, cursor)) {
+            CommonColors.WARNING.getColor()
+        } else {
+            CommonColors.VIT.getColor()
+        }
+        mapLayers.put(cursor!!.x - cam.x, cursor!!.y - cam.y, 'X', color)
     }
 
     override fun render() {

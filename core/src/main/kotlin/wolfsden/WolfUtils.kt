@@ -8,6 +8,7 @@ import squidpony.squidgrid.gui.gdx.GDXMarkup
 import squidpony.squidgrid.gui.gdx.TextCellFactory
 import wolfsden.screen.WolfScreen
 
+var debugState = false
 
 fun <T : Comparable<T>> T.between(low: T, high: T): Boolean {
     return when {
@@ -24,7 +25,7 @@ inline fun XmlReader.Element.nz(attr: String, block: () -> Unit) {
 }
 
 fun log(time: Int, tag: String, msg: String) {
-    GdxAI.getLogger().info(tag, "[$time]$msg")
+    if (debugState) GdxAI.getLogger().info(tag, "[$time]$msg")
 }
 
 fun String.toICString(): IColoredString<Color> {

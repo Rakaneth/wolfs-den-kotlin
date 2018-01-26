@@ -7,6 +7,7 @@ import squidpony.squidgrid.Direction
 import squidpony.squidgrid.gui.gdx.SquidInput
 import wolfsden.entity.effects.BulwarkStance
 import wolfsden.entity.effects.TitanStance
+import wolfsden.entity.skills.Stonebreaker
 import wolfsden.screen.PlayScreen
 import wolfsden.system.CommandProcessor
 import wolfsden.system.DialogManager
@@ -70,6 +71,11 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                     'T' -> {
                         entity.curState.changeState(TARGET)
                         GameStore.update()
+                    }
+                    SquidInput.F1 -> {
+                        entity.skillInUse = Stonebreaker(player.eID)
+                        entity.curState.changeState(TARGET)
+                        GameStore.update(true, false)
                     }
                 }
             })
@@ -159,9 +165,13 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                 }
                 entity.moveCursor(direction)
                 when (key) {
-                    SquidInput.ENTER, SquidInput.ESCAPE -> {
+                    SquidInput.ENTER -> {
+                        if (entity.skillInUse != null)
+                            entity.skillInUse?.use(entity.cursor!!)
                         entity.curState.changeState(PLAY)
                     }
+                    SquidInput.ESCAPE -> entity.curState.changeState(PLAY)
+                    else -> {}
                 }
             })
             entity.activateInput(entity.menuStage, entity.input)
