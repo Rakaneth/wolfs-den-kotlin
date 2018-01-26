@@ -4,6 +4,7 @@ import com.badlogic.gdx.ai.btree.BehaviorTree
 import com.badlogic.gdx.ai.btree.utils.BehaviorTreeLibraryManager
 import squidpony.squidmath.Coord
 import wolfsden.entity.effects.Effect
+import wolfsden.entity.skills.WolfSkill
 import wolfsden.system.GameStore
 import java.io.Serializable
 
@@ -127,6 +128,7 @@ class AI(
     var btree: BehaviorTree<Entity>? = null
     var target: String? = null
     var leader: String = entity
+    var skillInUse: WolfSkill? = null
 
     fun updateBTree(aiName: String? = null) {
         if (aiName != null) aiTree = "data/ai/$aiName.tree"
@@ -169,4 +171,13 @@ class EffectStack(
         get() = effects.fold(mutableListOf<String>(), { acc, effect -> acc.addAll(effect.resistance); acc }).toSet()
     val tags
         get() = effects.fold(mutableListOf<String>(), { acc, effect -> acc.addAll(effect.tags); acc }).toSet()
+}
+
+class SkillStack(override val entity: String) : Component(entity) {
+    val skills: MutableList<WolfSkill> = mutableListOf()
+    private val labels = listOf("F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10")
+
+    val skillTable
+        get() = labels.zip(skills)
+
 }

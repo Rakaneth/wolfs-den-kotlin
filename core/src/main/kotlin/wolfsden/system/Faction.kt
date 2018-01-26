@@ -13,7 +13,7 @@ fun Entity.visibleEnemies() = if (Location.sameMap(player, this)) curEntities.fi
 fun Entity.isLeader() = Faction.dMaps.containsKey(this.eID)
 
 object Faction : EntityListener {
-    val dMaps: MutableMap<String, DijkstraMap> = mutableMapOf()
+    var dMaps: MutableMap<String, DijkstraMap> = mutableMapOf()
 
     fun addFaction(leader: String) {
         val eLeader = GameStore.getByID(leader)

@@ -133,7 +133,6 @@ object PlayScreen : WolfScreen("main") {
     val menuStage = Stage(menuVPort, batch)
 
     override val stage = playLayout.build()
-    var skillInUse: WolfSkill? = null
 
     init {
         curState.changeState(MenuState.PLAY)
@@ -248,6 +247,11 @@ object PlayScreen : WolfScreen("main") {
     private fun drawSkl() {
         sklPanel.erase()
         sklPanel.putBorders(FW, "Skills(Shift: use)")
+        if (player.skillStack!!.skills.isNotEmpty()) {
+            player.skillStack!!.skillTable.forEachIndexed { index, pair ->
+                sklPanel.put(1, index + 1, "[${CommonColors.INFO}]${pair.first}:[] ${pair.second.markupString}".toICString())
+            }
+        }
     }
 
     private fun drawInv() {
@@ -305,8 +309,8 @@ object PlayScreen : WolfScreen("main") {
     }
 
     private fun drawCursor() {
-        skillInUse?.aoe?.shift(cursor)
-        val color = if (AreaUtils.verifyReach(skillInUse!!.aoe!!.reach, player.pos!!.coord, cursor)) {
+        player.ai!!.skillInUse?.aoe?.shift(cursor)
+        val color = if (AreaUtils.verifyReach(player.ai!!.skillInUse!!.aoe!!.reach, player.pos!!.coord, cursor)) {
             CommonColors.WARNING.getColor()
         } else {
             CommonColors.VIT.getColor()

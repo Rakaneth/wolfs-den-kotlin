@@ -140,7 +140,7 @@ object CommandProcessor {
             }
             "skill" -> {
                 val tgt = target as Coord
-                PlayScreen.skillInUse?.use(tgt) ?: 10
+                entity.ai!!.skillInUse?.use(tgt) ?: 10
             }
             else -> {
                 0

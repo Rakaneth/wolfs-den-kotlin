@@ -8,6 +8,7 @@ import wolfsden.entity.Entity
 import wolfsden.system.GameStore
 import wolfsden.system.Location
 import wolfsden.system.getMap
+import java.io.Serializable
 
 abstract class WolfSkill(
         private val userID: String,
@@ -15,15 +16,16 @@ abstract class WolfSkill(
         val desc: String,
         aoe: AOE,
         val cd: Int = 0,
-        val cost: Int = 0
-) : Technique(name, aoe) {
+        val cost: Int = 0,
+        val targeting: Boolean = true
+) : Technique(name, aoe), Serializable {
     init {
         updateMap()
     }
 
     var curCD = cd
     val markupString
-        get() = "[${CommonColors.INFO}]$name[]"
+        get() = "[${if (isAvailable) CommonColors.INFO else "Gray"}]$name ${if (!isAvailable) " ($curCD)" else ""}[]"
 
     open val isAvailable
         get() = curCD <= 0 && user.vit!!.curEnd >= cost
@@ -32,7 +34,7 @@ abstract class WolfSkill(
         get() = GameStore.getByID(userID)!!
 
     fun tick() {
-        curCD--
+        if (curCD > 0) curCD--
     }
 
     fun setCD() {

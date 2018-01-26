@@ -5,9 +5,6 @@ import com.badlogic.gdx.ai.fsm.State
 import com.badlogic.gdx.ai.msg.Telegram
 import squidpony.squidgrid.Direction
 import squidpony.squidgrid.gui.gdx.SquidInput
-import wolfsden.entity.effects.BulwarkStance
-import wolfsden.entity.effects.TitanStance
-import wolfsden.entity.skills.Stonebreaker
 import wolfsden.screen.PlayScreen
 import wolfsden.system.CommandProcessor
 import wolfsden.system.DialogManager
@@ -36,7 +33,7 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                     SquidInput.UP_LEFT_ARROW -> CommandProcessor.process(player, "move", Direction.UP_LEFT)
                     SquidInput.CENTER_ARROW -> CommandProcessor.process(player, "wait")
                     'G' -> CommandProcessor.process(player, "pickup")
-                    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
+                    in '0'..'9' -> {
                         val numSlot = key.toString().toInt()
                         if (player.inventory.size >= (numSlot + 1)) {
                             PlayScreen.itemSelected = player.inventory[numSlot]
@@ -53,17 +50,6 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                             PlayScreen.addMessage("No stairs here.")
                         }
                     }
-                    'd' -> {
-                        DialogManager.startDialog("joe")
-                    }
-                    't' -> {
-                        player.toggleEffect(TitanStance(player.eID))
-                        GameStore.update(false, true)
-                    }
-                    'b' -> {
-                        player.toggleEffect(BulwarkStance(player.eID))
-                        GameStore.update(false, true)
-                    }
                     'Q' -> {
                         GameStore.saveGame()
                         Gdx.app.exit()
@@ -72,10 +58,30 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                         entity.curState.changeState(TARGET)
                         GameStore.update()
                     }
-                    SquidInput.F1 -> {
-                        entity.skillInUse = Stonebreaker(player.eID)
-                        entity.curState.changeState(TARGET)
-                        GameStore.update(true, false)
+                    in SquidInput.F1..SquidInput.F10 -> {
+                        val fMap = mapOf(
+                                SquidInput.F1 to 0,
+                                SquidInput.F2 to 1,
+                                SquidInput.F3 to 2,
+                                SquidInput.F4 to 3,
+                                SquidInput.F5 to 4,
+                                SquidInput.F6 to 5,
+                                SquidInput.F7 to 6,
+                                SquidInput.F8 to 7,
+                                SquidInput.F9 to 8,
+                                SquidInput.F10 to 9
+                        )
+                        val theSkill =  player.skillStack!!.skillTable.getOrNull(fMap[key]!!)?.second
+                        player.ai!!.skillInUse = theSkill
+                        if (theSkill?.isAvailable == true){
+                            if (theSkill?.targeting == true)
+                                entity.curState.changeState(TARGET)
+                            else
+                                CommandProcessor.process(player, "skill", player.pos!!.coord)
+                        } else {
+                            entity.addMessage("That skill isn't available.")
+                        }
+                        GameStore.update()
                     }
                 }
             })
@@ -166,8 +172,8 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                 entity.moveCursor(direction)
                 when (key) {
                     SquidInput.ENTER -> {
-                        if (entity.skillInUse != null)
-                            entity.skillInUse?.use(entity.cursor!!)
+                        if (GameStore.player.ai!!.skillInUse != null)
+                            CommandProcessor.process(GameStore.player, "skill", entity.cursor)
                         entity.curState.changeState(PLAY)
                     }
                     SquidInput.ESCAPE -> entity.curState.changeState(PLAY)

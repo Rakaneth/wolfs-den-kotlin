@@ -1,9 +1,12 @@
 package wolfsden.system
 
+import squidpony.squidai.DijkstraMap
 import squidpony.squidmath.StatefulRNG
 import wolfsden.entity.CreatureBuilder
 import wolfsden.entity.Entity
 import wolfsden.entity.ItemBuilder
+import wolfsden.entity.skills.Stonebreaker
+import wolfsden.entity.skills.TitanStance
 import wolfsden.map.MapBuilder
 import wolfsden.map.WolfMap
 import wolfsden.screen.PlayScreen
@@ -82,6 +85,7 @@ object GameStore {
                 it.writeObject(mapList)
                 it.writeObject(WolfRNG.wolfRNG)
                 it.writeInt(clock)
+                it.writeObject(Faction.dMaps)
             }
             println("Game saved")
         } catch (e: IOException) {
@@ -99,6 +103,7 @@ object GameStore {
                 val mapBlob = it.readObject()
                 val rngBlob = it.readObject()
                 val schedClock = it.readInt()
+                val dMaps = it.readObject()
 
                 when (entityBlob) {
                     is MutableMap<*, *> ->
@@ -117,6 +122,11 @@ object GameStore {
                 }
 
                 Scheduler.clock = schedClock
+
+                when (dMaps) {
+                    is Map<*, *> -> Faction.dMaps = dMaps as MutableMap<String, DijkstraMap>
+                    else -> throw IOException("Error loading AI maps")
+                }
             }
             DialogManager.curDialog = null
             println("$fileName loaded")
@@ -128,7 +138,9 @@ object GameStore {
     fun newGame(playerClass: String, playerName: String) {
         MapBuilder.buildAll()
         with(CreatureBuilder) {
-            build(playerClass, true, null, "mine", playerName)
+            val player = build(playerClass, true, null, "mine", playerName)
+            player!!.learnSkill(TitanStance(player.eID))
+            player.learnSkill(Stonebreaker(player.eID))
             buildWolfPack()
         }
         with(ItemBuilder) {

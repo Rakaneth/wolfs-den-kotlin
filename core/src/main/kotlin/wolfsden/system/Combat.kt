@@ -16,7 +16,8 @@ data class CombatResults(
 )
 
 fun Entity.attack(other: Entity, atkStat: Int = this.atk, defStat: Int = other.dfp, dmgMod: Int = 0): CombatResults {
-    val (sux, hitBy) = WolfRNG.roll(atkStat, defStat)
+    val toDef = if (other.hasEffect("Stunned")) 0 else defStat
+    val (sux, hitBy) = WolfRNG.roll(atkStat, toDef)
     val hit = sux > 0
     var (dmg, _) = if (hit) WolfRNG.roll((sux - 1) * 2 + this.dmg + dmgMod) else 0 to 0
     val wk: MutableList<String> = mutableListOf()

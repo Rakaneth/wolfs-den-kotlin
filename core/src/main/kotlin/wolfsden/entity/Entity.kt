@@ -8,6 +8,7 @@ import squidpony.squidmath.Coord
 import wolfsden.CommonColors
 import wolfsden.entity.effects.Effect
 import wolfsden.entity.effects.Stance
+import wolfsden.entity.skills.WolfSkill
 import wolfsden.log
 import wolfsden.map.WolfMap
 import wolfsden.nz
@@ -37,6 +38,7 @@ class Entity(
         var isPlayer: Boolean = false,
         var blocking: Boolean = true,
         var effectStack: EffectStack? = null,
+        var skillStack: SkillStack? = null,
         private var capacity: Int = 0
 ) : Serializable {
     val atk: Int
@@ -168,6 +170,10 @@ class Entity(
 
     fun addInventory(cap: Int) {
         capacity = cap
+    }
+
+    fun addSkills() {
+        skillStack = SkillStack(eID)
     }
 
     fun updateTag(tagList: String, tag: String, adding: Boolean = true) {
@@ -375,6 +381,16 @@ class Entity(
         } else {
             applyEffect(eff)
         }
+    }
+
+    fun learnSkill(skill: WolfSkill) {
+        if (skillStack == null) addSkills()
+        skillStack!!.skills.add(skill)
+    }
+
+    fun forgetSkill(skillName: String) {
+        val toForget = skillStack?.skills?.first { it.name == skillName} ?: return
+        skillStack!!.skills.remove(toForget)
     }
 
     override fun toString(): String = "${id?.name}-${eID.substringBefore("-")}"

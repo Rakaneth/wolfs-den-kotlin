@@ -4,15 +4,33 @@ import squidpony.squidai.AimLimit
 import squidpony.squidai.PointAOE
 import squidpony.squidmath.Coord
 import wolfsden.CommonColors
+import wolfsden.entity.effects.TitanStanceEffect
 import wolfsden.screen.PlayScreen
 import wolfsden.system.Location
 import wolfsden.system.attack
 import wolfsden.system.describeCombat
 
+private val DEFAULT_POINT: Coord = Coord.get(0,0)
+
+class TitanStance(userID: String) : WolfSkill(
+        userID,
+        "Hulking Titan Stance",
+        "Become a hulking titan on the battlefield",
+        PointAOE(DEFAULT_POINT),
+        20,
+        0,
+        false
+) {
+    override fun use(target: Coord): Int {
+        user.applyEffect(TitanStanceEffect(user.eID))
+        return 0
+    }
+}
+
 class Stonebreaker(userID: String) : WolfSkill(userID, "Stonebreaker",
         "A devastating strike to a single foe",
-        PointAOE(Coord.get(0, 0), 1, 1),
-        20,
+        PointAOE(DEFAULT_POINT, 1, 1),
+        30,
         5) {
 
     init {

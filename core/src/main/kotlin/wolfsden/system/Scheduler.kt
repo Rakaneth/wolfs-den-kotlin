@@ -49,6 +49,9 @@ object Scheduler : EntityListener {
                 effsToRemove.forEach {
                     creature.removeEffect(it)
                 }
+                creature.skillStack?.skills?.forEach {
+                    it.tick()
+                }
                 if (!creature.vit!!.alive) {
                     if (creature.isPlayer) {
                         //WolfScreen.setScreen(GameOverScreen)

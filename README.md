@@ -13,10 +13,9 @@ years ago.
 
 ## Screenshots
 ![Character Creation](/screenshots/charselect.png)
-![In the Mine](/screenshots/mine.png)
+![Titanic Power](/screenshots/titan.png)
 
 ## Task List
-
 - [x] This README
 - [x] Basic Story
 - [x] Screen interface
@@ -25,6 +24,6 @@ years ago.
 - [x] Multiple levels
 - [x] Saving and loading
 - [x] Simple combat mechanics
-- [ ] Character abilities
+- [x] Character abilities
 - [ ] Expand character options
 - [ ] Playable alpha
