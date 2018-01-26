@@ -1,7 +1,7 @@
 package wolfsden.system
 
-import wolfsden.entity.effects.Effect
 import wolfsden.entity.Entity
+import wolfsden.entity.effects.Effect
 import wolfsden.screen.PlayScreen
 import wolfsden.system.GameStore.curEntities
 

@@ -3,12 +3,9 @@ package wolfsden.entity.skills
 import squidpony.squidai.PointAOE
 import squidpony.squidmath.Coord
 import wolfsden.CommonColors
-import wolfsden.entity.Slot
 import wolfsden.screen.PlayScreen
-import wolfsden.system.GameStore
 import wolfsden.system.Location
 import wolfsden.system.attack
-import wolfsden.system.getMap
 
 class Stonebreaker(override val userID: String) : WolfSkill(userID, "Stonebreaker",
         "A devastating strike to a single foe",
@@ -20,8 +17,8 @@ class Stonebreaker(override val userID: String) : WolfSkill(userID, "Stonebreake
 
     override fun use(target: Coord): Int {
         val affected = apply(user.pos!!.coord, target)
-        val spot = affected.filter { it.value > 0.0}.keys.first()
-        val sucker = Location.thingsAt(spot, user.pos!!.mapID).firstOrNull() { it.isCreature}
+        val spot = affected.filter { it.value > 0.0 }.keys.first()
+        val sucker = Location.thingsAt(spot, user.pos!!.mapID).firstOrNull() { it.isCreature }
         val missMsg = "${user.markupString} swings mightily, but finds nothing there!"
 
         if (sucker == null) {
@@ -30,7 +27,7 @@ class Stonebreaker(override val userID: String) : WolfSkill(userID, "Stonebreake
             val results = user.attack(sucker, dmgMod = 4)
             if (results.hit) {
                 PlayScreen.addMessage("${user.markupString} brings down a crashing blow upon ${sucker.markupString}," +
-                "dealing [${CommonColors.VIT}]${results.dmg} damage![]")
+                        "dealing [${CommonColors.VIT}]${results.dmg} damage![]")
                 sucker.takeDmg(results.dmg)
             } else {
                 PlayScreen.addMessage(missMsg)

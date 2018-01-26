@@ -112,7 +112,12 @@ object CreatureBuilder {
         }
     }
 
-    fun buildWolfPack(mapID: String = GameStore.curMap.id) { buildPack("wolf", "alpha", WolfRNG.wolfRNG.between(2, 5), mapID)}
-    fun buildGreaterPack(mapID: String = GameStore.curMap.id) { buildPack("dire", "direAlpha", WolfRNG.wolfRNG.between(2, 5), mapID)}
+    fun buildWolfPack(mapID: String = GameStore.curMap.id) {
+        buildPack("wolf", "alpha", WolfRNG.wolfRNG.between(2, 5), mapID)
+    }
+
+    fun buildGreaterPack(mapID: String = GameStore.curMap.id) {
+        buildPack("dire", "direAlpha", WolfRNG.wolfRNG.between(2, 5), mapID)
+    }
 }
 

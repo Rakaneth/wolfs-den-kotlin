@@ -15,8 +15,9 @@ import java.io.Serializable
 class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, var light: Boolean = true) : Serializable {
     var displayMap: Array<CharArray> = ArrayTools.fill('#', baseMap.size, baseMap[0].size)
     var resistances = DungeonUtility.generateResistances(baseMap)
-    var floors : GreasedRegion = GreasedRegion(resistances, 0.8)
-    var tempRegion : GreasedRegion = floors.copy()
+    var floors: GreasedRegion = GreasedRegion(resistances, 0.8)
+    var tempRegion: GreasedRegion = floors.copy()
+
     init {
         for ((x, row) in baseMap.withIndex()) {
             for ((y, c) in row.withIndex()) {

@@ -112,9 +112,9 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
         override fun update(entity: PlayScreen?) {
             val curDialog = DialogManager.curDialog!!
             with(theMenu as Dialog) {
-                theMenu.caption = curDialog.caption
-                theMenu.dialog = curDialog.text.toICString()
-                theMenu.menuItems = curDialog.options.map { it.text }
+                caption = curDialog.caption
+                dialog = curDialog.text.toICString()
+                menuItems = curDialog.options.map { it.text }
             }
         }
 
@@ -145,7 +145,7 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
 
         override fun enter(entity: PlayScreen?) {
             entity!!.cursor = GameStore.player.pos!!.coord
-            entity.input = SquidInput({key, _, _, _ ->
+            entity.input = SquidInput({ key, _, _, _ ->
                 val direction = when (key) {
                     SquidInput.UP_ARROW -> Direction.UP
                     SquidInput.UP_RIGHT_ARROW -> Direction.UP_RIGHT
@@ -159,7 +159,9 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                 }
                 entity.moveCursor(direction)
                 when (key) {
-                    SquidInput.ENTER, SquidInput.ESCAPE -> { entity.curState.changeState(PLAY)}
+                    SquidInput.ENTER, SquidInput.ESCAPE -> {
+                        entity.curState.changeState(PLAY)
+                    }
                 }
             })
             entity.activateInput(entity.menuStage, entity.input)

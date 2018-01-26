@@ -9,7 +9,7 @@ fun Entity.isAlly(other: Entity): Boolean = other.eID == this.ai?.leader || othe
 fun Entity.isEnemy(other: Entity): Boolean = !this.isAlly(other) && other.hasTag("creature")
 fun Entity.allies() = curEntities.filter { this.isAlly(it) && it != this }
 fun Entity.visibleAllies() = this.allies().filter { this.visible(it) && it.vit!!.alive }
-fun Entity.visibleEnemies() = if(Location.sameMap(player, this)) curEntities.filter { this.visible(it) && this.isEnemy(it) && it.vit!!.alive } else emptyList()
+fun Entity.visibleEnemies() = if (Location.sameMap(player, this)) curEntities.filter { this.visible(it) && this.isEnemy(it) && it.vit!!.alive } else emptyList()
 fun Entity.isLeader() = Faction.dMaps.containsKey(this.eID)
 
 object Faction : EntityListener {

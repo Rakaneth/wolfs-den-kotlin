@@ -106,7 +106,7 @@ class Entity(
                         oh?.getEntity?.tags ?: emptyList()
                     } else {
                         emptyList()
-                    }).filter { !arrayOf("melee", "equipment").contains(it)}.toSet()
+                    }).filter { !arrayOf("melee", "equipment").contains(it) }.toSet()
         }
 
     fun addID(name: String, desc: String) {
@@ -352,7 +352,7 @@ class Entity(
             getEffect(eff.name).onMerge(eff)
         } else {
             if (eff is Stance)
-                effectStack!!.effects.filter { it is Stance}.forEach { removeEffect(it)}
+                effectStack!!.effects.filter { it is Stance }.forEach { removeEffect(it) }
             eff.onApply()
             effectStack!!.effects.add(eff)
 
@@ -365,7 +365,7 @@ class Entity(
     }
 
     fun removeEffect(effName: String) {
-        val eff = effectStack!!.effects.first { it.name == effName}
+        val eff = effectStack!!.effects.first { it.name == effName }
         removeEffect(eff)
     }
 

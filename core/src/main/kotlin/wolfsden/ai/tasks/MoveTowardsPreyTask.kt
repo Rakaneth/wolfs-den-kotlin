@@ -16,7 +16,7 @@ class MoveTowardsPreyTask : LeafTask<Entity>() {
     }
 
     override fun execute(): Status {
-        val dMap = if (`object`.isLeader()){
+        val dMap = if (`object`.isLeader()) {
             Faction.getDMap(`object`.eID)
         } else {
             Faction.getDMap(`object`.ai!!.leader)
