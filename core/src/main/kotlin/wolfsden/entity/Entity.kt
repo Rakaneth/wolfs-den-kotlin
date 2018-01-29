@@ -8,6 +8,8 @@ import squidpony.squidmath.Coord
 import wolfsden.CommonColors
 import wolfsden.entity.effects.Effect
 import wolfsden.entity.effects.Stance
+import wolfsden.entity.skills.Stonebreaker
+import wolfsden.entity.skills.TitanStance
 import wolfsden.entity.skills.WolfSkill
 import wolfsden.log
 import wolfsden.map.WolfMap
@@ -17,30 +19,33 @@ import wolfsden.system.getMap
 import wolfsden.toICString
 import java.io.Serializable
 
-class Entity(
-        val eID: String,
-        var id: Identity? = null,
-        var draw: Drawing? = null,
-        var pos: Position? = null,
-        var vit: Vitals? = null,
-        var eq: EquipStats? = null,
-        var heal: HealingItem? = null,
-        var repair: RepairItem? = null,
-        var rest: RestoreItem? = null,
-        var stats: Stats? = null,
-        var mh: EquipStats? = null,
-        var oh: EquipStats? = null,
-        var armor: EquipStats? = null,
-        var trinket: EquipStats? = null,
-        var xp: XPGainer? = null,
-        var vision: Vision? = null,
-        var ai: AI? = null,
-        var isPlayer: Boolean = false,
-        var blocking: Boolean = true,
-        var effectStack: EffectStack? = null,
-        var skillStack: SkillStack? = null,
-        private var capacity: Int = 0
-) : Serializable {
+private data class SkillInfo(
+        val name: String,
+        val curCD: Int
+) : Serializable
+
+class Entity(val eID: String) : Serializable {
+    var id: Identity? = null
+    var draw: Drawing? = null
+    var pos: Position? = null
+    var vit: Vitals? = null
+    var eq: EquipStats? = null
+    var heal: HealingItem? = null
+    var repair: RepairItem? = null
+    var rest: RestoreItem? = null
+    var stats: Stats? = null
+    var mh: EquipStats? = null
+    var oh: EquipStats? = null
+    var armor: EquipStats? = null
+    var trinket: EquipStats? = null
+    var xp: XPGainer? = null
+    var vision: Vision? = null
+    var ai: AI? = null
+    var isPlayer: Boolean = false
+    var blocking: Boolean = true
+    var effectStack: EffectStack? = null
+    @Transient var skillStack: SkillStack? = null
+    private var capacity: Int = 0
     val atk: Int
         get() = stats?.skl.nz() + armor?.atk.nz() + mh?.atk.nz() + oh?.atk.nz() + trinket?.atk.nz() +
                 effectStack?.atk.nz() - if (dualWield) 2 else 0
@@ -80,6 +85,8 @@ class Entity(
         get() = inventory.size >= capacity
     val isCreature
         get() = hasTag("creature") && blocking
+
+    private val skillStore: MutableList<SkillInfo> = mutableListOf()
 
     private fun markupEQ(label: String, eq: EquipStats?): IColoredString<Color> {
         return "[${CommonColors.INFO}]%8s[]: ${eq?.name ?: "Nothing"}".format(label).toICString()
@@ -383,14 +390,39 @@ class Entity(
         }
     }
 
-    fun learnSkill(skill: WolfSkill) {
+    fun learnSkill(skill: WolfSkill): WolfSkill {
         if (skillStack == null) addSkills()
         skillStack!!.skills.add(skill)
+        return skill
     }
+
+    fun learnSkill(skillName: String): WolfSkill {
+        val theSkill = when (skillName) {
+            "Hulking Titan Stance" -> TitanStance(eID)
+            "Stonebreaker" -> Stonebreaker(eID)
+            else -> null
+        }
+        learnSkill(theSkill ?: throw IllegalArgumentException("$skillName is not a valid skill"))
+        return theSkill
+    }
+
+
 
     fun forgetSkill(skillName: String) {
         val toForget = skillStack?.skills?.first { it.name == skillName} ?: return
         skillStack!!.skills.remove(toForget)
+    }
+
+    fun storeSkills() {
+        skillStack?.skills?.forEach {
+            skillStore.add(SkillInfo(it.name, it.curCD))
+        }
+    }
+
+    fun loadSkills() {
+        skillStore.forEach {
+            learnSkill(it.name).setCD(it.curCD)
+        }
     }
 
     override fun toString(): String = "${id?.name}-${eID.substringBefore("-")}"

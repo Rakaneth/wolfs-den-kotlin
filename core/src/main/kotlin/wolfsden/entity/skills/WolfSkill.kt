@@ -17,8 +17,9 @@ abstract class WolfSkill(
         aoe: AOE,
         val cd: Int = 0,
         val cost: Int = 0,
-        val targeting: Boolean = true
-) : Technique(name, aoe), Serializable {
+        val targeting: Boolean = true,
+        val skillIndex: Int = 0
+) : Technique(name, aoe) {
     init {
         updateMap()
     }
@@ -37,8 +38,8 @@ abstract class WolfSkill(
         if (curCD > 0) curCD--
     }
 
-    fun setCD() {
-        curCD = cd
+    fun setCD(value: Int = cd) {
+        curCD = value
     }
 
     fun resetCD() {

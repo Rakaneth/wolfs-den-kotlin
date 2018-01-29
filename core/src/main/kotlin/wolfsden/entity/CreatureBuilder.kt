@@ -33,7 +33,8 @@ data class CreatureBase(
         val gainsXP: Boolean = false,
         val xp: Float = 0f,
         val inventory: Int = 10,
-        val rarity: Int = 0
+        val rarity: Int = 0,
+        val skills: List<String> = listOf()
 )
 
 object CreatureBuilder {
@@ -99,6 +100,11 @@ object CreatureBuilder {
         foetus.addEffect()
 
         GameStore.addEntity(foetus)
+
+        info.skills.forEach {
+            foetus.learnSkill(it).resetCD()
+        }
+
         if (foetus.hasTag("leader") || foetus.hasTag("solo")) Faction.addFaction(foetus.eID)
         return foetus
     }

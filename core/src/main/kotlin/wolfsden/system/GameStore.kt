@@ -41,6 +41,9 @@ object GameStore {
     val curEntities
         get() = allEntities.filter { Location.sameMap(it, player) }
 
+    val allCreatures
+        get() = allEntities.filter { it.isCreature}
+
     fun addListener(listener: EntityListener) {
         listeners.add(listener)
     }
@@ -75,6 +78,9 @@ object GameStore {
     fun saveGame() {
         val savePath = "${System.getProperty("user.home")}/WolfsDenKotlin"
         val fileName = player.id!!.name + ".wlf"
+        allCreatures.forEach {
+            it.storeSkills()
+        }
         try {
             val dir = File(savePath)
             if (!dir.exists() || !dir.isDirectory) {
@@ -89,7 +95,10 @@ object GameStore {
             }
             println("Game saved")
         } catch (e: IOException) {
-            println("Error saving game: ${e.stackTrace}")
+            println("Error saving game: ${e.message}")
+            for (line in e.stackTrace) {
+                println(line)
+            }
         }
     }
 
@@ -127,20 +136,25 @@ object GameStore {
                     is Map<*, *> -> Faction.dMaps = dMaps as MutableMap<String, DijkstraMap>
                     else -> throw IOException("Error loading AI maps")
                 }
+
+                allCreatures.forEach {
+                    it.loadSkills()
+                }
             }
             DialogManager.curDialog = null
             println("$fileName loaded")
         } catch (e: IOException) {
-            println("Error loading $fileName: ${e.stackTrace}")
+            println("Error loading $fileName: ${e.message}")
+            for (line in e.stackTrace) {
+                println(line)
+            }
         }
     }
 
     fun newGame(playerClass: String, playerName: String) {
         MapBuilder.buildAll()
         with(CreatureBuilder) {
-            val player = build(playerClass, true, null, "mine", playerName)
-            player!!.learnSkill(TitanStance(player.eID))
-            player.learnSkill(Stonebreaker(player.eID))
+            build(playerClass, true, null, "mine", playerName)
             buildWolfPack()
         }
         with(ItemBuilder) {

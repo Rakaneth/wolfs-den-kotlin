@@ -12,14 +12,13 @@ import wolfsden.system.describeCombat
 
 private val DEFAULT_POINT: Coord = Coord.get(0,0)
 
-class TitanStance(userID: String) : WolfSkill(
-        userID,
-        "Hulking Titan Stance",
-        "Become a hulking titan on the battlefield",
-        PointAOE(DEFAULT_POINT),
-        20,
-        0,
-        false
+class TitanStance(userID: String) : WolfSkill( userID, "Hulking Titan Stance",
+        desc = "Become a hulking titan on the battlefield",
+        aoe = PointAOE(DEFAULT_POINT),
+        cd = 20,
+        cost = 0,
+        targeting = false,
+        skillIndex = 0
 ) {
     override fun use(target: Coord): Int {
         user.applyEffect(TitanStanceEffect(user.eID))
@@ -28,10 +27,11 @@ class TitanStance(userID: String) : WolfSkill(
 }
 
 class Stonebreaker(userID: String) : WolfSkill(userID, "Stonebreaker",
-        "A devastating strike to a single foe",
-        PointAOE(DEFAULT_POINT, 1, 1),
-        30,
-        5) {
+        desc = "A devastating strike to a single foe",
+        aoe = PointAOE(DEFAULT_POINT, 1, 1),
+        cd = 30,
+        cost = 5,
+        skillIndex = 1) {
 
     init {
         aoe.limitType = AimLimit.EIGHT_WAY

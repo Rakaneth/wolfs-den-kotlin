@@ -309,8 +309,9 @@ object PlayScreen : WolfScreen("main") {
     }
 
     private fun drawCursor() {
-        player.ai!!.skillInUse?.aoe?.shift(cursor)
-        val color = if (AreaUtils.verifyReach(player.ai!!.skillInUse!!.aoe!!.reach, player.pos!!.coord, cursor)) {
+        val skl = player.ai!!.skillInUse
+        skl?.aoe?.shift(cursor)
+        val color = if (skl?.canTarget(player.pos!!.coord, cursor) == true) {
             CommonColors.WARNING.getColor()
         } else {
             CommonColors.VIT.getColor()
