@@ -3,16 +3,15 @@ package wolfsden.entity.skills
 import squidpony.squidai.AimLimit
 import squidpony.squidai.PointAOE
 import squidpony.squidmath.Coord
-import wolfsden.CommonColors
+import wolfsden.entity.effects.StunEffect
 import wolfsden.entity.effects.TitanStanceEffect
 import wolfsden.screen.PlayScreen
-import wolfsden.system.Location
 import wolfsden.system.attack
 import wolfsden.system.describeCombat
 
-private val DEFAULT_POINT: Coord = Coord.get(0,0)
+private val DEFAULT_POINT: Coord = Coord.get(0, 0)
 
-class TitanStance(userID: String) : WolfSkill( userID, "Hulking Titan Stance",
+class TitanStance(userID: String) : WolfSkill(userID, "Hulking Titan Stance",
         desc = "Become a hulking titan on the battlefield",
         aoe = PointAOE(DEFAULT_POINT),
         cd = 20,
@@ -47,7 +46,7 @@ class Stonebreaker(userID: String) : WolfSkill(userID, "Stonebreaker",
         if (sucker == null) {
             PlayScreen.addMessage(missMsg)
         } else {
-            val results = user.attack(sucker, dmgMod = 4)
+            val results = user.attack(sucker, dmgMod = 5)
             if (results.hit) {
                 PlayScreen.addMessage("${user.markupString} brings down a stone-breaking blow upon ${sucker.markupString}!")
                 sucker.takeDmg(results.dmg)
@@ -55,6 +54,43 @@ class Stonebreaker(userID: String) : WolfSkill(userID, "Stonebreaker",
             describeCombat(results)
         }
         user.vit!!.curEnd -= cost
-        return user.atkDly + 5
+        return user.atkDly
     }
 }
+
+class Rumble(userID: String) : WolfSkill(userID, "Rumble",
+        desc = "A rattling blow that stuns enemies, setting them up for other moves in this style",
+        aoe = PointAOE(DEFAULT_POINT, 1, 1),
+        cd = 50,
+        cost = 10,
+        skillIndex = 2) {
+    init {
+        aoe.limitType = AimLimit.EIGHT_WAY
+    }
+
+    override val isAvailable: Boolean
+        get() = super.isAvailable && user.hasEffect("Hulking Titan Stance")
+
+    override fun use(target: Coord): Int {
+        val sucker = targetEntity(target)
+        val missMsg = "${user.markupString} pounds the ground!"
+
+        if (sucker == null) {
+            PlayScreen.addMessage(missMsg)
+        } else {
+            val results = user.attack(sucker, user.atk + user.atkDly, sucker.sav)
+            if (results.hit) {
+                PlayScreen.addMessage("${user.markupString} pounds the ground at ${sucker.markupString}'s feet!")
+                sucker.takeDmg(results.dmg)
+                if (user.hasSkill("Stonebreaker"))
+                    user.getSkillByName("Stonebreaker").resetCD()
+                if (user.hasSkill("Mountainhammer"))
+                    user.getSkillByName("Mountainhammer").resetCD()
+                sucker.applyEffect(StunEffect(sucker.eID, 10))
+            }
+            describeCombat(results)
+        }
+        return user.atkDly
+    }
+}
+

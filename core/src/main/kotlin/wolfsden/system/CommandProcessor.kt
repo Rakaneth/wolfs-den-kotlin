@@ -2,9 +2,7 @@ package wolfsden.system
 
 import squidpony.squidgrid.Direction
 import squidpony.squidmath.Coord
-import wolfsden.CommonColors
 import wolfsden.entity.Entity
-import wolfsden.joinWithAnd
 import wolfsden.log
 import wolfsden.map.WolfMap
 import wolfsden.screen.PlayScreen
@@ -142,6 +140,7 @@ object CommandProcessor {
                 val tgt = target as Coord
                 val theSkill = entity.ai!!.skillInUse
                 theSkill?.setCD()
+                entity.ai!!.skillInUse = null
                 theSkill?.use(tgt) ?: 10
             }
             else -> {

@@ -8,7 +8,6 @@ import wolfsden.entity.Entity
 import wolfsden.system.GameStore
 import wolfsden.system.Location
 import wolfsden.system.getMap
-import java.io.Serializable
 
 abstract class WolfSkill(
         private val userID: String,
@@ -58,8 +57,8 @@ abstract class WolfSkill(
 
     protected fun allTargets(c: Coord): List<Entity> {
         val affected = apply(user.pos!!.coord, c)
-        val spots = affected.filter { it.value > 0.0}.keys
-        return spots.mapNotNull { Location.thingsAt(it, user.pos!!.mapID).firstOrNull { it.isCreature}}.toList()
+        val spots = affected.filter { it.value > 0.0 }.keys
+        return spots.mapNotNull { Location.thingsAt(it, user.pos!!.mapID).firstOrNull { it.isCreature } }.toList()
     }
 
     abstract fun use(target: Coord): Int

@@ -71,11 +71,12 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                                 SquidInput.F9 to 8,
                                 SquidInput.F10 to 9
                         )
-                        val theSkill =  player.skillStack!!.skillTable.getOrNull(fMap[key]!!)?.second
+                        val theSkill = player.skillStack!!.skillTable.getOrNull(fMap[key]!!)?.second
                         player.ai!!.skillInUse = theSkill
-                        if (theSkill?.isAvailable == true){
-                            if (theSkill?.targeting == true)
+                        if (theSkill?.isAvailable == true) {
+                            if (theSkill.targeting == true) {
                                 entity.curState.changeState(TARGET)
+                            }
                             else
                                 CommandProcessor.process(player, "skill", player.pos!!.coord)
                         } else {
@@ -176,8 +177,11 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                             CommandProcessor.process(GameStore.player, "skill", entity.cursor)
                         entity.curState.changeState(PLAY)
                     }
-                    SquidInput.ESCAPE -> entity.curState.changeState(PLAY)
-                    else -> {}
+                    SquidInput.ESCAPE -> {
+                        entity.curState.changeState(PLAY)
+                    }
+                    else -> {
+                    }
                 }
             })
             entity.activateInput(entity.menuStage, entity.input)
@@ -185,6 +189,7 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
 
         override fun exit(entity: PlayScreen?) {
             entity?.cursor = null
+            GameStore.player.ai!!.skillInUse = null
         }
 
     };

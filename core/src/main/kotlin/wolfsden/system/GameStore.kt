@@ -5,8 +5,6 @@ import squidpony.squidmath.StatefulRNG
 import wolfsden.entity.CreatureBuilder
 import wolfsden.entity.Entity
 import wolfsden.entity.ItemBuilder
-import wolfsden.entity.skills.Stonebreaker
-import wolfsden.entity.skills.TitanStance
 import wolfsden.map.MapBuilder
 import wolfsden.map.WolfMap
 import wolfsden.screen.PlayScreen
@@ -15,7 +13,7 @@ import wolfsden.system.Scheduler.clock
 import java.io.*
 
 fun Entity.playerVisible(): Boolean = player.visible(this)
-fun Entity.getMap(): WolfMap? = GameStore.mapList[this.pos?.mapID]
+fun Entity.getMap(): WolfMap = GameStore.mapList[this.pos?.mapID]!!
 
 interface EntityListener {
     fun onAdd(entity: Entity) {}
@@ -42,7 +40,7 @@ object GameStore {
         get() = allEntities.filter { Location.sameMap(it, player) }
 
     val allCreatures
-        get() = allEntities.filter { it.isCreature}
+        get() = allEntities.filter { it.isCreature }
 
     fun addListener(listener: EntityListener) {
         listeners.add(listener)

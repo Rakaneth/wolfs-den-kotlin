@@ -8,14 +8,17 @@ import squidpony.squidmath.Coord
 import wolfsden.CommonColors
 import wolfsden.entity.effects.Effect
 import wolfsden.entity.effects.Stance
+import wolfsden.entity.skills.Rumble
 import wolfsden.entity.skills.Stonebreaker
 import wolfsden.entity.skills.TitanStance
 import wolfsden.entity.skills.WolfSkill
 import wolfsden.log
 import wolfsden.map.WolfMap
 import wolfsden.nz
+import wolfsden.system.Faction
 import wolfsden.system.Scheduler.clock
 import wolfsden.system.getMap
+import wolfsden.system.isLeader
 import wolfsden.toICString
 import java.io.Serializable
 
@@ -44,7 +47,8 @@ class Entity(val eID: String) : Serializable {
     var isPlayer: Boolean = false
     var blocking: Boolean = true
     var effectStack: EffectStack? = null
-    @Transient var skillStack: SkillStack? = null
+    @Transient
+    var skillStack: SkillStack? = null
     private var capacity: Int = 0
     val atk: Int
         get() = stats?.skl.nz() + armor?.atk.nz() + mh?.atk.nz() + oh?.atk.nz() + trinket?.atk.nz() +
@@ -332,11 +336,11 @@ class Entity(val eID: String) : Serializable {
             (effectStack?.resistance?.contains(resist) ?: false)
 
     fun updateFOV() {
-        FOV.reuseFOV(getMap()!!.resistances, vision!!.visible, pos!!.x, pos!!.y, vision!!.vision)
+        FOV.reuseFOV(getMap().resistances, vision!!.visible, pos!!.x, pos!!.y, vision!!.vision)
     }
 
     fun resetFOV() {
-        vision!!.visible = ArrayTools.fill(0.0, getMap()!!.baseMap.size, getMap()!!.baseMap[0].size)
+        vision!!.visible = ArrayTools.fill(0.0, getMap().baseMap.size, getMap().baseMap[0].size)
         updateFOV()
     }
 
@@ -346,6 +350,7 @@ class Entity(val eID: String) : Serializable {
         pos?.y = conn.to.y
         //TODO: minions change level
         resetFOV()
+        if (isLeader()) Faction.getDMap(eID).initialize(getMap().baseMap)
     }
 
     fun hasEffect(effName: String): Boolean {
@@ -400,6 +405,7 @@ class Entity(val eID: String) : Serializable {
         val theSkill = when (skillName) {
             "Hulking Titan Stance" -> TitanStance(eID)
             "Stonebreaker" -> Stonebreaker(eID)
+            "Rumble" -> Rumble(eID)
             else -> null
         }
         learnSkill(theSkill ?: throw IllegalArgumentException("$skillName is not a valid skill"))
@@ -407,10 +413,18 @@ class Entity(val eID: String) : Serializable {
     }
 
 
-
     fun forgetSkill(skillName: String) {
-        val toForget = skillStack?.skills?.first { it.name == skillName} ?: return
+        val toForget = skillStack?.skills?.first { it.name == skillName } ?: return
         skillStack!!.skills.remove(toForget)
+    }
+
+    fun hasSkill(skillName: String): Boolean {
+        return skillStack?.skills?.any { it.name == skillName } ?: false
+    }
+
+    fun getSkillByName(skillName: String): WolfSkill {
+        require(hasSkill(skillName))
+        return skillStack!!.skills.first { it.name == skillName }
     }
 
     fun storeSkills() {
