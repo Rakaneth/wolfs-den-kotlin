@@ -9,7 +9,7 @@ import wolfsden.system.Scheduler.clock
 import wolfsden.system.visibleAllies
 
 class PackBuffedCondition : LeafTask<Entity>() {
-    @TaskAttribute(name="buffName", required=true)
+    @TaskAttribute(name = "buffName", required = true)
     @JvmField
     var buffName: String = ""
 

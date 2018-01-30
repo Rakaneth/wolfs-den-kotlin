@@ -15,7 +15,8 @@ import wolfsden.system.visibleAllies
 import wolfsden.system.visibleEnemies
 
 class UseSkillTask : LeafTask<Entity>() {
-    @TaskAttribute(required = true) var skillName: String = ""
+    @TaskAttribute(required = true)
+    var skillName: String = ""
     private val los: LOS = LOS()
 
     override fun copyTo(task: Task<Entity>?): Task<Entity> {

@@ -13,7 +13,7 @@ class BuffedCondition : LeafTask<Entity>() {
     var buffName: String = ""
 
     override fun copyTo(task: Task<Entity>?): Task<Entity> {
-        (task as BuffedCondition).buffName = ""
+        (task as BuffedCondition).buffName = buffName
         return task
     }
 
