@@ -13,7 +13,7 @@ class PreyAliveCondition : LeafTask<Entity>() {
 
     override fun execute(): Status {
         val subject = `object`
-        var target = subject.ai!!.getTarget()
+        val target = subject.ai!!.getTarget()
         return when {
             target == null -> {
                 log(clock, "AI", "$subject's target is null, not alive")
@@ -25,7 +25,7 @@ class PreyAliveCondition : LeafTask<Entity>() {
             }
             else -> {
                 log(clock, "AI", "$subject's target $target is dead")
-                subject.ai!!.target = null
+                subject.ai!!.target = ""
                 Status.FAILED
             }
         }

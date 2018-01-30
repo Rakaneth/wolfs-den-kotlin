@@ -1,4 +1,3 @@
-
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.XmlReader
 import org.junit.jupiter.api.Assertions.assertEquals

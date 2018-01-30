@@ -17,7 +17,8 @@ abstract class WolfSkill(
         val cd: Int = 0,
         val cost: Int = 0,
         val targeting: Boolean = true,
-        val skillIndex: Int = 0
+        val skillIndex: Int = 0,
+        val isAttack: Boolean = true
 ) : Technique(name, aoe) {
     init {
         updateMap()
@@ -61,5 +62,11 @@ abstract class WolfSkill(
         return spots.mapNotNull { Location.thingsAt(it, user.pos!!.mapID).firstOrNull { it.isCreature } }.toList()
     }
 
+    open fun canTarget(target: Coord): Boolean {
+        return super.canTarget(user.pos!!.coord, target)
+    }
+
     abstract fun use(target: Coord): Int
+
+    override fun toString(): String = name
 }

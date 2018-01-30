@@ -1,9 +1,8 @@
-import canSeePrey?: "wolfsden.ai.conditions.CanSeePreyCondition"
+import preySameLevel?: "wolfsden.ai.conditions.PreySameLevelCondition"
 import preyAlive?: "wolfsden.ai.conditions.PreyAliveCondition"
-
 
 #Check for prey existence
 root
 	sequence
 		preyAlive?
-		canSeePrey?
+		preySameLevel?

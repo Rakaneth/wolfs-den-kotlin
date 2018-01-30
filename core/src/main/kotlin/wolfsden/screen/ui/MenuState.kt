@@ -76,8 +76,7 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                         if (theSkill?.isAvailable == true) {
                             if (theSkill.targeting == true) {
                                 entity.curState.changeState(TARGET)
-                            }
-                            else
+                            } else
                                 CommandProcessor.process(player, "skill", player.pos!!.coord)
                         } else {
                             entity.addMessage("That skill isn't available.")

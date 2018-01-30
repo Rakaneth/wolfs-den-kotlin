@@ -1,18 +1,25 @@
 #Wolf tree
 
 #Aliases
-import randomWalk: "wolfsden.ai.tasks.RandomWalkTask"
-import detectPrey?: "wolfsden.ai.conditions.DetectPreyCondition"
-import getTarget: "wolfsden.ai.tasks.GetTargetTask"
-import detectFood?: "wolfsden.ai.conditions.DetectFoodCondition"
+import buffed?: "wolfsden.ai.conditions.BuffedCondition"
 import followLeader: "wolfsden.ai.tasks.FollowLeaderTask"
-import leaderNear?: "wolfsden.ai.conditions.CanSeeLeaderCondition"
+import informLeader: "wolfsden.ai.tasks.InformLeaderTask"
+import getTarget: "wolfsden.ai.tasks.GetTargetTask"
+import detectPrey?: "wolfsden.ai.conditions.DetectPreyCondition"
+
+subtree name: "notBuffed?"
+	invert
+		buffed? buffName:"Might"
+
+subtree name: "targetAndInform"
+	sequence
+		getTarget
+		informLeader
 
 #tree definition
 root
 	dynamicGuardSelector
-		(include subtree: "data/ai/common/preyExists.tree" lazy:true) include subtree: "data/ai/common/huntPrey.tree" lazy:true
-		(detectPrey?) getTarget
-		(detectFood?) include subtree: "data/ai/common/lookForFood.tree" lazy:true
-		(leaderNear?) followLeader
-		() randomWalk
+		(include subtree: "data/ai/common/preyExists.tree" lazy:true) include subtree: "data/ai/hunt.tree" lazy:true
+		(detectPrey?) $targetAndInform
+		($notBuffed?) followLeader
+		() followLeader

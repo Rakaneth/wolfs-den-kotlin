@@ -15,7 +15,7 @@
 		"trinket": "none",
 		"vision": 10,
 		"xp": 100,
-		"ai": "hunt",
+		"ai": "wolf",
 		"weakness": [],
 		"resistance": [],
 		"tags": [
@@ -38,13 +38,16 @@
 		"trinket": "none",
 		"vision": 10,
 		"xp": 300,
-		"ai": "hunt",
+		"ai": "alpha",
 		"weakness": [],
 		"resistance": [],
 		"tags": [
 			"wolf",
 			"leader"
-		]
+		],
+        "skills": [
+          "Howl"
+        ]
 	},
 	{
 		"id": "dire",
@@ -62,12 +65,11 @@
 		"trinket": "none",
 		"vision": 12,
 		"xp": 500,
-		"ai": "hunt",
+		"ai": "wolf",
 		"weakness": [],
 		"resistance": [],
 		"tags": [
-			"wolf",
-			"leader"
+			"wolf"
 		]
 	},
 	{
@@ -87,13 +89,16 @@
 		"trinket": "none",
 		"vision": 15,
 		"xp": 1000,
-		"ai": "hunt",
+		"ai": "alpha",
 		"weakness": [],
 		"resistance": [],
 		"tags": [
 			"wolf",
 			"leader"
-		]
+		],
+        "skills": [
+          "Howl"
+        ]
 	},
 	{
 		"id": "revenant",
@@ -139,14 +144,17 @@
 		"trinket": "wolfCharm",
 		"vision": 10,
 		"xp": 1000,
-		"ai": "hunt",
+		"ai": "alpha",
 		"weakness": [],
 		"resistance": [],
 		"tags": [
 			"wolf",
 			"door",
 			"leader"
-		]
+		],
+        "skills": [
+          "Howl"
+        ]
 	},
 	{
 		"id": "banshee",

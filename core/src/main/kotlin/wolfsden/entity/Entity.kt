@@ -8,10 +8,7 @@ import squidpony.squidmath.Coord
 import wolfsden.CommonColors
 import wolfsden.entity.effects.Effect
 import wolfsden.entity.effects.Stance
-import wolfsden.entity.skills.Rumble
-import wolfsden.entity.skills.Stonebreaker
-import wolfsden.entity.skills.TitanStance
-import wolfsden.entity.skills.WolfSkill
+import wolfsden.entity.skills.*
 import wolfsden.log
 import wolfsden.map.WolfMap
 import wolfsden.nz
@@ -406,6 +403,7 @@ class Entity(val eID: String) : Serializable {
             "Hulking Titan Stance" -> TitanStance(eID)
             "Stonebreaker" -> Stonebreaker(eID)
             "Rumble" -> Rumble(eID)
+            "Howl" -> WolfHowl(eID)
             else -> null
         }
         learnSkill(theSkill ?: throw IllegalArgumentException("$skillName is not a valid skill"))

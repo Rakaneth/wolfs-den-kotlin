@@ -1,0 +1,10 @@
+#Idling
+
+#Aliases
+import doNothing: "wolfsden.ai.tasks.WaitTask"
+import randomWalk: "wolfsden.ai.tasks.RandomWalkTask"
+
+root
+  randomSelector
+    doNothing
+    randomWalk

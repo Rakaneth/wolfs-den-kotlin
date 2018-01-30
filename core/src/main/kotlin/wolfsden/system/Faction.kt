@@ -26,8 +26,13 @@ object Faction : EntityListener {
     }
 
     fun getDMap(leader: String): DijkstraMap {
-        require(dMaps.containsKey(leader), { "${GameStore.getByID(leader)} has no faction to lead" })
-        return dMaps[leader]!!
+        //require(dMaps.containsKey(leader), { "${GameStore.getByID(leader)} has no faction to lead" })
+        return if (dMaps.containsKey(leader)) {
+            dMaps[leader]!!
+        } else {
+            val realLeader = GameStore.getByID(leader)!!.ai!!.leader
+            dMaps[realLeader]!!
+        }
     }
 
     init {

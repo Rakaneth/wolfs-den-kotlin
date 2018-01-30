@@ -17,7 +17,8 @@ class TitanStance(userID: String) : WolfSkill(userID, "Hulking Titan Stance",
         cd = 20,
         cost = 0,
         targeting = false,
-        skillIndex = 0
+        skillIndex = 0,
+        isAttack = false
 ) {
     override fun use(target: Coord): Int {
         user.applyEffect(TitanStanceEffect(user.eID))
@@ -78,7 +79,7 @@ class Rumble(userID: String) : WolfSkill(userID, "Rumble",
         if (sucker == null) {
             PlayScreen.addMessage(missMsg)
         } else {
-            val results = user.attack(sucker, user.atk + user.atkDly, sucker.sav)
+            val results = user.attack(sucker, user.atk, sucker.sav)
             if (results.hit) {
                 PlayScreen.addMessage("${user.markupString} pounds the ground at ${sucker.markupString}'s feet!")
                 sucker.takeDmg(results.dmg)

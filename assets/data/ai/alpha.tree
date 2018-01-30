@@ -1,15 +1,34 @@
 #Wolf alpha tree
 
 #imports
-import detectPreyNearby?: "wolfsden.ai.conditions.DetectPreyCondition"
-#import detectFood?: "wolfsden.ai.conditions.DetectFoodCondition"
-import randomWalk: "wolfsden.ai.tasks.RandomWalkTask"
+import howl: "wolfsden.ai.tasks.HowlTask"
+import moveToHowl: "wolfsden.ai.tasks.MoveToHowlTask"
+import packBuffed?: "wolfsden.ai.conditions.PackBuffedCondition"
+import packTarget: "wolfsden.ai.tasks.PackTargetTask"
+import packHasTarget?: "wolfsden.ai.conditions.PackHasTargetCondition"
+import preyAlive?: "wolfsden.ai.conditions.PreyAliveCondition"
+import detectPrey?: "wolfsden.ai.conditions.DetectPreyCondition"
 import getTarget: "wolfsden.ai.tasks.GetTargetTask"
+
+
+subtree name: "packNotBuffed?"
+	invert
+		packBuffed? buffName:"Might"
+
+subtree name: "packNotTogether?"
+	invert
+		packHasTarget?
+
+subtree name: "buffPack"
+	sequence
+		moveToHowl
+		howl
 
 #tree definition
 root
 	dynamicGuardSelector
-		(include subtree: "data/ai/common/preyExists.tree" lazy:true) include subtree: "data/ai/common/commandAndHuntPrey.tree" lazy:true
-		(detectPreyNearby?) getTarget
-		#(detectFood?) include subtree: "data/ai/common/lookForFood.tree" lazy:true
-		() randomWalk
+		($packNotBuffed?) $buffPack
+		($packNotTogether?) packTarget
+		(include subtree: "data/ai/common/preyExists.tree" lazy:true) include subtree: "data/ai/hunt.tree" lazy:true
+		(detectPrey?) getTarget
+		() include subtree: "data/ai/common/idle.tree" lazy:true

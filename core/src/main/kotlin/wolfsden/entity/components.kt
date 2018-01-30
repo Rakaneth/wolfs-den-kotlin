@@ -126,7 +126,7 @@ class AI(
 ) : Component(entity) {
     @Transient
     var btree: BehaviorTree<Entity>? = null
-    var target: String? = null
+    var target: String = ""
     var leader: String = entity
     var skillInUse: WolfSkill? = null
 
@@ -142,7 +142,8 @@ class AI(
         return btree!!
     }
 
-    fun getTarget(): Entity? = GameStore.entityList[target]
+    fun getTarget(): Entity? = GameStore.getByID(target)
+    fun getLeader(): Entity? = GameStore.getByID(leader)
 }
 
 class EffectStack(
