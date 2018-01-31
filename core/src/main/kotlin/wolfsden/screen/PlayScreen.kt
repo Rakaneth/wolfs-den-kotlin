@@ -118,7 +118,7 @@ object PlayScreen : WolfScreen("main") {
         }
     }
     override var input: SquidInput = SquidInput()
-    private val mapLayers = playLayout.toSparseLayers("map")
+    val mapLayers = playLayout.toSparseLayers("map")
     private val statPanel = playLayout.toSquidPanel("stats")
     private val msgPanel = playLayout.toMessageBox("messages")
     private val ttPanel = playLayout.toSquidPanel("tt")

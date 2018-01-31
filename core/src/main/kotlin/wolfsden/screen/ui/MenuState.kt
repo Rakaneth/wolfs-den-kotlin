@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ai.fsm.State
 import com.badlogic.gdx.ai.msg.Telegram
 import squidpony.squidgrid.Direction
+import squidpony.squidgrid.gui.gdx.PanelEffect
 import squidpony.squidgrid.gui.gdx.SquidInput
+import squidpony.squidmath.Coord
 import wolfsden.screen.PlayScreen
 import wolfsden.system.CommandProcessor
 import wolfsden.system.DialogManager
@@ -54,9 +56,8 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                         GameStore.saveGame()
                         Gdx.app.exit()
                     }
-                    'T' -> {
-                        entity.curState.changeState(TARGET)
-                        GameStore.update()
+                    't' -> {
+                        entity.stage.addAction(PanelEffect.GlowBallEffect(entity.mapLayers, Coord.get(40, 20), Coord.get(35, 20), 5))
                     }
                     in SquidInput.F1..SquidInput.F10 -> {
                         val fMap = mapOf(
