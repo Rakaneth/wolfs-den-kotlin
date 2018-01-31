@@ -23,6 +23,7 @@ class FollowLeaderTask : LeafTask<Entity>() {
         val dMap = Faction.getDMap(subject.eID)
         val path = dMap.findPath(1, null, allyCoords, userC, alphaC)
         return if (path.isEmpty()) {
+            CommandProcessor.process(subject, "wait")
             log(clock, "AI", "$subject cannot find path to leader")
             Status.FAILED
         } else {

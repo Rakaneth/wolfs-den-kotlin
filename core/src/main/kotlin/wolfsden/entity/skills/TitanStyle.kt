@@ -33,10 +33,6 @@ class Stonebreaker(userID: String) : WolfSkill(userID, "Stonebreaker",
         cost = 5,
         skillIndex = 1) {
 
-    init {
-        aoe.limitType = AimLimit.EIGHT_WAY
-    }
-
     override val isAvailable: Boolean
         get() = super.isAvailable && user.hasEffect("Hulking Titan Stance")
 
@@ -65,9 +61,6 @@ class Rumble(userID: String) : WolfSkill(userID, "Rumble",
         cd = 50,
         cost = 10,
         skillIndex = 2) {
-    init {
-        aoe.limitType = AimLimit.EIGHT_WAY
-    }
 
     override val isAvailable: Boolean
         get() = super.isAvailable && user.hasEffect("Hulking Titan Stance")
@@ -81,12 +74,8 @@ class Rumble(userID: String) : WolfSkill(userID, "Rumble",
         } else {
             val results = user.attack(sucker, user.atk, sucker.sav)
             if (results.hit) {
-                PlayScreen.addMessage("${user.markupString} pounds the ground at ${sucker.markupString}'s feet!")
+                PlayScreen.addMessage("${user.markupString} pounds the ground at ${sucker.markupString}'s feet, stunning them!")
                 sucker.takeDmg(results.dmg)
-                if (user.hasSkill("Stonebreaker"))
-                    user.getSkillByName("Stonebreaker").resetCD()
-                if (user.hasSkill("Mountainhammer"))
-                    user.getSkillByName("Mountainhammer").resetCD()
                 sucker.applyEffect(StunEffect(sucker.eID, 10))
             }
             describeCombat(results)

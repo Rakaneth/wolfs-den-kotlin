@@ -1,6 +1,7 @@
 package wolfsden.entity.skills
 
 import squidpony.squidai.AOE
+import squidpony.squidai.AimLimit
 import squidpony.squidai.Technique
 import squidpony.squidmath.Coord
 import wolfsden.CommonColors
@@ -22,6 +23,7 @@ abstract class WolfSkill(
 ) : Technique(name, aoe) {
     init {
         updateMap()
+        aoe.limitType = AimLimit.EIGHT_WAY
     }
 
     var curCD = cd
@@ -47,7 +49,7 @@ abstract class WolfSkill(
     }
 
     fun updateMap() {
-        setMap(user.getMap()!!.baseMap)
+        setMap(user.getMap().baseMap)
     }
 
     protected fun targetEntity(c: Coord): Entity? {

@@ -2,7 +2,7 @@
 
 #imports
 import howl: "wolfsden.ai.tasks.HowlTask"
-import moveToHowl: "wolfsden.ai.tasks.MoveToHowlTask"
+import packInRange?: "wolfsden.ai.conditions.PackInRangeCondition"
 import packBuffed?: "wolfsden.ai.conditions.PackBuffedCondition"
 import packTarget: "wolfsden.ai.tasks.PackTargetTask"
 import packHasTarget?: "wolfsden.ai.conditions.PackHasTargetCondition"
@@ -21,14 +21,13 @@ subtree name: "packNotTogether?"
 
 subtree name: "buffPack"
 	sequence
-		moveToHowl
+		packInRange? skillName:"Howl"
 		howl
 
 #tree definition
 root
 	dynamicGuardSelector
-		($packNotBuffed?) $buffPack
 		($packNotTogether?) packTarget
 		(include subtree: "data/ai/common/preyExists.tree" lazy:true) include subtree: "data/ai/hunt.tree" lazy:true
-		(detectPrey?) getTarget
+		($packNotBuffed?) $buffPack
 		() include subtree: "data/ai/common/idle.tree" lazy:true
