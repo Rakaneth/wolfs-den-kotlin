@@ -46,6 +46,7 @@ class Entity(val eID: String) : Serializable {
     var effectStack: EffectStack? = null
     @Transient
     var skillStack: SkillStack? = null
+    var aggroStack: AggroStack? = null
     private var capacity: Int = 0
     val atk: Int
         get() = stats?.skl.nz() + armor?.atk.nz() + mh?.atk.nz() + oh?.atk.nz() + trinket?.atk.nz() +
@@ -87,7 +88,7 @@ class Entity(val eID: String) : Serializable {
     val isCreature
         get() = hasTag("creature") && blocking
 
-    private val skillStore: MutableList<SkillInfo> = mutableListOf()
+    private val skillStore: MutableSet<SkillInfo> = mutableSetOf()
 
     private fun markupEQ(label: String, eq: EquipStats?): IColoredString<Color> {
         return "[${CommonColors.INFO}]%8s[]: ${eq?.name ?: "Nothing"}".format(label).toICString()
@@ -182,6 +183,10 @@ class Entity(val eID: String) : Serializable {
 
     fun addSkills() {
         skillStack = SkillStack(eID)
+    }
+
+    fun addAggro() {
+        aggroStack = AggroStack(eID)
     }
 
     fun updateTag(tagList: String, tag: String, adding: Boolean = true) {
@@ -435,6 +440,7 @@ class Entity(val eID: String) : Serializable {
         skillStore.forEach {
             learnSkill(it.name).setCD(it.curCD)
         }
+        skillStore.clear()
     }
 
     override fun toString(): String = "${id?.name}-${eID.substringBefore("-")}"

@@ -22,4 +22,4 @@ root
 		(include subtree: "data/ai/common/preyExists.tree" lazy:true) include subtree: "data/ai/hunt.tree" lazy:true
 		(detectPrey?) $targetAndInform
 		($notBuffed?) followLeader
-		() followLeader
+		() include subtree: "data/ai/common/idle.tree" lazy:true

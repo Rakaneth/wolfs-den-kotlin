@@ -98,6 +98,7 @@ object CreatureBuilder {
         foetus.isPlayer = isPlayer
         foetus.addInventory(info.inventory)
         foetus.addEffect()
+        foetus.addAggro()
 
         GameStore.addEntity(foetus)
 

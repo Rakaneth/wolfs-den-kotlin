@@ -57,6 +57,7 @@ object Scheduler : EntityListener {
                         //WolfScreen.setScreen(GameOverScreen)
                     } else {
                         PlayScreen.addMessage("${creature.markupString} has been [Crimson]slain![]")
+                        onDeath(creature)
                         GameStore.removeEntity(creature)
                     }
                 }

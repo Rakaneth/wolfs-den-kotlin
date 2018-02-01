@@ -3,6 +3,7 @@ package wolfsden.entity
 import com.badlogic.gdx.ai.btree.BehaviorTree
 import com.badlogic.gdx.ai.btree.utils.BehaviorTreeLibraryManager
 import squidpony.squidmath.Coord
+import squidpony.squidmath.OrderedMap
 import wolfsden.entity.effects.Effect
 import wolfsden.entity.skills.WolfSkill
 import wolfsden.system.GameStore
@@ -110,7 +111,16 @@ data class XPGainer(
         override val entity: String,
         var curXP: Float = 0f,
         var totXP: Float = 0f
-) : Component(entity)
+) : Component(entity) {
+    fun gainXP(amt: Float) {
+        curXP += amt
+        totXP += amt
+    }
+
+    fun spendXP(amt: Float) {
+        curXP -= amt
+    }
+}
 
 data class Vision(
         override val entity: String,
@@ -181,4 +191,17 @@ class SkillStack(override val entity: String) : Component(entity) {
     val skillTable
         get() = labels.zip(skills)
 
+}
+
+class AggroStack(override val entity: String) : Component(entity) {
+    val aggroList: OrderedMap<String, Int> = OrderedMap()
+    val topAggro
+        get() = aggroList.maxBy { it.value}?.key
+
+    fun getAggro(eID: String) = aggroList[eID] ?: 0
+
+    fun changeAggro(eID: String, amt: Int) {
+        val curAmt = getAggro(eID)
+        aggroList[eID] = curAmt + amt
+    }
 }

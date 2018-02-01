@@ -36,6 +36,7 @@ fun Entity.attack(other: Entity, atkStat: Int = this.atk, defStat: Int = other.d
             }
         }
     }
+    if (hit) other.aggroStack!!.changeAggro(this.eID, dmg)
     return CombatResults(this, other, hit, hitBy, dmg, wk, res)
 }
 
