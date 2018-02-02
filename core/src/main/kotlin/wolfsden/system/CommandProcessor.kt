@@ -94,7 +94,7 @@ object CommandProcessor {
                         entity.atkDly
                     }
                     CollideResults.DOOR -> {
-                        entity.getMap()!!.openDoor(tgt as Coord)
+                        entity.getMap().openDoor(tgt as Coord)
                         entity.movDly
                     }
                     else -> {
@@ -131,6 +131,7 @@ object CommandProcessor {
             "stairs" -> {
                 val tgt = target as WolfMap.Connection
                 entity.changeLevel(tgt)
+                if (entity.isPlayer) Scheduler.updateScheduled()
                 entity.movDly
             }
             "wait" -> {

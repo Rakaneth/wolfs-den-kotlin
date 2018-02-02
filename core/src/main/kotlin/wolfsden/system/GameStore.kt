@@ -154,6 +154,24 @@ object GameStore {
         with(CreatureBuilder) {
             build(playerClass, true, null, "mine", playerName)
             buildWolfPack()
+            repeat(2, {_ ->
+                buildWolfPack("mine2")
+            })
+            repeat(3, {_->
+                buildWolfPack("cave")
+            })
+            buildGreaterPack("cave2")
+            repeat(3, { _->
+                build("revenant", false, null, "cave2")
+            })
+            repeat(2, {_->
+                buildGreaterPack("cave3")
+            })
+            build("wolfLord", false, null, "cave2")
+            build("margrave", false, null, "lair")
+            repeat(4, { _ ->
+                buildGreaterPack("lair")
+            })
         }
         with(ItemBuilder) {
             mapList.values.forEach {
