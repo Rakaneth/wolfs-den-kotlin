@@ -54,3 +54,7 @@ fun TextCellFactory.setUp(width: Float = WolfScreen.cellWidth, height: Float = W
 fun Collection<Entity>.getCoords() = this.mapNotNull { it.pos?.coord }
 fun Collection<Coord>.nearest(toCoord: Coord): Coord = this.minBy { it.distance(toCoord) }!!
 fun Collection<Coord>.farthest(fromCoord: Coord): Coord = this.maxBy { it.distance(fromCoord) }!!
+
+val fib = generateSequence(2 to 3) {it.second to it.first + it.second }.map{ it.first}
+
+fun getFib(n: Int): Int = fib.take(n).last()
