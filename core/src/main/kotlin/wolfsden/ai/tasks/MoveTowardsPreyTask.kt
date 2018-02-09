@@ -22,7 +22,8 @@ class MoveTowardsPreyTask : LeafTask<Entity>() {
             Faction.getDMap(`object`.ai!!.leader)
         }
 
-        val nextStep = dMap.findPath(1, null, `object`.visibleAllies().map { it.pos!!.coord }, `object`.pos!!.coord, `object`.ai!!.getTarget()!!.pos!!.coord)
+        val nextStep = dMap.findPath(1, null, `object`.visibleAllies().map { it.pos!!.coord }, `object`.pos!!.coord,
+                                     `object`.ai!!.getTarget()!!.pos!!.coord)
         return if (nextStep.isEmpty()) {
             log(clock, "AI", "$`object` cannot find path to prey")
             Status.FAILED

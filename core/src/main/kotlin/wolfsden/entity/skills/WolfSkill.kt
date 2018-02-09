@@ -11,15 +11,15 @@ import wolfsden.system.Location
 import wolfsden.system.getMap
 
 abstract class WolfSkill(
-        private val userID: String,
-        name: String,
-        val desc: String,
-        aoe: AOE,
-        val cd: Int = 0,
-        val cost: Int = 0,
-        val targeting: Boolean = true,
-        val skillIndex: Int = 0,
-        val isAttack: Boolean = true
+    private val userID: String,
+    name: String,
+    val desc: String,
+    aoe: AOE,
+    val cd: Int = 0,
+    val cost: Int = 0,
+    val targeting: Boolean = true,
+    val skillIndex: Int = 0,
+    val isAttack: Boolean = true
 ) : Technique(name, aoe) {
     init {
         updateMap()

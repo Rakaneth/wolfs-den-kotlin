@@ -7,9 +7,9 @@ import squidpony.squidgrid.gui.gdx.TextCellFactory
 import wolfsden.screen.WolfScreen
 
 abstract class WolfMenu(
-        tcf: TextCellFactory,
-        private val caption: String? = null,
-        override var menuItems: List<String> = listOf()
+    tcf: TextCellFactory,
+    private val caption: String? = null,
+    override var menuItems: List<String> = listOf()
 ) : SquidPanel(10, 10, tcf), WolfSelector {
 
     protected fun setGridPos(x: Int, y: Int) {

@@ -61,10 +61,12 @@ object CommandProcessor {
         for (thing in things.filter { it != this }) {
             when {
                 !this.bagsFull -> {
-                    if (this.playerVisible()) PlayScreen.addMessage("${this.markupString} picks up ${thing.markupString}.")
+                    if (this.playerVisible()) PlayScreen.addMessage(
+                        "${this.markupString} picks up ${thing.markupString}.")
                     this.putInBags(thing)
                 }
-                this.isPlayer -> PlayScreen.addMessage("${this.markupString}'s bags are too full for ${thing.markupString}.")
+                this.isPlayer -> PlayScreen.addMessage(
+                    "${this.markupString}'s bags are too full for ${thing.markupString}.")
                 else -> {
                 }
             }
@@ -118,7 +120,8 @@ object CommandProcessor {
                         10
                     }
                     else -> {
-                        log(Scheduler.clock, "CommandProcessor", "${entity.eID} attempts to use unusable item ${tgt.eID}")
+                        log(Scheduler.clock, "CommandProcessor",
+                            "${entity.eID} attempts to use unusable item ${tgt.eID}")
                         10
                     }
                 }

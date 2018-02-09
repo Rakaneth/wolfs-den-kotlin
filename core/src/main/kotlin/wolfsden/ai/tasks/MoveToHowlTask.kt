@@ -33,12 +33,12 @@ class MoveToHowlTask : LeafTask<Entity>() {
             val dMap = Faction.getDMap(subject.eID)
             val radius = (howlSkill.aoe as BurstAOE).radius
             val path = dMap.findAttackPath(1,
-                    radius,
-                    los,
-                    allyCoords,
-                    allyCoords,
-                    userC,
-                    *allyCoords.toTypedArray())
+                                           radius,
+                                           los,
+                                           allyCoords,
+                                           allyCoords,
+                                           userC,
+                                           *allyCoords.toTypedArray())
             if (path.isNotEmpty()) {
                 CommandProcessor.process(subject, "move", userC.toGoTo(path[0]))
                 Status.RUNNING

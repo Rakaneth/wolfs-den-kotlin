@@ -6,13 +6,13 @@ import wolfsden.joinWithAnd
 import wolfsden.screen.PlayScreen
 
 data class CombatResults(
-        val attacker: Entity,
-        val defender: Entity,
-        val hit: Boolean = false,
-        val hitBy: Int = 0,
-        val dmg: Int = 0,
-        val weakness: List<String> = listOf(),
-        val resistance: List<String> = listOf()
+    val attacker: Entity,
+    val defender: Entity,
+    val hit: Boolean = false,
+    val hitBy: Int = 0,
+    val dmg: Int = 0,
+    val weakness: List<String> = listOf(),
+    val resistance: List<String> = listOf()
 )
 
 fun Entity.attack(other: Entity, atkStat: Int = this.atk, defStat: Int = other.dfp, dmgMod: Int = 0): CombatResults {

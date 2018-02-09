@@ -246,7 +246,8 @@ object PlayScreen : WolfScreen("main") {
         sklPanel.putBorders(FW, "Skills(Shift: use)")
         if (player.skillStack!!.skills.isNotEmpty()) {
             player.skillStack!!.skillTable.forEachIndexed { index, pair ->
-                sklPanel.put(1, index + 1, "[${CommonColors.INFO}]${pair.first}:[] ${pair.second.markupString}".toICString())
+                sklPanel.put(1, index + 1,
+                             "[${CommonColors.INFO}]${pair.first}:[] ${pair.second.markupString}".toICString())
             }
         }
     }

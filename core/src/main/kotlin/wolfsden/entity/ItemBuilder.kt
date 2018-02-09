@@ -17,32 +17,32 @@ private interface BaseMarker {
 }
 
 data class EquipBase(
-        override val id: String,
-        val name: String = "No name",
-        val desc: String = "No description",
-        val glyph: String = "@",
-        val color: String = "White",
-        override val rarity: Int = 0,
-        val slot: String = "mh",
-        val atk: Int = 0,
-        val dmg: Int = 0,
-        val dly: Int = 0,
-        val sav: Int = 0,
-        val dfp: Int = 0,
-        val prot: Int = 0,
-        val tags: List<String> = listOf()
+    override val id: String,
+    val name: String = "No name",
+    val desc: String = "No description",
+    val glyph: String = "@",
+    val color: String = "White",
+    override val rarity: Int = 0,
+    val slot: String = "mh",
+    val atk: Int = 0,
+    val dmg: Int = 0,
+    val dly: Int = 0,
+    val sav: Int = 0,
+    val dfp: Int = 0,
+    val prot: Int = 0,
+    val tags: List<String> = listOf()
 ) : BaseMarker
 
 data class ItemBase(
-        override val id: String,
-        val name: String = "No name",
-        val desc: String = "No description",
-        val glyph: String = "@",
-        val color: String = "White",
-        override val rarity: Int = 0,
-        val itemType: String = "healing",
-        val pctAmt: Float = 0f,
-        val flatAmt: Int = 0
+    override val id: String,
+    val name: String = "No name",
+    val desc: String = "No description",
+    val glyph: String = "@",
+    val color: String = "White",
+    override val rarity: Int = 0,
+    val itemType: String = "healing",
+    val pctAmt: Float = 0f,
+    val flatAmt: Int = 0
 ) : BaseMarker
 
 object ItemBuilder {

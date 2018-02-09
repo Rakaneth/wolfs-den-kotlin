@@ -7,14 +7,14 @@ import wolfsden.screen.PlayScreen
 import wolfsden.screen.ui.MenuState
 
 data class DialogOption(
-        val text: String = "",
-        val result: String = ""
+    val text: String = "",
+    val result: String = ""
 )
 
 data class WolfDialog(
-        val caption: String = "",
-        val text: String = "",
-        var options: List<DialogOption> = listOf()
+    val caption: String = "",
+    val text: String = "",
+    var options: List<DialogOption> = listOf()
 )
 
 object DialogManager {

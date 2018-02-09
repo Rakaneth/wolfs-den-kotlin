@@ -12,29 +12,29 @@ import wolfsden.system.WolfRNG
 import java.util.*
 
 data class CreatureBase(
-        val id: String,
-        val name: String = "No name",
-        val desc: String = "No description",
-        val glyph: String = "@",
-        val color: String = "White",
-        val str: Int = 1,
-        val stam: Int = 1,
-        val spd: Int = 1,
-        val skl: Int = 1,
-        val mh: String = "none",
-        val oh: String = "none",
-        val armor: String = "none",
-        val trinket: String = "none",
-        val vision: Double = 6.0,
-        val ai: String = "hunt",
-        val weakness: List<String> = listOf(),
-        val resistance: List<String> = listOf(),
-        val tags: List<String> = listOf(),
-        val gainsXP: Boolean = false,
-        val xp: Float = 0f,
-        val inventory: Int = 10,
-        val rarity: Int = 0,
-        val skills: List<String> = listOf()
+    val id: String,
+    val name: String = "No name",
+    val desc: String = "No description",
+    val glyph: String = "@",
+    val color: String = "White",
+    val str: Int = 1,
+    val stam: Int = 1,
+    val spd: Int = 1,
+    val skl: Int = 1,
+    val mh: String = "none",
+    val oh: String = "none",
+    val armor: String = "none",
+    val trinket: String = "none",
+    val vision: Double = 6.0,
+    val ai: String = "hunt",
+    val weakness: List<String> = listOf(),
+    val resistance: List<String> = listOf(),
+    val tags: List<String> = listOf(),
+    val gainsXP: Boolean = false,
+    val xp: Float = 0f,
+    val inventory: Int = 10,
+    val rarity: Int = 0,
+    val skills: List<String> = listOf()
 )
 
 object CreatureBuilder {
@@ -48,7 +48,8 @@ object CreatureBuilder {
     }
 
 
-    fun build(buildID: String, isPlayer: Boolean = false, start: Coord? = null, mapID: String? = null, name: String? = null): Entity? {
+    fun build(buildID: String, isPlayer: Boolean = false, start: Coord? = null, mapID: String? = null,
+              name: String? = null): Entity? {
         val info = creatureBP.first { it.id == buildID }
         val eID = if (isPlayer) "player" else UUID.randomUUID().toString()
         val foetus = Entity(eID)
@@ -110,7 +111,8 @@ object CreatureBuilder {
         return foetus
     }
 
-    fun buildPack(lackeyID: String, leaderID: String, numLackeys: Int, mapID: String = GameStore.curMap.id, leaderStart: Coord? = null) {
+    fun buildPack(lackeyID: String, leaderID: String, numLackeys: Int, mapID: String = GameStore.curMap.id,
+                  leaderStart: Coord? = null) {
         val leader = build(leaderID, mapID = mapID, start = leaderStart)!!
         for (i in 0 until numLackeys) {
             val startC = GameStore.getMapByID(mapID).randomFloorWithin(leader.pos!!.coord, 2)

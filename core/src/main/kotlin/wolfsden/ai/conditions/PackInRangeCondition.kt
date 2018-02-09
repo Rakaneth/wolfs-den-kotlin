@@ -12,7 +12,7 @@ import wolfsden.system.getMap
 import wolfsden.system.visibleAllies
 
 class PackInRangeCondition : LeafTask<Entity>() {
-    @TaskAttribute(required=true, name="skillName")
+    @TaskAttribute(required = true, name = "skillName")
     @JvmField
     var skillName: String = ""
 

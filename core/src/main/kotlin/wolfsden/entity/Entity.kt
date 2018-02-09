@@ -20,8 +20,8 @@ import wolfsden.toICString
 import java.io.Serializable
 
 private data class SkillInfo(
-        val name: String,
-        val curCD: Int
+    val name: String,
+    val curCD: Int
 ) : Serializable
 
 class Entity(val eID: String) : Serializable {
@@ -335,7 +335,7 @@ class Entity(val eID: String) : Serializable {
     fun hasTag(tag: String) = tags.contains(tag) || atkTags.contains(tag) || (effectStack?.tags?.contains(tag) ?: false)
     fun hasWeakness(weak: String) = weakness.contains(weak) || (effectStack?.weakness?.contains(weak) ?: false)
     fun hasResistance(resist: String) = resistance.contains(resist) || defTags.contains(resist) ||
-            (effectStack?.resistance?.contains(resist) ?: false)
+                                        (effectStack?.resistance?.contains(resist) ?: false)
 
     fun updateFOV() {
         FOV.reuseFOV(getMap().resistances, vision!!.visible, pos!!.x, pos!!.y, vision!!.vision)

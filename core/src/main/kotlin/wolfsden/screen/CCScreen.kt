@@ -40,9 +40,9 @@ object CCScreen : WolfScreen("character creation") {
             in ('1'..'3') -> selected = key.toString().toInt()
             SquidInput.ENTER -> {
                 val selections = mapOf(
-                        1 to ("fighter" to "Palmyra"),
-                        2 to ("rogue" to "Poe"),
-                        3 to ("cleric" to "Barnabas")
+                    1 to ("fighter" to "Palmyra"),
+                    2 to ("rogue" to "Poe"),
+                    3 to ("cleric" to "Barnabas")
                 )
                 val (charClass, charName) = selections[selected]!!
                 GameStore.newGame(charClass, charName)
@@ -56,27 +56,27 @@ object CCScreen : WolfScreen("character creation") {
     private const val crimson = CommonColors.VIT
     private const val warning = CommonColors.WARNING
     private const val palmyraDesc = "A strong, eager warrior, [$info][*]Palmyra[] has been called upon by his village, " +
-            "[$info][*]Jommund[], to deal with the threat of the [$crimson][*]Wolflords.[] He prefers to confront enemies " +
-            "openly, wielding heavy weapons to bring death to his foes and wearing heavy armor for protection. He has " +
-            "knowledge of various [$info][/]fighting styles[], using that to his advantage on the battlefield."
+                                    "[$info][*]Jommund[], to deal with the threat of the [$crimson][*]Wolflords.[] He prefers to confront enemies " +
+                                    "openly, wielding heavy weapons to bring death to his foes and wearing heavy armor for protection. He has " +
+                                    "knowledge of various [$info][/]fighting styles[], using that to his advantage on the battlefield."
     private const val poeDesc = "A swift, stealthy scout, [$info][*]Poe[] hails from [$info][*]Jommund[] as well, having " +
-            "similarly been called upon by the people of his town to face the [$crimson][*]Wolflords.[]  He prefers " +
-            "lighter armor, silent and easier to move around in, as well as light weapons that are easy to conceal. " +
-            "Like Palmyra, he has knowledge of various [$info][/]fighting styles[], though these are underhanded " +
-            "techniques rather than formal martial arts."
+                                "similarly been called upon by the people of his town to face the [$crimson][*]Wolflords.[]  He prefers " +
+                                "lighter armor, silent and easier to move around in, as well as light weapons that are easy to conceal. " +
+                                "Like Palmyra, he has knowledge of various [$info][/]fighting styles[], though these are underhanded " +
+                                "techniques rather than formal martial arts."
     private const val barnaDesc = "A sturdy, faithful [$info][*]Oathsworn[] of [$warning][*]the Raven, Oath of Death " +
-            "and War,[] [$info]Barnabas[] does not hail from [$info][*]Jommund[], being a missionary from the capital " +
-            "of [$info][*]Salaban[]. His crusade against the [$crimson][*]Wolflords[] is a holy one. He prefers defense " +
-            "over offense, wearing heavy armor and shields. He has knowledge of a few [$info][/]martial techniques[], " +
-            "but draws his might directly from the Raven, [$info][/]calling upon the Oath[] to wreak destruction on his " +
-            "enemies or bless Barnabas in battle."
+                                  "and War,[] [$info]Barnabas[] does not hail from [$info][*]Jommund[], being a missionary from the capital " +
+                                  "of [$info][*]Salaban[]. His crusade against the [$crimson][*]Wolflords[] is a holy one. He prefers defense " +
+                                  "over offense, wearing heavy armor and shields. He has knowledge of a few [$info][/]martial techniques[], " +
+                                  "but draws his might directly from the Raven, [$info][/]calling upon the Oath[] to wreak destruction on his " +
+                                  "enemies or bless Barnabas in battle."
     private val choicePanel = ccLayout.toSquidPanel("choices")
     private val descPanel = ccLayout.toSquidPanel("descs")
     private var selected = 1
     private val choices = mapOf(
-            1 to ("[1]: Palmyra, the Warrior" to palmyraDesc.toICString()),
-            2 to ("[2]: Poe, the Scoundrel" to poeDesc.toICString()),
-            3 to ("[3]: Barnabas, the Oathsworn" to barnaDesc.toICString())
+        1 to ("[1]: Palmyra, the Warrior" to palmyraDesc.toICString()),
+        2 to ("[2]: Poe, the Scoundrel" to poeDesc.toICString()),
+        3 to ("[3]: Barnabas, the Oathsworn" to barnaDesc.toICString())
     )
 
     init {

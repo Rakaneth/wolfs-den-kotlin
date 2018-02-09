@@ -1,6 +1,5 @@
 package wolfsden.entity.skills
 
-import squidpony.squidai.AimLimit
 import squidpony.squidai.PointAOE
 import squidpony.squidmath.Coord
 import wolfsden.entity.effects.StunEffect
@@ -12,13 +11,13 @@ import wolfsden.system.describeCombat
 private val DEFAULT_POINT: Coord = Coord.get(0, 0)
 
 class TitanStance(userID: String) : WolfSkill(userID, "Hulking Titan Stance",
-        desc = "Become a hulking titan on the battlefield",
-        aoe = PointAOE(DEFAULT_POINT),
-        cd = 20,
-        cost = 0,
-        targeting = false,
-        skillIndex = 0,
-        isAttack = false
+                                              desc = "Become a hulking titan on the battlefield",
+                                              aoe = PointAOE(DEFAULT_POINT),
+                                              cd = 20,
+                                              cost = 0,
+                                              targeting = false,
+                                              skillIndex = 0,
+                                              isAttack = false
 ) {
     override fun use(target: Coord): Int {
         user.applyEffect(TitanStanceEffect(user.eID))
@@ -27,11 +26,11 @@ class TitanStance(userID: String) : WolfSkill(userID, "Hulking Titan Stance",
 }
 
 class Stonebreaker(userID: String) : WolfSkill(userID, "Stonebreaker",
-        desc = "A devastating strike to a single foe",
-        aoe = PointAOE(DEFAULT_POINT, 1, 1),
-        cd = 30,
-        cost = 5,
-        skillIndex = 1) {
+                                               desc = "A devastating strike to a single foe",
+                                               aoe = PointAOE(DEFAULT_POINT, 1, 1),
+                                               cd = 30,
+                                               cost = 5,
+                                               skillIndex = 1) {
 
     override val isAvailable: Boolean
         get() = super.isAvailable && user.hasEffect("Hulking Titan Stance")
@@ -45,7 +44,8 @@ class Stonebreaker(userID: String) : WolfSkill(userID, "Stonebreaker",
         } else {
             val results = user.attack(sucker, dmgMod = 5)
             if (results.hit) {
-                PlayScreen.addMessage("${user.markupString} brings down a stone-breaking blow upon ${sucker.markupString}!")
+                PlayScreen.addMessage(
+                    "${user.markupString} brings down a stone-breaking blow upon ${sucker.markupString}!")
                 sucker.takeDmg(results.dmg)
             }
             describeCombat(results)
@@ -56,11 +56,11 @@ class Stonebreaker(userID: String) : WolfSkill(userID, "Stonebreaker",
 }
 
 class Rumble(userID: String) : WolfSkill(userID, "Rumble",
-        desc = "A rattling blow that stuns enemies, setting them up for other moves in this style",
-        aoe = PointAOE(DEFAULT_POINT, 1, 1),
-        cd = 50,
-        cost = 10,
-        skillIndex = 2) {
+                                         desc = "A rattling blow that stuns enemies, setting them up for other moves in this style",
+                                         aoe = PointAOE(DEFAULT_POINT, 1, 1),
+                                         cd = 50,
+                                         cost = 10,
+                                         skillIndex = 2) {
 
     override val isAvailable: Boolean
         get() = super.isAvailable && user.hasEffect("Hulking Titan Stance")
@@ -74,7 +74,8 @@ class Rumble(userID: String) : WolfSkill(userID, "Rumble",
         } else {
             val results = user.attack(sucker, user.atk, sucker.sav)
             if (results.hit) {
-                PlayScreen.addMessage("${user.markupString} pounds the ground at ${sucker.markupString}'s feet, stunning them!")
+                PlayScreen.addMessage(
+                    "${user.markupString} pounds the ground at ${sucker.markupString}'s feet, stunning them!")
                 sucker.takeDmg(results.dmg)
                 sucker.applyEffect(StunEffect(sucker.eID, 10))
             }

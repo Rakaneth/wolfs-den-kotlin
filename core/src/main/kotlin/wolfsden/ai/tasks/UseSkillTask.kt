@@ -33,13 +33,13 @@ class UseSkillTask : LeafTask<Entity>() {
         val enemyCoords = subject.visibleEnemies().getCoords()
         val iLocs = if (theSkill.isAttack) {
             theSkill.idealLocations(userC,
-                    enemyCoords,
-                    allyCoords)
+                                    enemyCoords,
+                                    allyCoords)
         } else {
             theSkill.idealLocations(userC,
-                    setOf(userC),
-                    allyCoords.toSet(),
-                    enemyCoords.toSet())
+                                    setOf(userC),
+                                    allyCoords.toSet(),
+                                    enemyCoords.toSet())
         }
         val possTargets = theSkill.possibleTargets(userC)
         return if (possTargets.any { iLocs.containsKey(it) }) {
@@ -49,7 +49,8 @@ class UseSkillTask : LeafTask<Entity>() {
             log(clock, "AI", "$subject uses $theSkill")
             Status.SUCCEEDED
         } else {
-            val path = dMap.findAttackPath(1, theSkill.aoe.maxRange, los, null, allyCoords, userC, *iLocs.keys.toTypedArray())
+            val path = dMap.findAttackPath(1, theSkill.aoe.maxRange, los, null, allyCoords, userC,
+                                           *iLocs.keys.toTypedArray())
             CommandProcessor.process(subject, "move", userC.toGoTo(path[0]))
             log(clock, "AI", "$subject moves in range to use $theSkill")
             Status.RUNNING

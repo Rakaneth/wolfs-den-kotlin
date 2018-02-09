@@ -12,7 +12,8 @@ import wolfsden.system.Location
 import wolfsden.system.WolfRNG
 import java.io.Serializable
 
-class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, var light: Boolean = true) : Serializable {
+class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, var light: Boolean = true) :
+    Serializable {
     var displayMap: Array<CharArray> = ArrayTools.fill('#', baseMap.size, baseMap[0].size)
     var resistances = DungeonUtility.generateResistances(baseMap)
     var floors: GreasedRegion = GreasedRegion(resistances, 0.8)

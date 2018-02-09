@@ -10,24 +10,24 @@ import wolfsden.system.GameStore
 import wolfsden.system.WolfRNG
 
 data class MapBase(
-        val id: String,
-        val name: String = "No name",
-        val light: Boolean = false,
-        val width: Int = 20,
-        val height: Int = 20,
-        val boxCarvers: Int = 0,
-        val roomCarvers: Int = 0,
-        val caveCarvers: Int = 0,
-        val doors: Int = 0,
-        val doubleDoors: Boolean = true,
-        val water: Int = 0,
-        val connections: List<ConnectionBase> = listOf()
+    val id: String,
+    val name: String = "No name",
+    val light: Boolean = false,
+    val width: Int = 20,
+    val height: Int = 20,
+    val boxCarvers: Int = 0,
+    val roomCarvers: Int = 0,
+    val caveCarvers: Int = 0,
+    val doors: Int = 0,
+    val doubleDoors: Boolean = true,
+    val water: Int = 0,
+    val connections: List<ConnectionBase> = listOf()
 )
 
 data class ConnectionBase(
-        val mapID: String,
-        val direction: String = "down",
-        val twoWay: Boolean = false
+    val mapID: String,
+    val direction: String = "down",
+    val twoWay: Boolean = false
 )
 
 object MapBuilder {
