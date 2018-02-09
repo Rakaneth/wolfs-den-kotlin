@@ -15,6 +15,7 @@ import wolfsden.nz
 import wolfsden.system.Faction
 import wolfsden.system.Scheduler.clock
 import wolfsden.system.getMap
+import wolfsden.system.hasTag
 import wolfsden.system.isLeader
 import wolfsden.toICString
 import java.io.Serializable
@@ -79,9 +80,13 @@ class Entity(val eID: String) : Serializable {
     val maxShield: Int
         get() = mh?.prot.nz() + trinket?.prot.nz()
     var worthXP: Float = 0f
-    private val tags: MutableList<String> = mutableListOf()
-    private val weakness: MutableList<String> = mutableListOf()
-    private val resistance: MutableList<String> = mutableListOf()
+    private val ownTags: MutableList<String> = mutableListOf()
+    private fun resolveTags(eq: EquipStats?): List<String> = eq?.getEntity?.ownTags ?: listOf()
+    val tags
+        get() = ownTags union resolveTags(mh) union resolveTags(oh) union resolveTags(armor) union resolveTags(trinket) union (effectStack?.tags ?: listOf())
+    private val wrPattern = """(O+|X+)-(.+)""".toRegex()
+    val atkTags
+        get() = tags.filter{ !it.matches(wrPattern)}
     val inventory: MutableList<Entity> = mutableListOf()
     val bagsFull
         get() = inventory.size >= capacity
@@ -104,21 +109,6 @@ class Entity(val eID: String) : Serializable {
         get() = markupEQ("Offhand", oh)
     val dualWield
         get() = mh != null && (oh != null && !oh!!.getEntity.hasTag("shield"))
-    val atkTags: Set<String>
-        get(): Set<String> {
-            return (mh?.getEntity?.tags ?: emptyList<String>()) union
-                    (oh?.getEntity?.tags ?: emptyList()) union
-                    (trinket?.getEntity?.tags ?: emptyList())
-        }
-    private val defTags: Set<String>
-        get(): Set<String> {
-            return ((armor?.getEntity?.tags ?: emptyList<String>()) union
-                    if (oh?.getEntity?.hasTag("shield") == true) {
-                        oh?.getEntity?.tags ?: emptyList()
-                    } else {
-                        emptyList()
-                    }).filter { !arrayOf("melee", "equipment").contains(it) }.toSet()
-        }
 
     fun addID(name: String, desc: String) {
         id = Identity(eID, name, desc)
@@ -189,16 +179,12 @@ class Entity(val eID: String) : Serializable {
         aggroStack = AggroStack(eID)
     }
 
-    fun updateTag(tagList: String, tag: String, adding: Boolean = true) {
-        val toAdd = when (tagList) {
-            "weakness" -> weakness
-            "resistance" -> resistance
-            else -> tags
-        }
-        if (adding) toAdd.add(tag)
-        else toAdd.remove(tag)
+    fun updateTag(tag: String, adding: Boolean = true) {
+        if (adding)
+            ownTags.add(tag)
+        else
+            ownTags.remove(tag)
     }
-
 
     fun putOn(item: Entity) {
         when (item.eq!!.slot) {
@@ -331,11 +317,6 @@ class Entity(val eID: String) : Serializable {
             }
         }
     }
-
-    fun hasTag(tag: String) = tags.contains(tag) || atkTags.contains(tag) || (effectStack?.tags?.contains(tag) ?: false)
-    fun hasWeakness(weak: String) = weakness.contains(weak) || (effectStack?.weakness?.contains(weak) ?: false)
-    fun hasResistance(resist: String) = resistance.contains(resist) || defTags.contains(resist) ||
-                                        (effectStack?.resistance?.contains(resist) ?: false)
 
     fun updateFOV() {
         FOV.reuseFOV(getMap().resistances, vision!!.visible, pos!!.x, pos!!.y, vision!!.vision)

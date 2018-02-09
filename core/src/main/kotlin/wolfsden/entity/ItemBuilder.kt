@@ -52,7 +52,7 @@ object ItemBuilder {
     private val itemBP: List<ItemBase> = jacksonObjectMapper().readValue(Gdx.files.internal(itemFile).reader())
 
 
-    fun buildEquip(buildID: String, mapID: String, start: Coord? = null): Entity {
+    fun buildEquip(buildID: String): Entity {
         require(eqBP.any { it.id == buildID }, { "$buildID is not a valid equipment ID" })
         val info = eqBP.first { it.id == buildID }
         val mold = Entity(UUID.randomUUID().toString())
@@ -63,12 +63,9 @@ object ItemBuilder {
             info.glyph.toInt(16).toChar()
         }
 
-        val toStart = start ?: GameStore.getMapByID(mapID).randomFloor()
 
         mold.addID(info.name, info.desc)
         mold.addDraw(toGlyph, info.color, 1)
-        mold.addPos(toStart, mapID)
-        log(0, "ItemBuilder", "Item $buildID created at ${mold.pos!!.coord} on floor $mapID")
 
         val slot = when (info.slot) {
             "2H" -> Slot.TWOH
@@ -82,35 +79,28 @@ object ItemBuilder {
         mold.addEQ(slot, info.atk, info.dfp, info.dmg, info.sav, info.dly, info.prot)
 
         info.tags.forEach {
-            mold.updateTag("tags", it)
+            mold.updateTag(it)
         }
 
-        mold.updateTag("tags", "equipment")
+        mold.updateTag("equipment")
 
         mold.blocking = false
         GameStore.addEntity(mold)
         return mold
     }
 
-    fun buildItem(buildID: String, mapID: String, start: Coord? = null): Entity {
+    fun buildItem(buildID: String): Entity {
         require(itemBP.any { it.id == buildID }, { "$buildID is not a valid item ID" })
         val info = itemBP.first { it.id == buildID }
         val mold = Entity(UUID.randomUUID().toString())
-        val sMap = GameStore.getMapByID(mapID)
-        val finder = RoomFinder(sMap.baseMap)
-
         val toGlyph = if (info.glyph.length == 1) {
             info.glyph.first()
         } else {
             info.glyph.toInt(16).toChar()
         }
 
-        val toStart = start ?: finder.allRooms.singleRandom(WolfRNG.wolfRNG)
-
         mold.addID(info.name, info.desc)
         mold.addDraw(toGlyph, info.color, 1)
-        mold.addPos(toStart, mapID)
-        log(0, "ItemBuilder", "Item $buildID created at ${mold.pos!!.coord} on floor $mapID")
 
         when (info.itemType) {
             "healing" -> mold.addHeal(info.flatAmt, info.pctAmt)
@@ -118,7 +108,7 @@ object ItemBuilder {
             else -> mold.addRepair(info.flatAmt, info.pctAmt)
         }
 
-        mold.updateTag("tags", "item")
+        mold.updateTag("item")
 
         mold.blocking = false
         GameStore.addEntity(mold)
@@ -143,8 +133,8 @@ object ItemBuilder {
         for (i in 0.until(numItems)) {
             val randItem = table.random()
             when (randItem) {
-                is EquipBase -> buildEquip(randItem.id, mapID)
-                is ItemBase -> buildItem(randItem.id, mapID)
+                is EquipBase -> seed(buildEquip(randItem.id), mapID, roomsOnly = true)
+                is ItemBase ->seed(buildItem(randItem.id), mapID, roomsOnly = true)
                 else -> log(0, "ItemBuilder", "Attempt to seed invalid item ${randItem.id}")
             }
         }

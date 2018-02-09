@@ -5,6 +5,19 @@ import wolfsden.entity.Entity
 import wolfsden.joinWithAnd
 import wolfsden.screen.PlayScreen
 
+private fun Entity.countPrefix(pattern: String): Int {
+    val p = pattern.toRegex()
+    return tags.map {
+        p.matchEntire(it)?.destructured?.let {(pref) ->
+            pref.length
+        } ?: 0
+    }.sum()
+}
+
+fun Entity.hasTag(tag: String) = tags.contains(tag)
+fun Entity.hasWeakness(weak: String): Int = countPrefix("""^(X+)-$weak""")
+fun Entity.hasResistance(resist: String): Int = countPrefix("""^(O+)-$resist""")
+
 data class CombatResults(
     val attacker: Entity,
     val defender: Entity,
@@ -23,16 +36,24 @@ fun Entity.attack(other: Entity, atkStat: Int = this.atk, defStat: Int = other.d
     val wk: MutableList<String> = mutableListOf()
     val res: MutableList<String> = mutableListOf()
     this.atkTags.forEach {
-        when {
-            other.hasWeakness(it) -> {
-                wk.add(it)
-                dmg = (dmg * 1.5).toInt()
+        val weakLevel = other.hasWeakness(it)
+        val resLevel = other.hasResistance(it)
+        if (weakLevel > 0) {
+            wk.add(it)
+            when (weakLevel) {
+                1 -> dmg = (dmg * 1.5).toInt()
+                2 -> dmg *= 2
+                3 -> dmg *= 3
+                else -> dmg *= 4
             }
-            other.hasResistance(it) -> {
-                res.add(it)
-                dmg = (dmg * 0.75).toInt()
-            }
-            else -> {
+        }
+        if (resLevel > 0) {
+            res.add(it)
+            when (resLevel) {
+                1 -> dmg = (dmg * .75).toInt()
+                2 -> dmg /= 2
+                3 -> dmg /= 4
+                else -> dmg = 0
             }
         }
     }

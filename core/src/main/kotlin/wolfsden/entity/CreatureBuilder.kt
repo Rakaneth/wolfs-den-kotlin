@@ -9,6 +9,7 @@ import squidpony.squidmath.Coord
 import wolfsden.system.Faction
 import wolfsden.system.GameStore
 import wolfsden.system.WolfRNG
+import wolfsden.system.hasTag
 import java.util.*
 
 data class CreatureBase(
@@ -27,8 +28,6 @@ data class CreatureBase(
     val trinket: String = "none",
     val vision: Double = 6.0,
     val ai: String = "hunt",
-    val weakness: List<String> = listOf(),
-    val resistance: List<String> = listOf(),
     val tags: List<String> = listOf(),
     val gainsXP: Boolean = false,
     val xp: Float = 0f,
@@ -48,8 +47,7 @@ object CreatureBuilder {
     }
 
 
-    fun build(buildID: String, isPlayer: Boolean = false, start: Coord? = null, mapID: String? = null,
-              name: String? = null): Entity? {
+    fun build(buildID: String, isPlayer: Boolean = false, name: String? = null): Entity {
         val info = creatureBP.first { it.id == buildID }
         val eID = if (isPlayer) "player" else UUID.randomUUID().toString()
         val foetus = Entity(eID)
@@ -65,34 +63,17 @@ object CreatureBuilder {
         foetus.worthXP = info.xp
 
         info.tags.forEach {
-            foetus.updateTag("tags", it)
+            foetus.updateTag(it)
         }
 
-        info.weakness.forEach {
-            foetus.updateTag("weakness", it)
-        }
-
-        info.resistance.forEach {
-            foetus.updateTag("resistance", it)
-        }
-
-        foetus.updateTag("tags", "creature")
-        val toMap = mapID ?: GameStore.curMap.id
-        val toStart = start ?: GameStore.mapList[toMap]!!.randomFloor()
-
-        foetus.addPos(toStart, toMap)
-
-        val m = GameStore.getMapByID(toMap)
+        foetus.updateTag("creature")
         foetus.addVision(info.vision)
-        foetus.vision!!.visible = ArrayTools.fill(0.0, m.width, m.height)
-        FOV.reuseFOV(m.resistances, foetus.vision!!.visible, toStart.x, toStart.y, foetus.vision!!.vision)
-
         foetus.blocking = true
 
         foetus.addAI(foetus.movDly, info.ai)
 
         listOf(info.mh, info.oh, info.armor, info.trinket).filter { it != "none" }.forEach {
-            val item = ItemBuilder.buildEquip(it, toMap)
+            val item = ItemBuilder.buildEquip(it)
             foetus.putOn(item)
         }
 
@@ -111,13 +92,22 @@ object CreatureBuilder {
         return foetus
     }
 
+    fun buildAndSeed(buildID: String, isPlayer: Boolean = false, name: String? = null, mapID: String? = null,
+                     start: Coord? = null): Entity {
+        val creature = build(buildID, isPlayer, name)
+        seed(creature, mapID, start)
+        return creature
+    }
+
     fun buildPack(lackeyID: String, leaderID: String, numLackeys: Int, mapID: String = GameStore.curMap.id,
                   leaderStart: Coord? = null) {
-        val leader = build(leaderID, mapID = mapID, start = leaderStart)!!
+        val leader = build(leaderID)
+        seed(leader, mapID, leaderStart)
         for (i in 0 until numLackeys) {
             val startC = GameStore.getMapByID(mapID).randomFloorWithin(leader.pos!!.coord, 2)
-            val lackey = build(lackeyID, mapID = mapID, start = startC)!!
-            lackey.ai!!.leader = leader!!.eID
+            val lackey = build(lackeyID)
+            seed(lackey, mapID, startC)
+            lackey.ai!!.leader = leader.eID
         }
     }
 

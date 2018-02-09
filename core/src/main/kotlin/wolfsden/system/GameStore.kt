@@ -152,7 +152,7 @@ object GameStore {
     fun newGame(playerClass: String, playerName: String) {
         MapBuilder.buildAll()
         with(CreatureBuilder) {
-            build(playerClass, true, null, "mine", playerName)
+            buildAndSeed(playerClass, true, playerName, "mine")
             buildWolfPack()
             repeat(2, { _ ->
                 buildWolfPack("mine2")
@@ -162,13 +162,13 @@ object GameStore {
             })
             buildGreaterPack("cave2")
             repeat(3, { _ ->
-                build("revenant", false, null, "cave2")
+                buildAndSeed("revenant", false, null, "cave2")
             })
             repeat(2, { _ ->
                 buildGreaterPack("cave3")
             })
-            build("wolfLord", false, null, "cave2")
-            build("margrave", false, null, "lair")
+            buildAndSeed("wolfLord", false, null, "cave2")
+            buildAndSeed("margrave", false, null, "lair")
             repeat(4, { _ ->
                 buildGreaterPack("lair")
             })
