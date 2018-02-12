@@ -205,8 +205,8 @@
 		"atk": 1,
 		"dmg": 1,
 		"tags": [
-			"natural",
-			"wolf"
+			"O-natural",
+			"O-wolf"
 		]
 	},
 	{
@@ -222,7 +222,8 @@
 		"tags": [
 			"holy",
 			"war",
-			"death"
+			"death",
+			"O-dark"
 		],
 		"dfp": 1
 	}

@@ -16,8 +16,6 @@
 		"vision": 10,
 		"xp": 100,
 		"ai": "wolf",
-		"weakness": [],
-		"resistance": [],
 		"tags": [
 			"wolf"
 		]
@@ -39,8 +37,6 @@
 		"vision": 10,
 		"xp": 300,
 		"ai": "alpha",
-		"weakness": [],
-		"resistance": [],
 		"tags": [
 			"wolf",
 			"leader"
@@ -66,8 +62,6 @@
 		"vision": 12,
 		"xp": 500,
 		"ai": "wolf",
-		"weakness": [],
-		"resistance": [],
 		"tags": [
 			"wolf"
 		]
@@ -90,8 +84,6 @@
 		"vision": 15,
 		"xp": 1000,
 		"ai": "alpha",
-		"weakness": [],
-		"resistance": [],
 		"tags": [
 			"wolf",
 			"leader"
@@ -116,16 +108,12 @@
 		"trinket": "none",
 		"vision": 6,
 		"ai": "hunt",
-		"weakness": [
-			"holy"
-		],
-		"resistance": [
-			"natural"
-		],
 		"tags": [
 			"undead",
 			"door",
-			"solo"
+			"solo",
+			"OO-natural",
+			"XX-holy"
 		]
 	},
 	{
@@ -145,8 +133,6 @@
 		"vision": 10,
 		"xp": 1000,
 		"ai": "alpha",
-		"weakness": [],
-		"resistance": [],
 		"tags": [
 			"wolf",
 			"door",
@@ -173,15 +159,11 @@
 		"trinket": "none",
 		"vision": 6,
 		"ai": "hunt",
-		"weakness": [
-			"holy"
-		],
-		"resistance": [
-			"natural"
-		],
 		"tags": [
 			"undead",
-			"solo"
+			"solo",
+			"OO-natural",
+			"XX-holy"
 		]
 	},
 	{
@@ -201,16 +183,12 @@
 		"vision": 8,
 		"xp": 5000,
 		"ai": "hunt",
-		"weakness": [
-			"holy"
-		],
-		"resistance": [
-			"natural"
-		],
 		"tags": [
 			"undead",
 			"door",
-			"leader"
+			"leader",
+			"OO-natural",
+			"XX-holy"
 		]
 	},
 	{
@@ -231,8 +209,6 @@
 		"vision": 6,
 		"gainsXP": true,
 		"ai": "hunt",
-		"weakness": [],
-		"resistance": [],
 		"tags": [
 			"hero",
 			"door",
@@ -262,8 +238,6 @@
 		"trinket": "none",
 		"vision": 6,
 		"ai": "hunt",
-		"weakness": [],
-		"resistance": [],
 		"tags": [
 			"hero",
 			"door",
@@ -289,8 +263,6 @@
 		"trinket": "ravenSymbol",
 		"vision": 6,
 		"ai": "hunt",
-		"weakness": [],
-		"resistance": [],
 		"tags": [
 			"hero",
 			"door",

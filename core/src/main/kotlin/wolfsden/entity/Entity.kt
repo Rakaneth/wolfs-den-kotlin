@@ -419,7 +419,10 @@ class Entity(val eID: String) : Serializable {
 
     fun loadSkills() {
         skillStore.forEach {
-            learnSkill(it.name).setCD(it.curCD)
+            with (learnSkill(it.name)) {
+                setCD(it.curCD)
+                setMap(getMap().baseMap)
+            }
         }
         skillStore.clear()
     }

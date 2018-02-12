@@ -88,7 +88,6 @@ object CreatureBuilder {
             foetus.learnSkill(it).resetCD()
         }
 
-        if (foetus.hasTag("leader") || foetus.hasTag("solo")) Faction.addFaction(foetus.eID)
         return foetus
     }
 

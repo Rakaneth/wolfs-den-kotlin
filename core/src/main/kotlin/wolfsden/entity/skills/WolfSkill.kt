@@ -22,7 +22,6 @@ abstract class WolfSkill(
     val isAttack: Boolean = true
 ) : Technique(name, aoe) {
     init {
-        updateMap()
         aoe.limitType = AimLimit.EIGHT_WAY
     }
 
