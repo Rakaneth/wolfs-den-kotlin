@@ -31,9 +31,16 @@ class Layout(vport: StretchViewport) {
         stage.addActor(actors[mb.id])
     }
 
+    fun sqLayers(block: SquidLayersBuilder.() -> Unit) {
+        val sqb = SquidLayersBuilder().apply(block)
+        actors[sqb.id] = sqb.build()
+        stage.addActor(actors[sqb.id])
+    }
+
     fun toSquidPanel(id: String) = actors[id] as SquidPanel
     fun toMessageBox(id: String) = actors[id] as SquidMessageBox
     fun toSparseLayers(id: String) = actors[id] as SparseLayers
+    fun toSquidLayers(id: String) = actors[id] as SquidLayers
 
     fun build(): Stage = stage
 }
@@ -93,6 +100,28 @@ class PanelBuilder {
         sqp.setPosition(x * cellWidth, y * cellHeight)
         sqp.putBorders(borderColor, borderCaption)
         return sqp
+    }
+}
+
+class SquidLayersBuilder {
+    var gw: Int = 0
+    var gh: Int = 0
+    var x = 0
+    var y = 0
+    var borderColor = SColor.FLOAT_WHITE
+    var borderCaption: String? = null
+    var id: String = ""
+    private lateinit var _tcf: TextCellFactory
+
+    fun tcf(block: TCFBuild.() -> Unit) {
+        _tcf = TCFBuild().apply(block).build()
+    }
+
+    fun build(): SquidLayers {
+        val sql = SquidLayers(gw, gh, cellWidth.toInt(), cellHeight.toInt(), _tcf)
+        sql.setPosition(x * cellWidth, y * cellHeight)
+        sql.backgroundLayer.putBorders(borderColor, borderCaption)
+        return sql
     }
 }
 
