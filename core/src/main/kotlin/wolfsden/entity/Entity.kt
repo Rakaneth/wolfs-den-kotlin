@@ -83,10 +83,11 @@ class Entity(val eID: String) : Serializable {
     private val ownTags: MutableList<String> = mutableListOf()
     private fun resolveTags(eq: EquipStats?): List<String> = eq?.getEntity?.ownTags ?: listOf()
     val tags
-        get() = ownTags union resolveTags(mh) union resolveTags(oh) union resolveTags(armor) union resolveTags(trinket) union (effectStack?.tags ?: listOf())
+        get() = ownTags union resolveTags(mh) union resolveTags(oh) union resolveTags(armor) union resolveTags(
+            trinket) union (effectStack?.tags ?: listOf())
     private val wrPattern = """(O+|X+)-(.+)""".toRegex()
     val atkTags
-        get() = tags.filter{ !it.matches(wrPattern)}
+        get() = tags.filter { !it.matches(wrPattern) }
     val inventory: MutableList<Entity> = mutableListOf()
     val bagsFull
         get() = inventory.size >= capacity
@@ -419,7 +420,7 @@ class Entity(val eID: String) : Serializable {
 
     fun loadSkills() {
         skillStore.forEach {
-            with (learnSkill(it.name)) {
+            with(learnSkill(it.name)) {
                 setCD(it.curCD)
                 setMap(getMap().baseMap)
             }

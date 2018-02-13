@@ -12,7 +12,7 @@ import squidpony.panel.IColoredString
 import squidpony.squidgrid.gui.gdx.SquidInput
 import wolfsden.toICString
 
-abstract class WolfScreen(val name: String): Disposable {
+abstract class WolfScreen(val name: String) : Disposable {
     companion object Params {
         const val cellWidth = 15f
         const val cellHeight = 20f

@@ -1,18 +1,12 @@
 package wolfsden.entity
 
 import com.badlogic.gdx.Gdx
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import squidpony.ArrayTools
-import squidpony.squidgrid.FOV
 import squidpony.squidmath.Coord
-import wolfsden.system.Faction
+import wolfsden.mapper
 import wolfsden.system.GameStore
 import wolfsden.system.WolfRNG
-import wolfsden.system.hasTag
+import java.io.FileInputStream
 import java.util.*
 
 data class CreatureBase(
@@ -41,15 +35,17 @@ data class CreatureBase(
 
 object CreatureBuilder {
     private const val creatureFile = "data/entity/creatures.yml"
-    var creatureBP: List<CreatureBase>
+    lateinit var creatureBP: List<CreatureBase>
 
-    init {
-        val mapper = ObjectMapper(YAMLFactory())
-        mapper.registerModule(KotlinModule())
-        creatureBP = mapper.readValue(Gdx.files.internal(creatureFile).reader())
-        println(creatureBP.size)
+    fun initBP(live: Boolean = true) {
+        val theReader = if (live) {
+            Gdx.files.internal(creatureFile).reader()
+        } else {
+            FileInputStream("src/test/res/$creatureFile").reader()
+        }
+
+        creatureBP = mapper.readValue(theReader)
     }
-
 
     fun build(buildID: String, isPlayer: Boolean = false, name: String? = null): Entity {
         val info = creatureBP.first { it.id == buildID }

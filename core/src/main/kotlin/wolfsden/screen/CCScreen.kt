@@ -67,7 +67,7 @@ object CCScreen : WolfScreen("character creation") {
                     nameCursor = toAdd
                 }
             }
-            SquidInput.BACKSPACE ->  {
+            SquidInput.BACKSPACE -> {
                 val toDelete = nameCursor - 1
                 if (toDelete > 0) {
                     rawPlayerName[toDelete] = 0.toChar()
@@ -104,7 +104,7 @@ object CCScreen : WolfScreen("character creation") {
     private var rawPlayerName = CharArray(namePanel.gridWidth)
     private val playerName
         get(): String {
-            val cand = String(rawPlayerName.filter { it != 0.toChar()}.toCharArray())
+            val cand = String(rawPlayerName.filter { it != 0.toChar() }.toCharArray())
             return if (cand.isEmpty()) "Nameless" else cand
         }
     private var selected = 1

@@ -1,17 +1,13 @@
 package wolfsden.entity
 
 import com.badlogic.gdx.Gdx
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import squidpony.squidgrid.mapping.RoomFinder
-import squidpony.squidmath.Coord
 import squidpony.squidmath.ProbabilityTable
 import wolfsden.log
+import wolfsden.mapper
 import wolfsden.system.GameStore
 import wolfsden.system.WolfRNG
+import java.io.FileInputStream
 import java.util.*
 
 private interface BaseMarker {
@@ -51,10 +47,9 @@ data class ItemBase(
 object ItemBuilder {
     private const val eqFile = "data/entity/equipment.yml"
     private const val itemFile = "data/entity/items.yml"
-    private val mapper = ObjectMapper(YAMLFactory())
-    init {mapper.registerModule(KotlinModule())}
-    private val eqBP: List<EquipBase> = mapper.readValue(Gdx.files.internal(eqFile).reader())
-    private val itemBP: List<ItemBase> = mapper.readValue(Gdx.files.internal(itemFile).reader())
+    private lateinit var eqBP: List<EquipBase>
+    private lateinit var itemBP: List<ItemBase>
+
 
     fun buildEquip(buildID: String): Entity {
         require(eqBP.any { it.id == buildID }, { "$buildID is not a valid equipment ID" })
@@ -138,9 +133,26 @@ object ItemBuilder {
             val randItem = table.random()
             when (randItem) {
                 is EquipBase -> seed(buildEquip(randItem.id), mapID, roomsOnly = true)
-                is ItemBase ->seed(buildItem(randItem.id), mapID, roomsOnly = true)
+                is ItemBase -> seed(buildItem(randItem.id), mapID, roomsOnly = true)
                 else -> log(0, "ItemBuilder", "Attempt to seed invalid item ${randItem.id}")
             }
         }
+    }
+
+    fun initBP(live: Boolean = true) {
+        val eqReader = if (live) {
+            Gdx.files.internal(eqFile).reader()
+        } else {
+            FileInputStream("src/test/res/$eqFile").reader()
+        }
+
+        val itemReader = if (live) {
+            Gdx.files.internal(itemFile).reader()
+        } else {
+            FileInputStream("src/test/res/$itemFile").reader()
+        }
+
+        eqBP = mapper.readValue(eqReader)
+        itemBP = mapper.readValue(itemReader)
     }
 }

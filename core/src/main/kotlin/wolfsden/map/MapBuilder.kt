@@ -1,17 +1,14 @@
 package wolfsden.map
 
 import com.badlogic.gdx.Gdx
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import squidpony.squidgrid.mapping.SectionDungeonGenerator
 import squidpony.squidgrid.mapping.SerpentMapGenerator
 import wolfsden.log
+import wolfsden.mapper
 import wolfsden.system.GameStore
 import wolfsden.system.WolfRNG
+import java.io.FileInputStream
 
 
 data class MapBase(
@@ -37,9 +34,7 @@ data class ConnectionBase(
 
 object MapBuilder {
     private const val mapFile = "data/maps.yml"
-    private val mapper =  ObjectMapper(YAMLFactory())
-    init { mapper.registerModule(KotlinModule())}
-    private val mapBP: List<MapBase> = mapper.readValue(Gdx.files.internal(mapFile).reader())
+    private lateinit var mapBP: List<MapBase>
 
     fun build(mapID: String): WolfMap {
         require(mapBP.any { it.id == mapID }, { "$mapID is not a valid map ID" })
@@ -93,6 +88,15 @@ object MapBuilder {
                 log(0, "Map Generation", "Connecting $buildID to $connID")
             }
         }
+    }
+
+    fun initBP(live: Boolean = true) {
+        val theReader = if (live)
+            Gdx.files.internal(mapFile).reader()
+        else
+            FileInputStream("src/test/res/$mapFile").reader()
+
+        mapBP = mapper.readValue(theReader)
     }
 }
 

@@ -4,6 +4,9 @@ import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import squidpony.squidgrid.gui.gdx.SColor
+import wolfsden.entity.CreatureBuilder
+import wolfsden.entity.ItemBuilder
+import wolfsden.map.MapBuilder
 import wolfsden.screen.TitleScreen
 import wolfsden.screen.WolfScreen
 
@@ -11,6 +14,9 @@ class WolfGame : ApplicationAdapter() {
     private val bgColor = SColor.DARK_SLATE_GRAY
 
     override fun create() {
+        ItemBuilder.initBP()
+        CreatureBuilder.initBP()
+        MapBuilder.initBP()
         WolfScreen.setScreen(TitleScreen)
     }
 
