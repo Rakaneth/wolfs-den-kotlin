@@ -1,6 +1,9 @@
 package wolfsden.entity
 
 import com.badlogic.gdx.Gdx
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import squidpony.squidgrid.mapping.RoomFinder
@@ -46,11 +49,12 @@ data class ItemBase(
 ) : BaseMarker
 
 object ItemBuilder {
-    private const val eqFile = "data/entity/base.equipment.json"
-    private const val itemFile = "data/entity/base.item.json"
-    private val eqBP: List<EquipBase> = jacksonObjectMapper().readValue(Gdx.files.internal(eqFile).reader())
-    private val itemBP: List<ItemBase> = jacksonObjectMapper().readValue(Gdx.files.internal(itemFile).reader())
-
+    private const val eqFile = "data/entity/equipment.yml"
+    private const val itemFile = "data/entity/items.yml"
+    private val mapper = ObjectMapper(YAMLFactory())
+    init {mapper.registerModule(KotlinModule())}
+    private val eqBP: List<EquipBase> = mapper.readValue(Gdx.files.internal(eqFile).reader())
+    private val itemBP: List<ItemBase> = mapper.readValue(Gdx.files.internal(itemFile).reader())
 
     fun buildEquip(buildID: String): Entity {
         require(eqBP.any { it.id == buildID }, { "$buildID is not a valid equipment ID" })

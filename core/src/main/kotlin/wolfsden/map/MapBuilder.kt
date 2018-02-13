@@ -1,6 +1,10 @@
 package wolfsden.map
 
 import com.badlogic.gdx.Gdx
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import squidpony.squidgrid.mapping.SectionDungeonGenerator
@@ -8,6 +12,7 @@ import squidpony.squidgrid.mapping.SerpentMapGenerator
 import wolfsden.log
 import wolfsden.system.GameStore
 import wolfsden.system.WolfRNG
+
 
 data class MapBase(
     val id: String,
@@ -31,8 +36,10 @@ data class ConnectionBase(
 )
 
 object MapBuilder {
-    private const val mapFile = "data/entity/base.map.json"
-    private val mapBP: List<MapBase> = jacksonObjectMapper().readValue(Gdx.files.internal(mapFile).reader())
+    private const val mapFile = "data/maps.yml"
+    private val mapper =  ObjectMapper(YAMLFactory())
+    init { mapper.registerModule(KotlinModule())}
+    private val mapBP: List<MapBase> = mapper.readValue(Gdx.files.internal(mapFile).reader())
 
     fun build(mapID: String): WolfMap {
         require(mapBP.any { it.id == mapID }, { "$mapID is not a valid map ID" })

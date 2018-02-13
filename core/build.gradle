@@ -10,7 +10,7 @@ dependencies {
   compile "com.github.SquidPony.SquidLib:squidlib-util:$squidLibUtilVersion"
   compile "com.github.tommyettinger:regexodus:$regExodusVersion"
   compile "com.fasterxml.jackson.module:jackson-module-kotlin:$jkVersion"
+  compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jkVersion"
   testCompile('org.junit.jupiter:junit-jupiter-api:5.0.1')
-  //testRuntime('org.junit.juipter:junit-jupiter-engine:5.0.1')
 }
         

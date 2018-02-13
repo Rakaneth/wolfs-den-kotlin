@@ -1,6 +1,9 @@
 package wolfsden.entity
 
 import com.badlogic.gdx.Gdx
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import squidpony.ArrayTools
@@ -37,11 +40,12 @@ data class CreatureBase(
 )
 
 object CreatureBuilder {
-    private const val creatureFile = "data/entity/base.creature.json"
+    private const val creatureFile = "data/entity/creatures.yml"
     var creatureBP: List<CreatureBase>
 
     init {
-        val mapper = jacksonObjectMapper()
+        val mapper = ObjectMapper(YAMLFactory())
+        mapper.registerModule(KotlinModule())
         creatureBP = mapper.readValue(Gdx.files.internal(creatureFile).reader())
         println(creatureBP.size)
     }
