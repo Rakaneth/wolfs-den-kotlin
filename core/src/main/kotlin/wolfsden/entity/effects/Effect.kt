@@ -1,6 +1,7 @@
 package wolfsden.entity.effects
 
 import wolfsden.log
+import wolfsden.screen.PlayScreen
 import wolfsden.system.GameStore
 import wolfsden.system.Scheduler.clock
 import java.io.Serializable
@@ -19,9 +20,8 @@ open class Effect(
     val atkDly: Int = 0,
     val movDly: Int = 0,
     val permanent: Boolean = false,
-    val weakness: List<String> = listOf(),
-    val resistance: List<String> = listOf(),
-    val tags: List<String> = listOf()
+    val tags: List<String> = listOf(),
+    val message: String = ""
 ) : Serializable {
     val entity
         get() = GameStore.getByID(eID)!!
@@ -33,6 +33,7 @@ open class Effect(
     }
 
     open fun onApply() {
+        if (message.isNotEmpty()) PlayScreen.addMessage(message)
         log(clock, "Effect", "$name effect applied")
     }
 

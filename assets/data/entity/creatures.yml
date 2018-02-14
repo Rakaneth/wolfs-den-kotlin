@@ -17,6 +17,7 @@
   ai: wolf
   tags:
   - wolf
+  - X-poison
 - id: alpha
   name: Alpha
   desc: A large wolf, usually seen at the head of a pack.
@@ -212,6 +213,11 @@
   - leader
   gainsXP: true
   xp: 300
+  skills:
+  - Cunning Snake Stance
+  - Swift Fang Strike
+  - Preparation
+  - Poisoned Blades
 - id: cleric
   name: Oathbound
   desc: An Oathbound, devoted to the Raven.

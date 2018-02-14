@@ -391,6 +391,10 @@ class Entity(val eID: String) : Serializable {
             "Stonebreaker" -> Stonebreaker(eID)
             "Rumble" -> Rumble(eID)
             "Howl" -> WolfHowl(eID)
+            "Cunning Snake Stance" -> CunningSnakeStance(eID)
+            "Swift Fang Strike" -> SwiftFangStrike(eID)
+            "Preparation" -> Preparation(eID)
+            "Poisoned Blades" -> PoisonedBlades(eID)
             else -> null
         }
         learnSkill(theSkill ?: throw IllegalArgumentException("$skillName is not a valid skill"))

@@ -5,6 +5,7 @@ import com.badlogic.gdx.ai.btree.utils.BehaviorTreeLibraryManager
 import squidpony.squidmath.Coord
 import squidpony.squidmath.OrderedMap
 import wolfsden.entity.effects.Effect
+import wolfsden.entity.skills.SkillType
 import wolfsden.entity.skills.WolfSkill
 import wolfsden.system.GameStore
 import java.io.Serializable
@@ -177,10 +178,6 @@ class EffectStack(
         get() = effects.sumBy { it.movDly }
     val loseTurn
         get() = effects.any { it.loseTurn }
-    val weakness
-        get() = effects.fold(mutableListOf<String>(), { acc, effect -> acc.addAll(effect.weakness); acc }).toSet()
-    val resistance
-        get() = effects.fold(mutableListOf<String>(), { acc, effect -> acc.addAll(effect.resistance); acc }).toSet()
     val tags
         get() = effects.fold(mutableListOf<String>(), { acc, effect -> acc.addAll(effect.tags); acc }).toSet()
 }
@@ -190,7 +187,9 @@ class SkillStack(override val entity: String) : Component(entity) {
     private val labels = listOf("F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10")
 
     val skillTable
-        get() = labels.zip(skills)
+        get() = labels.zip(skills.sortedBy { it.skillIndex })
+
+    fun getSkillsOfType(sklType: SkillType): List<WolfSkill> = skills.filter { it.skillType == sklType }
 
 }
 

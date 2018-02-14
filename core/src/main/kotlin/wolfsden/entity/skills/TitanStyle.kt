@@ -12,6 +12,7 @@ private val DEFAULT_POINT: Coord = Coord.get(0, 0)
 
 class TitanStance(userID: String) : WolfSkill(userID, "Hulking Titan Stance",
                                               desc = "Become a hulking titan on the battlefield",
+                                              skillType = SkillType.TITAN,
                                               aoe = PointAOE(DEFAULT_POINT),
                                               cd = 20,
                                               cost = 0,
@@ -27,6 +28,7 @@ class TitanStance(userID: String) : WolfSkill(userID, "Hulking Titan Stance",
 
 class Stonebreaker(userID: String) : WolfSkill(userID, "Stonebreaker",
                                                desc = "A devastating strike to a single foe",
+                                               skillType = SkillType.TITAN,
                                                aoe = PointAOE(DEFAULT_POINT, 1, 1),
                                                cd = 30,
                                                cost = 5,
@@ -57,6 +59,7 @@ class Stonebreaker(userID: String) : WolfSkill(userID, "Stonebreaker",
 
 class Rumble(userID: String) : WolfSkill(userID, "Rumble",
                                          desc = "A rattling blow that stuns enemies, setting them up for other moves in this style",
+                                         skillType = SkillType.TITAN,
                                          aoe = PointAOE(DEFAULT_POINT, 1, 1),
                                          cd = 50,
                                          cost = 10,

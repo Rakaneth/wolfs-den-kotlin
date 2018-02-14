@@ -192,4 +192,8 @@ object GameStore {
             println("Error deleting $fileName: ${e.stackTrace}")
         }
     }
+
+    fun registerMap(buildID: String, wolfMap: WolfMap) {
+        mapList[buildID] = wolfMap
+    }
 }

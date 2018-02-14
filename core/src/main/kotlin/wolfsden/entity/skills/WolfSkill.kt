@@ -2,6 +2,7 @@ package wolfsden.entity.skills
 
 import squidpony.squidai.AOE
 import squidpony.squidai.AimLimit
+import squidpony.squidai.PointAOE
 import squidpony.squidai.Technique
 import squidpony.squidmath.Coord
 import wolfsden.CommonColors
@@ -10,11 +11,16 @@ import wolfsden.system.GameStore
 import wolfsden.system.Location
 import wolfsden.system.getMap
 
+enum class SkillType {
+    TITAN, BULWARK, SNAKE, WOLFSLAYER, WITCHHUNTER, MONSTER;
+}
+
 abstract class WolfSkill(
     private val userID: String,
     name: String,
     val desc: String,
-    aoe: AOE,
+    val skillType: SkillType,
+    aoe: AOE = PointAOE(Coord.get(0, 0)),
     val cd: Int = 0,
     val cost: Int = 0,
     val targeting: Boolean = true,

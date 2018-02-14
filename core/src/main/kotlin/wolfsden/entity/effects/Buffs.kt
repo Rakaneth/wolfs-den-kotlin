@@ -1,5 +1,7 @@
 package wolfsden.entity.effects
 
+import wolfsden.screen.PlayScreen
+
 class RegenEffect(
     override val eID: String,
     override var duration: Int,
@@ -30,3 +32,23 @@ class AgilityEffect(
     override val eID: String,
     override var duration: Int
 ) : Effect("Agility", eID, duration = duration, dfp = 2, sav = 2, buff = true)
+
+class PoisonerEffect(
+    override val eID: String,
+    override var duration: Int
+) : Effect("Poisoned Weapons",
+           eID,
+           duration = duration,
+           tags = listOf("poison"),
+           buff = true) {
+
+    override fun onApply() {
+        PlayScreen.addMessageVisible(entity, "${entity.markupString} poisons their weapons.")
+        super.onApply()
+    }
+
+    override fun onExpire() {
+        PlayScreen.addMessageVisible(entity, "${entity.markupString}'s weapons are no longer poisoned.")
+        super.onExpire()
+    }
+}

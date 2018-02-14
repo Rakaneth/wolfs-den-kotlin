@@ -8,12 +8,12 @@ class StunEffect(
 class WolfCurseEffect(
     override val eID: String,
     override var duration: Int
-) : Effect("Wolf Curse", eID, duration = duration, weakness = listOf("wolf", "natural"))
+) : Effect("Wolf Curse", eID, duration = duration, tags = listOf("X-wolf", "X-natural"))
 
 class DarkCurseEffect(
     override val eID: String,
     override var duration: Int
-) : Effect("Curse of Darkness", eID, duration = duration, weakness = listOf("dark", "magic"))
+) : Effect("Curse of Darkness", eID, duration = duration, tags = listOf("X-dark", "X-magic"))
 
 class SlowEffect(
     override val eID: String,

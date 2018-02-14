@@ -294,6 +294,10 @@ object PlayScreen : WolfScreen("main") {
         msgPanel.appendWrappingMessage("-$msg".toICString())
     }
 
+    fun addMessageVisible(other: Entity, msg: String) {
+        if (GameStore.player.visible(other)) addMessage(msg)
+    }
+
     private fun inView(c: Coord): Boolean {
         val onMap = !curMap.oob(c)
         val onScreen = (c.x - cam.x).between(0, mapW - 1) && (c.y - cam.y).between(0, mapH - 1)

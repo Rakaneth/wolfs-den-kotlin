@@ -1,6 +1,5 @@
-import com.badlogic.gdx.files.FileHandle
-import com.badlogic.gdx.utils.XmlReader
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import squidpony.squidgrid.mapping.DungeonGenerator
@@ -8,7 +7,6 @@ import wolfsden.entity.*
 import wolfsden.map.MapBuilder
 import wolfsden.map.WolfMap
 import wolfsden.system.WolfRNG
-import java.io.*
 
 
 class EntityTestSource {
@@ -17,6 +15,7 @@ class EntityTestSource {
     private val gen = DungeonGenerator(30, 30, WolfRNG.wolfRNG)
     private val m1 = WolfMap("test", "Test Map 1", gen.generate(), true)
     private val m2 = WolfMap("test", "Test Map 2", gen.generate(), true)
+
     init {
         CreatureBuilder.initBP(false)
         ItemBuilder.initBP(false)

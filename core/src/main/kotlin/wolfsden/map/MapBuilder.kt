@@ -59,13 +59,15 @@ object MapBuilder {
         for (node in mapBP) {
             val buildID = node.id
             if (!GameStore.mapList.containsKey(buildID)) {
-                GameStore.mapList[buildID] = build(buildID)
+                GameStore.registerMap(buildID, build(buildID))
             }
             val curMap = GameStore.getMapByID(buildID)
 
             node.connections.forEach {
                 val connID = it.mapID
-                if (!GameStore.mapList.containsKey(connID)) build(connID)
+                if (!GameStore.mapList.containsKey(connID)) {
+                    GameStore.registerMap(connID, build(connID))
+                }
                 val fromC = curMap.randomFloor()
                 val toMap = GameStore.mapList[connID]!!
                 val toC = toMap.randomFloor()

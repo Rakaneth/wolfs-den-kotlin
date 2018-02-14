@@ -12,6 +12,7 @@ private val DEFAULT_POINT = Coord.get(0, 0)
 
 class WolfHowl(userID: String) : WolfSkill(userID, "Howl",
                                            desc = "A howl that rallies packmates and disquiets foes",
+                                           skillType = SkillType.MONSTER,
                                            aoe = BurstAOE(DEFAULT_POINT, 5, Radius.SQUARE, 0, 5),
                                            cd = 100,
                                            cost = 0,

@@ -41,7 +41,7 @@ class SnakeStanceEffect(override val eID: String)
 }
 
 class WolfSlayerStanceEffect(override val eID: String)
-    : Effect("Wolf Slayer Stance", eID, duration = 0, permanent = true, resistance = listOf("natural", "wolf")),
+    : Effect("Wolf Slayer Stance", eID, duration = 0, permanent = true, buff = true, tags = listOf("O-natural")),
       Stance {
 
     override fun onApply() {
@@ -54,8 +54,8 @@ class WolfSlayerStanceEffect(override val eID: String)
 }
 
 class WitchHunterStanceEffect(override val eID: String)
-    : Effect("Witch Hunter Stance", eID, duration = 0, permanent = true,
-             resistance = listOf("dark", "magic"), tags = listOf("holy")), Stance {
+    : Effect("Witch Hunter Stance", eID, duration = 0, permanent = true, buff = true,
+             tags = listOf("holy", "O-dark", "O-magic")), Stance {
 
     override fun onApply() {
         PlayScreen.addMessage("${entity.markupString} assumes the stance of a determined inquisitor!")
