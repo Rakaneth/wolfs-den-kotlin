@@ -51,17 +51,16 @@ object MapBuilder {
         deco.addDoors(info.doors, info.doubleDoors)
         deco.addLake(info.water)
         val baseMap = deco.generate(raw, smg.environment)
-        val finished = WolfMap(mapID, info.name, baseMap, info.light)
 
-        GameStore.mapList[mapID] = finished
-
-        return finished
+        return WolfMap(mapID, info.name, baseMap, info.light)
     }
 
     fun buildAll() {
         for (node in mapBP) {
             val buildID = node.id
-            if (!GameStore.mapList.containsKey(buildID)) build(buildID)
+            if (!GameStore.mapList.containsKey(buildID)) {
+                GameStore.mapList[buildID] = build(buildID)
+            }
             val curMap = GameStore.getMapByID(buildID)
 
             node.connections.forEach {
