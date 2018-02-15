@@ -205,3 +205,9 @@ class AggroStack(override val entity: String) : Component(entity) {
         aggroList[eID] = curAmt + amt
     }
 }
+
+class FactionStack(override val entity: String) : Component(entity) {
+    val neutral: MutableList<String> = mutableListOf()
+    val hostile: MutableList<String> = mutableListOf()
+    val ally: MutableList<String> = mutableListOf()
+}

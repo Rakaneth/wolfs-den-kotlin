@@ -25,7 +25,6 @@ fun seed(entity: Entity, mapID: String?, start: Coord? = null, roomsOnly: Boolea
     entity.skillStack?.skills?.forEach {
         it.setMap(entity.getMap().baseMap)
     }
-    if (entity.hasTag("leader") || entity.hasTag("solo")) Faction.addFaction(entity.eID)
-
     GameStore.addEntity(entity)
+    if (entity.hasTag("leader") || entity.hasTag("solo")) Faction.addFaction(entity.eID)
 }

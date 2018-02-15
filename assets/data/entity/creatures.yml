@@ -18,6 +18,12 @@
   tags:
   - wolf
   - X-poison
+  factions:
+    neutral:
+    - wolf
+    hostile:
+    - hero
+    - undead
 - id: alpha
   name: Alpha
   desc: A large wolf, usually seen at the head of a pack.
@@ -37,8 +43,15 @@
   tags:
   - wolf
   - leader
+  - X-poison
   skills:
   - Howl
+  factions:
+    neutral:
+    - wolf
+    hostile:
+    - hero
+    - undead
 - id: dire
   name: Great Wolf
   desc: A massive monster of a wolf.
@@ -57,6 +70,13 @@
   ai: wolf
   tags:
   - wolf
+  - X-poison
+  factions:
+    neutral:
+    - wolf
+    hostile:
+    - hero
+    - undead
 - id: direAlpha
   name: Great Wolf Alpha
   desc: The mightiest among wolves, these lupine titans lead packs of great wolves.
@@ -77,8 +97,15 @@
   tags:
   - wolf
   - leader
+  - X-poison
   skills:
   - Howl
+  factions:
+    neutral:
+    - wolf
+    hostile:
+    - hero
+    - undead
 - id: revenant
   name: Fallen Warrior
   desc: A fallen warrior animated by foul magic.
@@ -100,6 +127,13 @@
   - solo
   - OO-natural
   - XX-holy
+  - OOOO-poison
+  factions:
+    neutral:
+    - undead
+    hostile:
+    - hero
+    - natural
 - id: wolfLord
   name: Wolf Lord
   desc: A savage man with wolflike features, covered in furs
@@ -122,6 +156,12 @@
   - leader
   skills:
   - Howl
+  factions:
+    ally:
+    - wolf
+    hostile:
+    - hero
+    - undead
 - id: banshee
   name: Banshee
   desc: A wailing spirit, eerie and translucent.
@@ -143,6 +183,13 @@
   - solo
   - OO-natural
   - XX-holy
+  - OOOO-poison
+  factions:
+    hostile:
+    - hero
+    - natural
+    neutral:
+    - undead
 - id: margrave
   name: Margrave of Bones
   desc: A frightening creature, thin as a rail, radiating menace.
@@ -165,6 +212,13 @@
   - leader
   - OO-natural
   - XX-holy
+  - OOOO-poison
+  factions:
+    hostile:
+    - hero
+    - natural
+    ally:
+    - undead
 - id: fighter
   name: Warrior
   desc: A burly, seasoned warrior.
@@ -191,6 +245,10 @@
   - Hulking Titan Stance
   - Stonebreaker
   - Rumble
+  factions:
+    hostile:
+    - wolf
+    - undead
 - id: rogue
   name: Rogue
   desc: A lithe, deft scoundrel.
@@ -218,6 +276,10 @@
   - Swift Fang Strike
   - Preparation
   - Poisoned Blades
+  factions:
+    hostile:
+    - wolf
+    - undead
 - id: cleric
   name: Oathbound
   desc: An Oathbound, devoted to the Raven.
@@ -240,3 +302,7 @@
   - leader
   gainsXP: true
   xp: 300
+  factions:
+    hostile:
+    - wolf
+    - undead

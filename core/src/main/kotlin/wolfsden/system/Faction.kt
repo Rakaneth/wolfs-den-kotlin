@@ -5,8 +5,18 @@ import wolfsden.entity.Entity
 import wolfsden.system.GameStore.curEntities
 import wolfsden.system.GameStore.player
 
-fun Entity.isAlly(other: Entity): Boolean = other.eID == this.ai?.leader || other.ai?.leader == this.ai?.leader
-fun Entity.isEnemy(other: Entity): Boolean = !this.isAlly(other) && other.hasTag("creature")
+fun Entity.isAlly(other: Entity): Boolean {
+    val isPackmate = other.eID == this.ai?.leader || other.ai?.leader == this.ai?.leader
+    val isInAllyList = other.tags.any { this.factionStack!!.ally.contains(it)}
+    return isPackmate || isInAllyList
+}
+
+fun Entity.isEnemy(other: Entity): Boolean {
+    return !this.isAlly(other)
+           && other.hasTag("creature")
+           && other.tags.any { this.factionStack!!.hostile.contains(it)}
+}
+
 fun Entity.allies() = curEntities.filter { this.isAlly(it) && it != this }
 fun Entity.visibleAllies() = this.allies().filter { this.visible(it) && it.vit!!.alive }
 fun Entity.visibleEnemies() = if (Location.sameMap(player, this)) curEntities.filter {
@@ -14,6 +24,30 @@ fun Entity.visibleEnemies() = if (Location.sameMap(player, this)) curEntities.fi
 } else emptyList()
 
 fun Entity.isLeader() = Faction.dMaps.containsKey(this.eID)
+fun Entity.addAlly(factionTag: String) {
+    with (factionStack!!) {
+        listOf(neutral, hostile).forEach {
+            it.remove(factionTag)
+        }
+        ally.add(factionTag)
+    }
+}
+fun Entity.addNeutral(factionTag: String) {
+    with (factionStack!!) {
+        listOf(hostile, ally).forEach {
+            it.remove(factionTag)
+        }
+        neutral.add(factionTag)
+    }
+}
+fun Entity.addHostile(factionTag: String) {
+    with (factionStack!!) {
+        listOf(neutral, ally).forEach {
+            it.remove(factionTag)
+        }
+        hostile.add(factionTag)
+    }
+}
 
 object Faction : EntityListener {
     var dMaps: MutableMap<String, DijkstraMap> = mutableMapOf()

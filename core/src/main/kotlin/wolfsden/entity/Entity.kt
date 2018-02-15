@@ -48,6 +48,7 @@ class Entity(val eID: String) : Serializable {
     @Transient
     var skillStack: SkillStack? = null
     var aggroStack: AggroStack? = null
+    var factionStack: FactionStack? = null
     private var capacity: Int = 0
     val atk: Int
         get() = stats?.skl.nz() + armor?.atk.nz() + mh?.atk.nz() + oh?.atk.nz() + trinket?.atk.nz() +
@@ -178,6 +179,13 @@ class Entity(val eID: String) : Serializable {
 
     fun addAggro() {
         aggroStack = AggroStack(eID)
+    }
+
+    fun addFactions(neutral: List<String> = listOf(), hostile: List<String> = listOf(), ally: List<String> = listOf()) {
+        factionStack = FactionStack(eID)
+        factionStack!!.neutral.addAll(neutral)
+        factionStack!!.hostile.addAll(hostile)
+        factionStack!!.ally.addAll(ally)
     }
 
     fun updateTag(tag: String, adding: Boolean = true) {

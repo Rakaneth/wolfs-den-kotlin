@@ -1,12 +1,14 @@
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
-import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import squidpony.squidgrid.mapping.DungeonGenerator
-import wolfsden.entity.*
+import wolfsden.entity.CreatureBuilder
+import wolfsden.entity.Entity
+import wolfsden.entity.ItemBuilder
 import wolfsden.map.MapBuilder
 import wolfsden.map.WolfMap
 import wolfsden.system.WolfRNG
+import wolfsden.system.isAlly
+import wolfsden.system.isEnemy
 
 
 class EntityTestSource {
@@ -30,21 +32,6 @@ class EntityTestSource {
     }
 
     @Test
-    @Disabled
-    fun equipFunctions() {
-        e1.armor = EquipStats(e1.eID, Slot.ARMOR, 1, 2, 3, 4, 5)
-        e1.mh = EquipStats(e1.eID, Slot.MH, 2, 0, 2, 0, 5)
-        e1.oh = EquipStats(e1.eID, Slot.OH, 0, 1, 1, 0, 8)
-        e1.addStats(1, 1, 1, 1)
-        assertEquals(4, e1.atk)
-        assertEquals(4, e1.dfp)
-        assertEquals(7, e1.dmg)
-        assertEquals(5, e1.sav)
-        assertEquals(9, e1.movDly)
-        assertEquals(12, e1.atkDly)
-    }
-
-    @Test
     fun testCreatureBuilder() {
         val wolf = CreatureBuilder.build("wolf")
         assertNotNull(wolf)
@@ -54,8 +41,27 @@ class EntityTestSource {
         assertEquals(0, wolf.atk)
     }
 
-    fun testMapBuilder() {
-        val mine = MapBuilder.build("mine")
+    @Test
+    fun testRawFactions() {
+        val wolf = CreatureBuilder.build("wolf")
+        with(wolf.factionStack!!) {
+            assertNotNull(this)
+            assertTrue(hostile.contains("hero"))
+            assertTrue(neutral.contains("wolf"))
+            assertTrue(hostile.contains("undead"))
+            assertTrue(ally.isEmpty())
+        }
     }
 
+    @Test
+    fun testFactionManager() {
+        val wolf = CreatureBuilder.build("wolf")
+        val zmobi = CreatureBuilder.build("revenant")
+        val otherWolf = CreatureBuilder.build("wolf")
+        val wolfLord = CreatureBuilder.build("wolfLord")
+        assertTrue(wolf.isEnemy(zmobi))
+        assertTrue(!wolf.isEnemy(otherWolf))
+        assertTrue(wolfLord.isAlly(wolf))
+        assertTrue(wolfLord.isAlly(otherWolf))
+    }
 }

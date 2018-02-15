@@ -15,9 +15,9 @@ import java.io.Serializable
 class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, var light: Boolean = true) :
     Serializable {
     var displayMap: Array<CharArray> = ArrayTools.fill('#', baseMap.size, baseMap[0].size)
-    var resistances = DungeonUtility.generateResistances(baseMap)
-    var floors: GreasedRegion = GreasedRegion(resistances, 0.8)
-    var tempRegion: GreasedRegion = floors.copy()
+    var resistances: Array<DoubleArray> = DungeonUtility.generateResistances(baseMap)
+    var floors: GreasedRegion = GreasedRegion(baseMap, '.')
+    private var tempRegion: GreasedRegion = floors.copy()
 
     init {
         for ((x, row) in baseMap.withIndex()) {
@@ -36,8 +36,8 @@ class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, v
         }
     }
 
-    var bgFloats = MapUtility.generateDefaultBGColorsFloat(baseMap)
-    var fgFloats = MapUtility.generateDefaultColorsFloat(baseMap)
+    var bgFloats: Array<FloatArray> = MapUtility.generateDefaultBGColorsFloat(baseMap)
+    var fgFloats: Array<FloatArray> = MapUtility.generateDefaultColorsFloat(baseMap)
     val connections: MutableMap<Coord, Connection> = mutableMapOf()
 
     val width
@@ -78,7 +78,7 @@ class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, v
         baseMap[c.x][c.y] = baseChar
         displayMap[c.x][c.y] = displayChar
         resistances = DungeonUtility.generateResistances(baseMap)
-        floors.refill(resistances, 0.8)
+        floors.refill(baseMap, '.')
         tempRegion.remake(floors)
 
         fgFloats = MapUtility.generateDefaultColorsFloat(baseMap)

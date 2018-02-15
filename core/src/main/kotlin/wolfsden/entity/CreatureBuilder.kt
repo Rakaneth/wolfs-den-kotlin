@@ -1,6 +1,7 @@
 package wolfsden.entity
 
 import com.badlogic.gdx.Gdx
+import com.fasterxml.jackson.annotation.JsonIdentityInfo
 import com.fasterxml.jackson.module.kotlin.readValue
 import squidpony.squidmath.Coord
 import wolfsden.mapper
@@ -30,7 +31,14 @@ data class CreatureBase(
     val xp: Float = 0f,
     val inventory: Int = 10,
     val rarity: Int = 0,
-    val skills: List<String> = listOf()
+    val skills: List<String> = listOf(),
+    val factions: FactionInfo = FactionInfo()
+)
+
+data class FactionInfo(
+    val ally: List<String> = listOf(),
+    val hostile: List<String> = listOf(),
+    val neutral: List<String> = listOf()
 )
 
 object CreatureBuilder {
@@ -81,8 +89,9 @@ object CreatureBuilder {
         foetus.addInventory(info.inventory)
         foetus.addEffect()
         foetus.addAggro()
+        foetus.addFactions(info.factions.neutral, info.factions.hostile, info.factions.ally)
 
-        GameStore.addEntity(foetus)
+        //GameStore.addEntity(foetus)
 
         info.skills.forEach {
             foetus.learnSkill(it).resetCD()
