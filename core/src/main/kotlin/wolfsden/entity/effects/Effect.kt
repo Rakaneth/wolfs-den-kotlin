@@ -34,11 +34,11 @@ open class Effect(
 
     open fun onApply() {
         if (message.isNotEmpty()) WolfScreen.addMessage(message)
-        log(clock, "Effect", "$name effect applied")
+        log(clock, "Effect", "$name effect applied to $entity")
     }
 
     open fun onExpire() {
-        log(clock, "Effect", "$name effect expired")
+        log(clock, "Effect", "$name effect expired on $entity")
     }
 
     open fun tick() {
