@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import wolfsden.screen.PlayScreen
+import wolfsden.screen.WolfScreen
 import wolfsden.screen.ui.MenuState
 
 data class DialogOption(
@@ -19,6 +20,8 @@ data class WolfDialog(
 
 object DialogManager {
     const val convoFile = "data/dialog/sample.convo.json"
+    val curState
+        get() = (WolfScreen.screens["main"] as PlayScreen).curState
 
     val dialogs: Map<String, WolfDialog> = jacksonObjectMapper().readValue(Gdx.files.internal(convoFile).reader())
     var curDialog: WolfDialog? = null
@@ -34,16 +37,16 @@ object DialogManager {
     fun select(option: String) {
         if (option == "done") {
             curDialog = null
-            PlayScreen.curState.changeState(MenuState.PLAY)
+            curState.changeState(MenuState.PLAY)
         } else {
             curDialog = dialogs[option]
-            PlayScreen.curState.update()
+            curState.update()
         }
     }
 
     fun startDialog(dialog: String) {
         select(dialog)
-        PlayScreen.curState.changeState(MenuState.DIALOG)
+        curState.changeState(MenuState.DIALOG)
         GameStore.update(false, true)
     }
 

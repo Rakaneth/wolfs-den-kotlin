@@ -2,6 +2,7 @@ package wolfsden.screen
 
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine
 import com.badlogic.gdx.graphics.Colors
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.StretchViewport
@@ -20,25 +21,25 @@ import wolfsden.system.Scheduler
 import wolfsden.system.playerVisible
 import wolfsden.toICString
 
-object PlayScreen : WolfScreen("main") {
-    const val mapW = 80
-    const val mapH = 30
-    private const val statW = 40
-    private const val statH = 10
-    private const val msgW = 40
-    const val msgH = 10
-    private const val ttW = 40
-    private const val ttH = 10
-    private const val sklW = 40
-    private const val sklH = 12
-    private const val invW = 40
-    private const val invH = 12
-    private const val eqW = 40
-    private const val eqH = 6
+class PlayScreen(batch: SpriteBatch) : WolfScreen("main") {
+    val mapW = 80
+    val mapH = 30
+    private val statW = 40
+    private val statH = 10
+    private val msgW = 40
+    val msgH = 10
+    private val ttW = 40
+    private val ttH = 10
+    private val sklW = 40
+    private val sklH = 12
+    private val invW = 40
+    private val invH = 12
+    private val eqW = 40
+    private val eqH = 6
 
     override val vport = StretchViewport(fullPixelW, fullPixelH)
 
-    private val playLayout = layout(vport) {
+    private val playLayout = layout(vport, batch) {
         layers {
             id = "map"
             gw = mapW
@@ -131,11 +132,7 @@ object PlayScreen : WolfScreen("main") {
 
     override val stage = playLayout.build()
 
-    init {
-        curState.changeState(MenuState.PLAY)
-    }
-
-    private const val FW = SColor.FLOAT_WHITE
+    private val FW = SColor.FLOAT_WHITE
     private val player
         get() = GameStore.player
 
@@ -319,6 +316,11 @@ object PlayScreen : WolfScreen("main") {
             CommonColors.VIT.getColor()
         }
         mapLayers.put(cursor!!.x - cam.x, cursor!!.y - cam.y, 'X', color)
+    }
+
+    override fun enter() {
+        curState.changeState(MenuState.PLAY)
+        super.enter()
     }
 
     override fun render() {

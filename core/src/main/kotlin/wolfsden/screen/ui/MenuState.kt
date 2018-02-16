@@ -8,6 +8,7 @@ import squidpony.squidgrid.gui.gdx.PanelEffect
 import squidpony.squidgrid.gui.gdx.SquidInput
 import squidpony.squidmath.Coord
 import wolfsden.screen.PlayScreen
+import wolfsden.screen.WolfScreen
 import wolfsden.system.CommandProcessor
 import wolfsden.system.DialogManager
 import wolfsden.system.GameStore
@@ -46,10 +47,10 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                                                 in '0'..'9' -> {
                                                     val numSlot = key.toString().toInt()
                                                     if (player.inventory.size >= (numSlot + 1)) {
-                                                        PlayScreen.itemSelected = player.inventory[numSlot]
-                                                        PlayScreen.curState.changeState(ITEM_MENU)
+                                                        entity.itemSelected = player.inventory[numSlot]
+                                                        entity.curState.changeState(ITEM_MENU)
 
-                                                    } else PlayScreen.addMessage("No item to use/equip in that slot.")
+                                                    } else WolfScreen.addMessage("No item to use/equip in that slot.")
                                                 }
                                                 '>', '<' -> {
                                                     val pc = player.pos!!.coord
@@ -58,7 +59,7 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
                                                         CommandProcessor.process(player, "stairs",
                                                                                  curMap.connection(pc))
                                                     } else {
-                                                        PlayScreen.addMessage("No stairs here.")
+                                                        WolfScreen.addMessage("No stairs here.")
                                                     }
                                                 }
                                                 'Q' -> {
@@ -111,19 +112,19 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
 
     ITEM_MENU(ItemMenu()) {
         override fun enter(entity: PlayScreen?) {
-            PlayScreen.menuStage.addActor(theMenu!!.asActor())
-            (theMenu as ItemMenu).setItem(PlayScreen.itemSelected!!)
-            PlayScreen.input = SquidInput({ key, _, _, _ ->
-                                              when (key) {
-                                                  SquidInput.UP_ARROW -> theMenu.prevItem()
-                                                  SquidInput.DOWN_ARROW -> theMenu.nextItem()
-                                                  SquidInput.ENTER -> theMenu.handleSelected()
-                                                  SquidInput.ESCAPE -> PlayScreen.curState.changeState(PLAY)
-                                                  else -> {
-                                                  }
+            entity!!.menuStage.addActor(theMenu!!.asActor())
+            (theMenu as ItemMenu).setItem(entity.itemSelected!!)
+            entity.input = SquidInput({ key, _, _, _ ->
+                                          when (key) {
+                                              SquidInput.UP_ARROW -> theMenu.prevItem()
+                                              SquidInput.DOWN_ARROW -> theMenu.nextItem()
+                                              SquidInput.ENTER -> theMenu.handleSelected()
+                                              SquidInput.ESCAPE -> entity.curState.changeState(PLAY)
+                                              else -> {
                                               }
-                                          })
-            entity!!.activateInput(PlayScreen.menuStage, PlayScreen.input)
+                                          }
+                                      })
+            entity!!.activateInput(entity.menuStage, entity.input)
         }
 
         override fun update(entity: PlayScreen?) {
@@ -146,18 +147,18 @@ enum class MenuState(val theMenu: WolfSelector?) : State<PlayScreen> {
 
         override fun enter(entity: PlayScreen?) {
             update(entity)
-            PlayScreen.menuStage.addActor(theMenu!!.asActor())
-            entity!!.input = SquidInput({ key, _, _, _ ->
-                                            when (key) {
-                                                SquidInput.UP_ARROW -> theMenu.prevItem()
-                                                SquidInput.DOWN_ARROW -> theMenu.nextItem()
-                                                SquidInput.ENTER -> theMenu.handleSelected()
-                                                SquidInput.ESCAPE -> PlayScreen.curState.changeState(PLAY)
-                                                else -> {
-                                                }
-                                            }
-                                        })
-            entity.activateInput(PlayScreen.menuStage, PlayScreen.input)
+            entity!!.menuStage.addActor(theMenu!!.asActor())
+            entity.input = SquidInput({ key, _, _, _ ->
+                                          when (key) {
+                                              SquidInput.UP_ARROW -> theMenu.prevItem()
+                                              SquidInput.DOWN_ARROW -> theMenu.nextItem()
+                                              SquidInput.ENTER -> theMenu.handleSelected()
+                                              SquidInput.ESCAPE -> entity.curState.changeState(PLAY)
+                                              else -> {
+                                              }
+                                          }
+                                      })
+            entity.activateInput(entity.menuStage, entity.input)
         }
 
         override fun exit(entity: PlayScreen?) {

@@ -39,15 +39,18 @@ class Dialog(var caption: String = "", tcf: TextCellFactory = DefaultResources.g
 
     override var selected = 0
 
+    private val playScreen
+        get() = WolfScreen.screens["main"] as PlayScreen
+
     private fun setDimensions() {
-        require(vertSize < PlayScreen.mapH - 2, { "Dialog is too tall" })
-        require(gw < PlayScreen.mapW - 2, { "Dialog is too long" })
+        require(vertSize < playScreen.mapH - 2, { "Dialog is too tall" })
+        require(gw < playScreen.mapW - 2, { "Dialog is too long" })
         setGridWidth(gw)
         setGridHeight(vertSize)
         contents = ArrayTools.fill(' ', gw, vertSize)
         colors = ArrayTools.fill(SColor.FLOAT_BLACK, gw, vertSize)
-        val left = WolfScreen.cellWidth * maxOf((PlayScreen.mapW - gw) / 2, 0)
-        val pTop = WolfScreen.cellHeight * maxOf((PlayScreen.mapH - vertSize) / 2, PlayScreen.msgH)
+        val left = WolfScreen.cellWidth * maxOf((playScreen.mapW - gw) / 2, 0)
+        val pTop = WolfScreen.cellHeight * maxOf((playScreen.mapH - vertSize) / 2, playScreen.msgH)
         setPosition(left, pTop)
     }
 

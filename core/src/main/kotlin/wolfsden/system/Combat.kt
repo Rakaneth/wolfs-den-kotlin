@@ -3,7 +3,7 @@ package wolfsden.system
 import wolfsden.CommonColors
 import wolfsden.entity.Entity
 import wolfsden.joinWithAnd
-import wolfsden.screen.PlayScreen
+import wolfsden.screen.WolfScreen
 
 private fun Entity.countPrefix(pattern: String): Int {
     val p = pattern.toRegex()
@@ -100,6 +100,6 @@ fun describeCombat(result: CombatResults) {
         }
         val dm = if (hit && dmg > 0) ", dealing [$vit]$dmg damage[]" else ""
         val finalString = "${attacker.markupString} $verb ${defender.markupString}$wk$res$dm!"
-        PlayScreen.addMessage(finalString)
+        WolfScreen.addMessage(finalString)
     }
 }

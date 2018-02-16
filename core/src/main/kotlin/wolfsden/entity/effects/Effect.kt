@@ -1,7 +1,7 @@
 package wolfsden.entity.effects
 
 import wolfsden.log
-import wolfsden.screen.PlayScreen
+import wolfsden.screen.WolfScreen
 import wolfsden.system.GameStore
 import wolfsden.system.Scheduler.clock
 import java.io.Serializable
@@ -33,7 +33,7 @@ open class Effect(
     }
 
     open fun onApply() {
-        if (message.isNotEmpty()) PlayScreen.addMessage(message)
+        if (message.isNotEmpty()) WolfScreen.addMessage(message)
         log(clock, "Effect", "$name effect applied")
     }
 

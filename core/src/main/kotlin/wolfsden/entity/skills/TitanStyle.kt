@@ -4,7 +4,7 @@ import squidpony.squidai.PointAOE
 import squidpony.squidmath.Coord
 import wolfsden.entity.effects.StunEffect
 import wolfsden.entity.effects.TitanStanceEffect
-import wolfsden.screen.PlayScreen
+import wolfsden.screen.WolfScreen
 import wolfsden.system.attack
 import wolfsden.system.describeCombat
 
@@ -42,11 +42,11 @@ class Stonebreaker(userID: String) : WolfSkill(userID, "Stonebreaker",
         val missMsg = "${user.markupString} swings mightily, but finds nothing there!"
 
         if (sucker == null) {
-            PlayScreen.addMessage(missMsg)
+            WolfScreen.addMessage(missMsg)
         } else {
             val results = user.attack(sucker, dmgMod = 5)
             if (results.hit) {
-                PlayScreen.addMessage(
+                WolfScreen.addMessage(
                     "${user.markupString} brings down a stone-breaking blow upon ${sucker.markupString}!")
                 sucker.takeDmg(results.dmg)
             }
@@ -73,11 +73,11 @@ class Rumble(userID: String) : WolfSkill(userID, "Rumble",
         val missMsg = "${user.markupString} pounds the ground!"
 
         if (sucker == null) {
-            PlayScreen.addMessage(missMsg)
+            WolfScreen.addMessage(missMsg)
         } else {
             val results = user.attack(sucker, user.atk, sucker.sav)
             if (results.hit) {
-                PlayScreen.addMessage(
+                WolfScreen.addMessage(
                     "${user.markupString} pounds the ground at ${sucker.markupString}'s feet, stunning them!")
                 sucker.takeDmg(results.dmg)
                 sucker.applyEffect(StunEffect(sucker.eID, 10))

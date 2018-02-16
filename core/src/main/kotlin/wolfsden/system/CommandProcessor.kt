@@ -5,7 +5,7 @@ import squidpony.squidmath.Coord
 import wolfsden.entity.Entity
 import wolfsden.log
 import wolfsden.map.WolfMap
-import wolfsden.screen.PlayScreen
+import wolfsden.screen.WolfScreen
 import wolfsden.system.Location.thingsAt
 
 object CommandProcessor {
@@ -42,7 +42,7 @@ object CommandProcessor {
         item.repair?.use(this)
         item.rest?.use(this)
         if (this.playerVisible()) {
-            PlayScreen.addMessage("${this.markupString} uses ${item.markupString}.")
+            WolfScreen.addMessage("${this.markupString} uses ${item.markupString}.")
         }
         this.removeFromBags(item)
         GameStore.removeEntity(item)
@@ -52,7 +52,7 @@ object CommandProcessor {
         this.putOn(item)
         this.inventory.remove(item)
         if (this.playerVisible()) {
-            PlayScreen.addMessage("${this.markupString} equips ${item.markupString}.")
+            WolfScreen.addMessage("${this.markupString} equips ${item.markupString}.")
         }
     }
 
@@ -61,11 +61,11 @@ object CommandProcessor {
         for (thing in things.filter { it != this }) {
             when {
                 !this.bagsFull -> {
-                    if (this.playerVisible()) PlayScreen.addMessage(
+                    if (this.playerVisible()) WolfScreen.addMessage(
                         "${this.markupString} picks up ${thing.markupString}.")
                     this.putInBags(thing)
                 }
-                this.isPlayer -> PlayScreen.addMessage(
+                this.isPlayer -> WolfScreen.addMessage(
                     "${this.markupString}'s bags are too full for ${thing.markupString}.")
                 else -> {
                 }

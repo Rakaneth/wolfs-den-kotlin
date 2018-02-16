@@ -1,6 +1,7 @@
 package wolfsden.screen
 
 import com.badlogic.gdx.graphics.Colors
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import squidpony.squidgrid.gui.gdx.SColor
 import squidpony.squidgrid.gui.gdx.SquidInput
@@ -8,9 +9,9 @@ import wolfsden.CommonColors
 import wolfsden.system.GameStore
 import wolfsden.toICString
 
-object CCScreen : WolfScreen("character creation") {
+class CCScreen(batch: SpriteBatch) : WolfScreen("character creation") {
     override val vport = StretchViewport(fullPixelW, fullPixelH)
-    private val ccLayout = layout(vport) {
+    private val ccLayout = layout(vport, batch) {
         panel {
             id = "choices"
             gw = 30
@@ -58,7 +59,7 @@ object CCScreen : WolfScreen("character creation") {
                 )
                 val charClass = selections[selected]!!
                 GameStore.newGame(charClass, playerName)
-                WolfScreen.setScreen(PlayScreen)
+                WolfScreen.setScreen("main")
             }
             in ('A'..'Z'), in ('a'..'z'), ' ' -> {
                 val toAdd = nameCursor + 1
@@ -80,24 +81,24 @@ object CCScreen : WolfScreen("character creation") {
         }
     }
     private var nameCursor = 1
-    private const val info = CommonColors.INFO
-    private const val crimson = CommonColors.VIT
-    private const val warning = CommonColors.WARNING
-    private const val palmyraDesc = "A strong, eager warrior, the [$info][*]Warrior[] has been called upon by his village, " +
-                                    "[$info][*]Jommund[], to deal with the threat of the [$crimson][*]Wolflords.[] He prefers to confront enemies " +
-                                    "openly, wielding heavy weapons to bring death to his foes and wearing heavy armor for protection. He has " +
-                                    "knowledge of various [$info][/]fighting styles[], using that to his advantage on the battlefield."
-    private const val poeDesc = "A swift, stealthy scout, the [$info][*]Scoundrel[] hails from [$info][*]Jommund[] as well, having " +
-                                "similarly been called upon by the people of his town to face the [$crimson][*]Wolflords.[]  He prefers " +
-                                "lighter armor, silent and easier to move around in, as well as light weapons that are easy to conceal. " +
-                                "Like the Warrior, he has knowledge of various [$info][/]fighting styles[], though these are underhanded " +
-                                "techniques rather than formal martial arts."
-    private const val barnaDesc = "A sturdy, faithful [$info][*]Oathsworn[] of [$warning][*]the Raven, Oath of Death " +
-                                  "and War,[] the [$info]Oathsworn[] does not hail from [$info][*]Jommund[], being a missionary from the capital " +
-                                  "of [$info][*]Salaban[]. His crusade against the [$crimson][*]Wolflords[] is a holy one. He prefers defense " +
-                                  "over offense, wearing heavy armor and shields. He has knowledge of a few [$info][/]martial techniques[], " +
-                                  "but draws his might directly from the Raven, [$info][/]calling upon the Oath[] to wreak destruction on his " +
-                                  "enemies or bless the Oathsworn in battle."
+    private val info = CommonColors.INFO
+    private val crimson = CommonColors.VIT
+    private val warning = CommonColors.WARNING
+    private val palmyraDesc = "A strong, eager warrior, the [$info][*]Warrior[] has been called upon by his village, " +
+                              "[$info][*]Jommund[], to deal with the threat of the [$crimson][*]Wolflords.[] He prefers to confront enemies " +
+                              "openly, wielding heavy weapons to bring death to his foes and wearing heavy armor for protection. He has " +
+                              "knowledge of various [$info][/]fighting styles[], using that to his advantage on the battlefield."
+    private val poeDesc = "A swift, stealthy scout, the [$info][*]Scoundrel[] hails from [$info][*]Jommund[] as well, having " +
+                          "similarly been called upon by the people of his town to face the [$crimson][*]Wolflords.[]  He prefers " +
+                          "lighter armor, silent and easier to move around in, as well as light weapons that are easy to conceal. " +
+                          "Like the Warrior, he has knowledge of various [$info][/]fighting styles[], though these are underhanded " +
+                          "techniques rather than formal martial arts."
+    private val barnaDesc = "A sturdy, faithful [$info][*]Oathsworn[] of [$warning][*]the Raven, Oath of Death " +
+                            "and War,[] the [$info]Oathsworn[] does not hail from [$info][*]Jommund[], being a missionary from the capital " +
+                            "of [$info][*]Salaban[]. His crusade against the [$crimson][*]Wolflords[] is a holy one. He prefers defense " +
+                            "over offense, wearing heavy armor and shields. He has knowledge of a few [$info][/]martial techniques[], " +
+                            "but draws his might directly from the Raven, [$info][/]calling upon the Oath[] to wreak destruction on his " +
+                            "enemies or bless the Oathsworn in battle."
     private val choicePanel = ccLayout.toSquidPanel("choices")
     private val descPanel = ccLayout.toSquidPanel("descs")
     private val namePanel = ccLayout.toSquidLayers("name")
@@ -113,10 +114,6 @@ object CCScreen : WolfScreen("character creation") {
         2 to ("[2]: The Scoundrel" to poeDesc.toICString()),
         3 to ("[3]: The Oathsworn" to barnaDesc.toICString())
     )
-
-    init {
-        activateInput(stage, input)
-    }
 
     private fun drawChoices() {
         with(choicePanel) {

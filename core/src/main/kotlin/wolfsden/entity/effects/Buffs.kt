@@ -1,6 +1,6 @@
 package wolfsden.entity.effects
 
-import wolfsden.screen.PlayScreen
+import wolfsden.screen.WolfScreen
 
 class RegenEffect(
     override val eID: String,
@@ -43,12 +43,12 @@ class PoisonerEffect(
            buff = true) {
 
     override fun onApply() {
-        PlayScreen.addMessageVisible(entity, "${entity.markupString} poisons their weapons.")
+        WolfScreen.addMessageVisible(entity, "${entity.markupString} poisons their weapons.")
         super.onApply()
     }
 
     override fun onExpire() {
-        PlayScreen.addMessageVisible(entity, "${entity.markupString}'s weapons are no longer poisoned.")
+        WolfScreen.addMessageVisible(entity, "${entity.markupString}'s weapons are no longer poisoned.")
         super.onExpire()
     }
 }

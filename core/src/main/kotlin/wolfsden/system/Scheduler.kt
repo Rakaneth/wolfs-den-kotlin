@@ -2,7 +2,7 @@ package wolfsden.system
 
 import wolfsden.entity.Entity
 import wolfsden.entity.effects.Effect
-import wolfsden.screen.PlayScreen
+import wolfsden.screen.WolfScreen
 import wolfsden.system.GameStore.curEntities
 
 object Scheduler : EntityListener {
@@ -56,7 +56,7 @@ object Scheduler : EntityListener {
                     if (creature.isPlayer) {
                         //WolfScreen.setScreen(GameOverScreen)
                     } else {
-                        PlayScreen.addMessage("${creature.markupString} has been [Crimson]slain![]")
+                        WolfScreen.addMessage("${creature.markupString} has been [Crimson]slain![]")
                         onDeath(creature)
                         GameStore.removeEntity(creature)
                     }

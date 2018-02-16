@@ -1,7 +1,6 @@
 package wolfsden.entity
 
 import com.badlogic.gdx.Gdx
-import com.fasterxml.jackson.annotation.JsonIdentityInfo
 import com.fasterxml.jackson.module.kotlin.readValue
 import squidpony.squidmath.Coord
 import wolfsden.mapper

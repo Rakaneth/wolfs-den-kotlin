@@ -4,16 +4,15 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import squidpony.panel.IColoredString
 import squidpony.squidgrid.gui.gdx.SquidInput
+import wolfsden.entity.Entity
 import wolfsden.toICString
 
-abstract class WolfScreen(val name: String) : Disposable {
-    companion object Params {
+abstract class WolfScreen(val name: String) {
+    companion object {
         const val cellWidth = 15f
         const val cellHeight = 20f
         const val fullGridW = 120
@@ -21,11 +20,26 @@ abstract class WolfScreen(val name: String) : Disposable {
         const val fullPixelW = fullGridW * cellWidth
         const val fullPixelH = fullGridH * cellHeight
         var curScreen: WolfScreen? = null
-        val batch = SpriteBatch()
-        fun setScreen(screen: WolfScreen) {
+        var screens: MutableMap<String, WolfScreen> = mutableMapOf()
+        fun setScreen(screenName: String) {
             curScreen?.exit()
-            curScreen = screen
+            curScreen = screens[screenName]
+            curScreen!!.activateInput(curScreen!!.stage, curScreen!!.input)
             curScreen?.enter()
+        }
+
+        fun register(screen: WolfScreen) {
+            screens[screen.name] = screen
+        }
+
+        fun addMessage(msg: String) {
+            val playScreen = screens["main"]!! as PlayScreen
+            playScreen.addMessage(msg)
+        }
+
+        fun addMessageVisible(other: Entity, msg: String) {
+            val playScreen = screens["main"]!! as PlayScreen
+            playScreen.addMessageVisible(other, msg)
         }
     }
 
@@ -46,10 +60,5 @@ abstract class WolfScreen(val name: String) : Disposable {
 
     fun activateInput(stage: Stage, input: InputProcessor) {
         Gdx.input.inputProcessor = InputMultiplexer(stage, input)
-    }
-
-    override fun dispose() {
-        stage.dispose()
-        batch.dispose()
     }
 }

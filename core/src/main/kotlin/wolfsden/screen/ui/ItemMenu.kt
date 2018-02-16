@@ -14,7 +14,7 @@ class ItemMenu(tcf: TextCellFactory = DefaultResources.getSlabFamily()
         .setUp(tw = 1.2f, th = 1.5f))
     : WolfMenu(tcf) {
 
-    lateinit private var theItem: Entity
+    private lateinit var theItem: Entity
 
     fun setItem(item: Entity) {
         theItem = item
@@ -37,7 +37,7 @@ class ItemMenu(tcf: TextCellFactory = DefaultResources.getSlabFamily()
             TODO("Need to implement Dialog for descriptions")
         } else {
             CommandProcessor.process(GameStore.player, "use", theItem)
-            PlayScreen.curState.changeState(MenuState.PLAY)
+            (WolfScreen.screens["main"] as PlayScreen).curState.changeState(MenuState.PLAY)
         }
     }
 }

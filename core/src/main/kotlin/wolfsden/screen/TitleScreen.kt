@@ -1,6 +1,7 @@
 package wolfsden.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import squidpony.squidgrid.gui.gdx.DefaultResources
@@ -10,19 +11,19 @@ import squidpony.squidgrid.gui.gdx.SquidPanel
 import wolfsden.system.GameStore
 import java.io.File
 
-object TitleScreen : WolfScreen("title") {
+class TitleScreen(batch: SpriteBatch) : WolfScreen("title") {
     override val vport = StretchViewport(fullPixelW, fullPixelH)
     override val stage = Stage(vport, batch)
     override var input = SquidInput({ key, _, _, _ ->
                                         when (key) {
-                                            'n', 'N' -> WolfScreen.setScreen(CCScreen)
+                                            'n', 'N' -> WolfScreen.setScreen("character creation")
                                             SquidInput.ESCAPE -> Gdx.app.exit()
                                             '0', '1', '2' -> {
                                                 val selected = key.toString().toInt()
                                                 if (fileList.size >= selected + 1) {
                                                     val sFile = fileList[selected].name
                                                     GameStore.loadGame(sFile)
-                                                    WolfScreen.setScreen(PlayScreen)
+                                                    WolfScreen.setScreen("main")
                                                 }
                                             }
                                             ')' -> if (fileList.isNotEmpty()) GameStore.deleteGame(fileList[0].name)
@@ -49,7 +50,6 @@ object TitleScreen : WolfScreen("title") {
     init {
         display.setBounds(0f, 0f, fullPixelW, fullPixelH)
         stage.addActor(display)
-        activateInput(stage, input)
     }
 
     private fun drawBase() {

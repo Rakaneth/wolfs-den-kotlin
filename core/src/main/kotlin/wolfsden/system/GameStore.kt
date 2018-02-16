@@ -7,7 +7,7 @@ import wolfsden.entity.Entity
 import wolfsden.entity.ItemBuilder
 import wolfsden.map.MapBuilder
 import wolfsden.map.WolfMap
-import wolfsden.screen.PlayScreen
+import wolfsden.screen.WolfScreen
 import wolfsden.system.GameStore.player
 import wolfsden.system.Scheduler.clock
 import java.io.*
@@ -179,7 +179,7 @@ object GameStore {
             }
         }
         Scheduler.resume()
-        PlayScreen.addMessage("Welcome to [Green][/]Wolf's Den II![]")
+        WolfScreen.addMessage("Welcome to [Green][/]Wolf's Den II![]")
         DialogManager.curDialog = null
     }
 

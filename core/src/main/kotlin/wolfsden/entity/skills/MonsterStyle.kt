@@ -5,7 +5,7 @@ import squidpony.squidgrid.Radius
 import squidpony.squidmath.Coord
 import wolfsden.entity.effects.MightEffect
 import wolfsden.entity.effects.WeakEffect
-import wolfsden.screen.PlayScreen
+import wolfsden.screen.WolfScreen
 import wolfsden.system.isAlly
 
 private val DEFAULT_POINT = Coord.get(0, 0)
@@ -26,7 +26,7 @@ class WolfHowl(userID: String) : WolfSkill(userID, "Howl",
             else
                 it.applyEffect(WeakEffect(it.eID, 50))
         }
-        PlayScreen.addMessage("${user.markupString} howls, bolstering the pack and chilling foes!")
+        WolfScreen.addMessage("${user.markupString} howls, bolstering the pack and chilling foes!")
         return 10
     }
 }

@@ -1,16 +1,17 @@
 package wolfsden.screen
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.StretchViewport
 import squidpony.squidgrid.gui.gdx.*
-import wolfsden.screen.WolfScreen.Params.batch
-import wolfsden.screen.WolfScreen.Params.cellHeight
-import wolfsden.screen.WolfScreen.Params.cellWidth
+import wolfsden.screen.WolfScreen.Companion.cellHeight
+import wolfsden.screen.WolfScreen.Companion.cellWidth
 
-fun layout(vport: StretchViewport, block: Layout.() -> Unit): Layout = Layout(vport).apply(block)
+fun layout(vport: StretchViewport, batch: SpriteBatch, block: Layout.() -> Unit): Layout = Layout(vport, batch).apply(
+    block)
 
-class Layout(vport: StretchViewport) {
+class Layout(vport: StretchViewport, batch: SpriteBatch) {
     private val stage = Stage(vport, batch)
     private val actors: MutableMap<String, Actor> = mutableMapOf()
     fun panel(block: PanelBuilder.() -> Unit) {

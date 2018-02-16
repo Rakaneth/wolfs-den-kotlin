@@ -4,7 +4,7 @@ import squidpony.squidai.PointAOE
 import squidpony.squidmath.Coord
 import wolfsden.entity.effects.PoisonerEffect
 import wolfsden.entity.effects.SnakeStanceEffect
-import wolfsden.screen.PlayScreen
+import wolfsden.screen.WolfScreen
 import wolfsden.system.attack
 import wolfsden.system.describeCombat
 import wolfsden.system.hasTag
@@ -46,11 +46,11 @@ class SwiftFangStrike(userID: String) : WolfSkill(
         val missMsg = "${user.markupString} quickly stabs at the air!"
 
         if (sucker == null) {
-            PlayScreen.addMessage(missMsg)
+            WolfScreen.addMessage(missMsg)
         } else {
             val results = user.attack(sucker, dmgMod = (10 - user.atkDly))
             if (results.hit) {
-                PlayScreen.addMessage("${user.markupString} strikes like a snake!")
+                WolfScreen.addMessage("${user.markupString} strikes like a snake!")
                 sucker.takeDmg(results.dmg)
             }
             describeCombat(results)
@@ -73,7 +73,7 @@ class Preparation(userID: String) : WolfSkill(
     targeting = false
 ) {
     override fun use(target: Coord): Int {
-        PlayScreen.addMessage("${user.markupString} breathes and reflects on the grim tasks before him.")
+        WolfScreen.addMessage("${user.markupString} breathes and reflects on the grim tasks before him.")
         user.skillStack!!.getSkillsOfType(SkillType.SNAKE).filter { it.name != this.name }.forEach {
             it.resetCD()
         }
