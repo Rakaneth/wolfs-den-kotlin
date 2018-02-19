@@ -14,8 +14,9 @@ import java.io.Serializable
 
 class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, var light: Boolean = true) :
     Serializable {
+
     var displayMap: Array<CharArray> = ArrayTools.fill('#', baseMap.size, baseMap[0].size)
-    var resistances: Array<DoubleArray> = DungeonUtility.generateResistances(baseMap)
+    var resistances: Array<DoubleArray> = DungeonUtility.generateSimpleResistances(baseMap)
     var floors: GreasedRegion = GreasedRegion(baseMap, '.')
     private var tempRegion: GreasedRegion = floors.copy()
 
@@ -27,8 +28,7 @@ class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, v
                     '>' -> Chars.DOWN
                     '<' -> Chars.UP
                     '+' -> Chars.CLOSED
-                    '/' -> Chars.CLOSED
-                    '\\' -> Chars.OPEN
+                    '/' -> Chars.OPEN
                     ':' -> Chars.BRIDGE
                     else -> Chars.FLOOR
                 }
@@ -77,7 +77,7 @@ class WolfMap(val id: String, val name: String, var baseMap: Array<CharArray>, v
     fun changeMap(c: Coord, baseChar: Char, displayChar: Char) {
         baseMap[c.x][c.y] = baseChar
         displayMap[c.x][c.y] = displayChar
-        resistances = DungeonUtility.generateResistances(baseMap)
+        resistances = DungeonUtility.generateSimpleResistances(baseMap)
         floors.refill(baseMap, '.')
         tempRegion.remake(floors)
 

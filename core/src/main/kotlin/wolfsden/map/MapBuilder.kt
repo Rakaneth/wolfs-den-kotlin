@@ -2,6 +2,7 @@ package wolfsden.map
 
 import com.badlogic.gdx.Gdx
 import com.fasterxml.jackson.module.kotlin.readValue
+import squidpony.squidgrid.mapping.DungeonUtility
 import squidpony.squidgrid.mapping.SectionDungeonGenerator
 import squidpony.squidgrid.mapping.SerpentMapGenerator
 import wolfsden.log
@@ -50,7 +51,7 @@ object MapBuilder {
         val raw = smg.generate()
         deco.addDoors(info.doors, info.doubleDoors)
         deco.addLake(info.water)
-        val baseMap = deco.generate(raw, smg.environment)
+        val baseMap = DungeonUtility.closeDoors(deco.generate(raw, smg.environment))
 
         return WolfMap(mapID, info.name, baseMap, info.light)
     }
